@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>账户设置</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js" type="text/javascript" charset="utf-8"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <style type="text/css">
+    	.mui-content{background-color: #DDDDDD}
+    	html{background-color: #DDDDDD}
+    </style>
+</head>
+<body style="background-color: #EFEFF4;">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">账户设置</h1>
+	</header>
+	<div class="mui-content">
+		<div class="wrapSetLi">
+		  <li id="" class="liDzqy" onclick="clicked(this.id)">
+			<a>
+				<span>电子签约</span>
+				<span id="spanDzqy" class="right" style="color: #6C6C6C;"></span><!--注销-->
+			</a>
+		  </li>	
+		  <li id="" class="liSetChannel" onclick="clicked(this.id)">  
+			<a>
+				<span id="spanYwqdFirst" style="margin: 0px;">签约渠道</span>
+				<span id="spanYwqd" class="right" style="color: #6C6C6C; font-size: 14px;"></span>   
+			</a>
+		  </li>
+		  <li id="changePhoneNum" style="margin-top: 10px;"> 
+			<a>
+				<span id="dhhmColor">签约手机号码</span>
+				<span id="spanDhhm" class="right"></span>   
+			</a>
+		  </li>
+		  <li id="" class="changeMm" onclick="clicked(this.id)">
+			<a>
+				<span>修改查询密码</span>
+			</a>
+		  </li>
+		  <li id="" class="dxdz" style="margin-top: 10px;" onclick="clicked(this.id)">
+			<a>
+				<span>短信订制</span> 
+			</a>
+		  </li>
+		</div>  
+		<button id="logOut" class="mui-btn mui-btn-danger" style="width: 96%; margin: 15px 2%;">退出</button>
+	</div>    
+	   
+	   
+</body>
+  <script type="text/javascript" charset="UTF-8">
+      	 mui.init();  
+      	function plusReady(){
+      	  var oSpanDzqy=document.getElementById("spanDzqy");
+      	  var oSpanDhhm=document.getElementById("spanDhhm");
+      	  var oSpanYwqd=document.getElementById("spanYwqd");
+      	  var oSpanYwqdFirst=document.getElementById("spanYwqdFirst");
+      	  var oLiSetChannel=document.querySelector(".liSetChannel");
+      	  //电子签约
+      	  zhszjc('404',
+      	    function (){
+		      	mui.ajax(localStorage.getItem("interfaceUrl")+'zhsz.app', {
+					  timeout: 15000,
+					  dataType: 'json',  
+					  type: 'post',
+					  success: function(data) {
+					  	oSpanDhhm.innerHTML=data.jbxx.lxdh;
+					  	if(data.qyxx.sfqy=='0'){
+					  		document.querySelector(".liDzqy").id='../mine/cancelSign.html';
+					  	   	oSpanDzqy.innerHTML="注销";
+					  	}else{
+					  		oSpanDzqy.innerHTML="未签约";
+					  		oSpanDzqy.style.color="#BBBBBB";
+					  		document.getElementById("dhhmColor").style.color="#BBBBBB";
+					  		document.getElementById("spanDhhm").innerHTML = '未签约';
+					  		document.getElementById("spanDhhm").style.color = "#BBBBBB"; 
+					  		document.querySelector(".liDzqy").id='../mine/electronSign.html';
+					  	}	  	
+					  },
+					  error: function(data) {
+					  	    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});  
+					   } 
+				})
+		      	} 
+      	    )
+      	    //签约渠道
+      	    zhszjc('402',
+      	    function (){
+		      	mui.ajax(localStorage.getItem("interfaceUrl")+'zhsz.app', {
+					  timeout: 15000,
+					  dataType: 'json',  
+					  type: 'post',
+					  success: function(data) {
+					  	if(data.qyxx.sfqy=='0'){
+					  		oLiSetChannel.id='../mine/setChannel.html';
+					  		var qyqdArry=data.qyxx.qyqd.split("|");
+					  	   	for(var i=0; i<qyqdArry.length;i++){
+					  	   		if(i!==(qyqdArry.length-1)){
+					  	   		  oSpanYwqd.innerHTML+=data.qdlbs[qyqdArry[i]]+'、';
+					  	   		}else{
+					  	   			oSpanYwqd.innerHTML+=data.qdlbs[qyqdArry[i]];
+					  	   		}
+					  	   	}	
+					  	}else{
+					  		oSpanYwqd.innerHTML="未签约"; 
+					  		oSpanYwqd.style.color="#BBBBBB";
+					  		oSpanYwqdFirst.style.color="#BBBBBB"; 
+					  	}	  	
+					  },
+					  error: function(data) {} 
+				})
+		    }  	
+      	    )
+      	    //签约手机号码
+      	    zhszjc('403',
+      	    function (){
+      	       document.getElementById("changePhoneNum").addEventListener('tap', function(){
+					hasOldSjhm();
+				})
+      	     }
+      	    )
+      	    
+      	    //修改查询密码
+      	    zhszjc('406',
+      	    function (){
+      	       document.getElementsByClassName("changeMm")[0].id = '../mine/changeQueryPass.html'
+      	      }
+      	    )
+      	    
+      	    //短信定制  
+      	    zhszjc('115',
+      	    function (){
+      	       document.getElementsByClassName("dxdz")[0].id = '../mine/messageCustom.html'
+      	      }
+      	    )
+      	  
+			document.getElementById("logOut").addEventListener('tap', function(){
+				mui.ajax(localStorage.getItem("interfaceUrl")+'logout.app', {   
+				  timeout: 15000,
+				  dataType: 'json', 
+				  type: 'post', 
+				  success: function(data) {	
+				        if(data.jg == '0'){
+				        	  mui.fire(plus.webview.getLaunchWebview(), 'logout');
+					  		  mui.toast('退出成功！');
+					  		  mui.back();
+				        }else if(data.jg == '-98'){
+				        	  loginPlease();
+				        }else{
+				        	  plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+				        }       	
+				  },
+				  error: function(data) {
+				              plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+				    }
+				});
+			})
+		}
+		if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+        var as='pop-in'; 
+		var _openw=null;
+		function clicked(id,a,s){
+			if(_openw){return;}
+            a||(a=as);
+			if(_openw){
+				_openw.showded=true;
+				_openw.show(a,null,function(){
+					_openw=null;//避免快速点击打开多个页面 
+				});
+			}else{
+				_openw=plus.webview.create(id,id,{scrollIndicator:'none',scalable:false,popGesture:'hide'},{preate:true});
+
+				_openw.addEventListener('loaded',function(){//叶面加载完成后才显示
+					s||_openw.show(a,null,function(){
+						_openw=null;//避免快速点击打开多个页面
+					});
+					s&&(_openw=null);//避免s模式下变量无法重置
+				},false);
+				_openw.addEventListener('hide',function(){
+					_openw&&(_openw.showded=true);
+					_openw=null;
+				},false);
+			}
+		}
+    </script>
+</html>

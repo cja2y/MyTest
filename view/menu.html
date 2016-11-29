@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Menu</title>
+    <script src="../js/tayh_app.js"></script>
+    <script src="../js/update.js"></script>
+    <script src="../js/share.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link href="../css/menu.css" rel="stylesheet"/> 
+    <link rel="stylesheet" type="text/css" href="../css/icons-extra.css"/>
+    <style type="text/css">  
+    	#slider img{height: 220px;}   
+    	#roll{height:30px;  overflow:hidden;list-style:none;}   
+        #roll li{height: 30px;}
+        .mui-slider-item{border: none;} 
+    </style>    
+</head> 
+<body>
+  <header class="mui-bar mui-bar-nav" style="padding-left: 0px;">
+  	  <div id="login" class="login"></div> 
+  	  <div id="share" class="mui-icon-extra mui-icon-extra-share right" style="color: #FFFFFF;font-size: 20px; padding: 14px 10px 10px 10px;"></div> 
+      <h1 class="mui-title">天津公积金</h1>
+  </header>
+  <div class="mui-content" style="padding-top: 44px;">
+    <div id="slider" class="mui-slider" style="border-bottom: 1px solid #DDDDDD;"> 
+		<div class="mui-slider-group mui-slider-loop">
+			<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+			<div class="mui-slider-item mui-slider-item-duplicate">
+				<a id="href33" onclick="lunboJump(this.id);">
+					<img id="lunBoImg44" src="../img/lunBo/lunBo3.png">   
+				</a>
+			</div>
+			<div class="mui-slider-item">
+				<a id="href1" onclick="lunboJump(this.id);">
+					<img id="lunBoImg1" src="../img/lunBo/lunBo1.png">   
+				</a>
+			</div>
+			<div class="mui-slider-item">
+				<a id="href2" onclick="lunboJump(this.id);"> 
+					<img id="lunBoImg2" src="../img/lunBo/lunBo2.png">    
+				</a>
+			</div>
+			<div class="mui-slider-item">
+				<a id="href3"  onclick="lunboJump(this.id);">
+					<img id="lunBoImg3" src="../img/lunBo/lunBo3.png">   
+				</a>
+			</div>
+			<!--<div class="mui-slider-item">
+				<a href="#">
+					<img id="lunBoImg4" alt="">   
+					<p id="lunBoTitle4" class="mui-slider-title"></p>
+				</a>
+			</div>-->
+			<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+			<div class="mui-slider-item mui-slider-item-duplicate">
+				<a id="href11" onclick="lunboJump(this.id);"> 
+					<img id="lunBoImg11" src="../img/lunBo/lunBo1.png">  
+				</a>
+			</div> 
+		</div>
+		<div class="mui-slider-indicator">
+			<div class="mui-indicator mui-active"></div>
+			<div class="mui-indicator"></div>
+			<div class="mui-indicator"></div> 
+			<!--<div class="mui-indicator"></div> -->
+		</div>  
+	</div> 
+	<div class="middle-content clearfix">  
+		<div id="myJiaocun" class="myacount"><img src="../img/menu/menu-myacount.png" alt=""/><span class="item">我的账户</span></div><!--../view/result.html--> <!--http://10.94.3.11:8085/tayh-app/app/zxzx.app-->
+		<div id="myLoan" class="myloan"><img src="../img/menu/menu-myloan.png" alt=""/><span class="item">我的贷款</span></div>
+		<div id="tiQu" class="get"><img src="../img/menu/menu-get.png" alt=""/><span class="item">提取</span></div>
+		<div id="huanDai" class="returnloan"><img src="../img/menu/menu-returnloan.png" alt=""/><span class="item">还贷</span></div>
+	</div>
+	<div id="http://www.zfgjj.cn/tjgjjcms/subSiteApp/channel/list/tzggsite/tzggsite.html" class="gonggao" onclick="clickAny(this.id,'公告');"></div>     
+	<div class="hot">   
+	  <ul id="roll"></ul>	 	    
+	</div> 
+	<div class="bottom-content"> 
+		<div id="http://www.zfgjj.cn/tjgjjcms/subSiteApp/channel/list/dtxwsite/dtxwsite.html" class="border" onclick="clickAny(this.id,'动态新闻');"><img src="../img/menu/menu-news.png" alt=""/><span class="itemb">动态新闻</span></div>
+		<div id="http://www.zfgjj.cn/tjgjjcms/subSiteApp/single/wydksite/10905/305153.html" class="border" onclick="clickAny(this.id,'我要贷款');"><img src="../img/menu/menu-daikuan2.png" alt=""/><span class="itemb">我要贷款</span></div>
+		<div id="http://www.zfgjj.cn/tjgjjcms/subSiteApp/single/dkjssite/10901/305152.html" class="border" onclick="clickAny(this.id,'贷款计算');"><img src="../img/menu/menu-calculate.png" alt=""/><span class="itemb">贷款计算</span></div>
+		<div id="http://www.zfgjj.cn/tjgjjcms/subSiteApp/channel/list/ywzn/ywzn.html" onclick="clickAny(this.id,'新手必备');"><img src="../img/menu/menu-book.png" alt=""/><span class="itemb">新手必备</span></div>
+		<div id="http://www.zfgjj.cn/tjgjjcms/subSiteApp/channel/list/zzfgsite/zzfgsite.html" class="border" onclick="clickAny(this.id,'政策法规');"><img src="../img/menu/menu-police.png" alt=""/><span class="itemb">政策法规</span></div>
+		<div id="http://www.zfgjj.cn/tjgjjcms/subSiteApp/channel/list/rdwtsite/rdwtsite.html" class="border" onclick="clickAny(this.id,'热点问题');"><img src="../img/menu/menu-hotquestion.png" alt=""/><span class="itemb">热点问题</span></div>
+		<div id="http://www.zfgjj.cn/tjgjjcms/subSiteApp/channel/list/wdcxsite/wdcxsite.html" class="border" onclick="clickAny(this.id,'网点查询');"><img src="../img/menu/munu-webquery.png" alt=""/><span class="itemb">网点查询</span></div>
+		<div id="peopleService" class="service"><img src="../img/menu/menu-service.png" alt=""/><span class="itemb">人工服务</span></div>
+	</div>      
+  </div>    
+  <script src="../js/mui.min.js"></script> 
+  <script type="text/javascript" charset="UTF-8"> 
+      	mui.init();
+      	// 图片轮播
+      	var slider = mui("#slider");
+      	var Intent = null,
+			File = null,
+			Uri = null,
+			main = null;
+		var shares = null;
+		var shareImageUrl = '';
+		var rgfw = null;
+		slider.slider({
+						interval: 6000 
+					});	
+		var oBitmap=null;
+	    var oldStotageTpxx="oldStotageTpxx";     //老版本号-图片信息
+	    var stotageYwxcxx="stotageYwxcxx";       //新获得的业务宣传信息 
+	    var oLunBoImgId1="oLunBoImgId1";        //轮播图本地相对url存储
+    	var oLunBoImgId2="oLunBoImgId2"; 
+    	var oLunBoImgId3="oLunBoImgId3";   
+    	/*var oLunBoImgId4="oLunBoImgId4";  */
+    	var lunBoTitle1="lunBoTitle1";          //轮播图标题存储
+    	var lunBoTitle2="lunBoTitle2";
+    	var lunBoTitle3="lunBoTitle3"; 
+    	/*var lunBoTitle4="lunBoTitle4";   */
+
+      	function plusReady(){  
+      		launchScreen();
+		    // 隐藏滚动条        
+		    var oLunBoImg1=document.getElementById("lunBoImg1");   //轮播图
+			var oLunBoImg2=document.getElementById("lunBoImg2");   
+			var oLunBoImg3=document.getElementById("lunBoImg3");
+			/*var oLunBoImg4=document.getElementById("lunBoImg4");*/ 
+			var oLunBoImg11=document.getElementById("lunBoImg11");  
+			var oLunBoImg44=document.getElementById("lunBoImg44"); 
+			
+			var arryOlunbo = new Array();                               //轮播图数组 
+			
+			var wgtVer=null;
+			
+			rgfw = plus.webview.getWebviewById('rgfw');
+			arryOlunbo.push(oLunBoImg1,oLunBoImg2,oLunBoImg3,oLunBoImg11,oLunBoImg44);    /*,oLunBoImg4*/
+            oBitmap = new plus.nativeObj.Bitmap();    // 原生图片对象 
+			plus.webview.currentWebview().setStyle({scrollIndicator:'none'});
+			updateSerivces();      //更新分享服务
+			plus.runtime.getProperty(plus.runtime.appid,function(inf){
+		        wgtVer=inf.version;
+		    });
+			if (plus.os.name == "Android") {
+				Intent = plus.android.importClass("android.content.Intent");
+				File = plus.android.importClass("java.io.File");
+				Uri = plus.android.importClass("android.net.Uri");
+				main = plus.android.runtimeMainActivity();
+			}
+			    
+			//获取最新的版本号     
+//			mui.ajax(localStorage.getItem("interfaceUrl")+'getVersion.app', {    
+//			  timeout: 200000,
+//			  dataType: 'json', 
+//			  type: 'post', 
+//			  success: function(data) {	 
+//		  	            if( parseFloat(data.version) !== parseFloat(wgtVer) ){
+//		  	          	    var url="https://app.zfgjj.cn/dzyw-app/app/GJJClient.apk"; // 下载文件地址
+//							var dtask = plus.downloader.createDownload( url, {}, function ( d, status ) {
+//							    if ( status == 200 ) { // 下载成功
+//							        var path = d.filename;
+//							        plus.runtime.install(path);  // 安装下载的apk文件
+//							    } else {//下载失败
+//							        alert( "Download failed: " + status ); 
+//							    }  
+//							});
+//							plus.ui.confirm( "天津公积金已有更新", function ( e ) {
+//								if(e.index == 0){
+//									 dtask.start();
+//								}else{
+//									plus.runtime.quit();
+//								}
+//							}, "", ["马上更新","暂不更新"] );	 
+//		  	            }  
+//			  },
+//			  error: function(data) {}
+//			});
+			
+	        //一、获取3个更新版本号,并更新 
+	        var tpxx = '';
+			mui.ajax(localStorage.getItem("interfaceUrl")+'getCacheVersion.app', {  
+			  timeout: 20000,                             
+			  dataType: 'json',          
+			  type: 'get',               
+			  success: function(data) {	 
+			  	tpxx = data.result.tpxxbbh;
+			  	getTpxx(tpxx);   //图片信息版本号判断及处理    
+			  },                   
+			  error: function(data) {         
+			  	//没网络连接时，则直接从本地获取轮播图 及轮播图标题 
+	            getLocalImage();  
+	            //getLocalImageTitle();   
+			  	plus.nativeUI.toast("网络连接异常!",{'duration':'long'});           
+			  }     
+			}); 
+		//一(1)(图片信息 轮播图处理)
+		function getTpxx(tpxx){	 
+			    var arryTpid = new Array();
+			    var arryTpsx = new Array();
+			    var arryTpbt = new Array();
+		    //根据版本号判断轮播图是否更新(图片信息版本号)
+				mui.ajax(localStorage.getItem("interfaceUrl")+'getWhxx.app', {
+				  timeout: 20000,   
+				  dataType: 'json',    
+				  type: 'get',   
+				  data:{  
+				  	xxlb: "01"
+				  }, 
+				  success: function(data) {	 
+				    //轮播图维护信息    
+			  	    for(i = 0; i<data.result.lbtdetail.length; i++){
+			  	 	  arryTpid.push((data.result.lbtdetail[i].tpid));
+			  	 	  arryTpsx.push((data.result.lbtdetail[i].sxh));
+			  	 	  arryTpbt.push((data.result.lbtdetail[i].bt));
+                    }
+			  	    if(parseFloat(tpxx) !== 896){
+				  	    //下载新的图片，图片id和顺序
+						for(i=0; i<arryTpid.length; i++) {
+							var tpid = arryTpid[i]; 
+							var sxh = arryTpsx[i];
+							lunboDownLoad(tpid,sxh);   //获取维护信息,显示并下载图片方法
+						}
+				  	    //下载新的图片标题
+						lunboTitleDownload(arryTpbt);
+			  	    }
+				  },        
+				  error: function(data) {  
+				  }     
+				});  
+		}	 
+
+		//三(1)根据维护信息  轮播图下载   
+		function lunboDownLoad(tpid,sxh){
+		  		  mui.ajax(localStorage.getItem("interfaceUrl")+'getTpxx.app', { 
+				  timeout: 30000,                          
+				  dataType: 'json',    
+				  type: 'post',    
+				  data: { 
+				  	tpid: tpid     
+				  },       
+				  success: function(data) { 
+				  //显示获取到的轮播图
+				     if(sxh == 1){   //显示第一张时  把轮播组的倒数第二张也加上
+				     	arryOlunbo[arryOlunbo.length - 2].src = "data:image/png;base64,"+data.result.tpxx;
+				     }else if(sxh == 3){  //显示第三张时  把轮播组的倒数第一张也加上
+				     	arryOlunbo[arryOlunbo.length - 1].src = "data:image/png;base64,"+data.result.tpxx;
+				     }
+				  	 arryOlunbo[sxh-1].src="data:image/png;base64,"+data.result.tpxx; 
+			      //下载到指定的文件夹
+				     createDownload(arryOlunbo[sxh-1].src,tpid,sxh);
+				  },     
+				  error: function(data) {     
+				   } 
+				});
+		}
+		//轮播图标题下载 保存
+		function lunboTitleDownload(arryTpbt){
+			document.getElementById("href1").id=arryTpbt[0];
+			document.getElementById("href2").id=arryTpbt[1];
+			document.getElementById("href3").id=arryTpbt[2];
+			/*oLunBoTitle4.innerHTML=arryTpbt[3];*/
+			document.getElementById("href11").id=arryTpbt[2]; 
+			document.getElementById("href33").id=arryTpbt[0];
+			localStorage.setItem('lunBoTitle1',arryTpbt[0]);
+			localStorage.setItem('lunBoTitle2',arryTpbt[1]); 
+			localStorage.setItem('lunBoTitle3',arryTpbt[2]);
+			/*localStorage.setItem(lunBoTitle4,arryTpbt[3]);*/
+			localStorage.setItem('lunBoTitle11',arryTpbt[3]);
+			localStorage.setItem('lunBoTitle44',arryTpbt[4]);
+		}  
+		 //调用本地轮播图方法
+	    function getLocalImage(){     
+	    	oLunBoImg1.src=setImgFromLocal(localStorage.getItem(oLunBoImgId1));
+			oLunBoImg2.src=setImgFromLocal(localStorage.getItem(oLunBoImgId2));
+			oLunBoImg3.src=setImgFromLocal(localStorage.getItem(oLunBoImgId3));
+			/*oLunBoImg4.src=setImgFromLocal(localStorage.getItem(oLunBoImgId4));*/
+			oLunBoImg11.src=setImgFromLocal(localStorage.getItem(oLunBoImgId1));
+			oLunBoImg44.src=setImgFromLocal(localStorage.getItem(oLunBoImgId3));
+	    }
+	    //调用本地轮播图标题方法
+	    function getLocalImageTitle(){     
+	    	document.getElementById("href1").id=localStorage.getItem(lunBoTitle1);
+			document.getElementById("href2").id=localStorage.getItem(lunBoTitle2);
+			document.getElementById("href3").id=localStorage.getItem(lunBoTitle3); 
+			/*oLunBoTitle4.innerHTML=localStorage.getItem(lunBoTitle4);*/
+			document.getElementById("href11").id=localStorage.getItem(lunBoTitle1);
+			document.getElementById("href33").id=localStorage.getItem(lunBoTitle3);
+	    } 
+	    //人工服务
+		document.getElementById("peopleService").addEventListener('tap', function() {
+			clickRengong();
+		});
+		//分享
+		document.getElementById("share").addEventListener('tap',function(){
+			var btnArray = [{title:"发送给微信好友"},{title:"分享到微信朋友圈"},{title:"分享到QQ"},{title:"分享到新浪微博"}];
+			plus.nativeUI.actionSheet( {
+				cancel:"取消",
+				buttons:btnArray
+			}, function(e){
+				var index = e.index;
+				switch (index){
+					case 0:
+						break;
+					case 1:
+							shareAction("weixin","WXSceneSession","../img/share/shareBig-1.jpg","天津公积金手机APP全面焕新,我们就是这样好用的APP","新界面,新业务,新体验！账户明细随时查看,线上业务全面办理,客户服务全程支持!","http://www.zfgjj.cn/tjgjjcms/subSiteApp/content/dtxwsite/zxxwsite/zxxwsite/305049.html");
+						break;
+					case 2:
+							shareAction("weixin","WXSceneTimeline","../img/share/shareBig-1.jpg","天津公积金手机APP全面焕新,我们就是这样好用的APP","新界面,新业务,新体验！账户明细随时查看,线上业务全面办理,客户服务全程支持!","http://www.zfgjj.cn/tjgjjcms/subSiteApp/content/dtxwsite/zxxwsite/zxxwsite/305049.html");
+						break;
+					case 3:
+							shareAction("qq","","../img/share/shareBig-1.jpg","天津公积金手机APP全面焕新,我们就是这样好用的APP","新界面,新业务,新体验！账户明细随时查看,线上业务全面办理,客户服务全程支持!","http://www.zfgjj.cn/tjgjjcms/subSiteApp/content/dtxwsite/zxxwsite/zxxwsite/305049.html");
+						break;
+					case 4:
+						    shareAction("sinaweibo","","../img/share/shareBig-1.jpg","天津公积金手机APP全面焕新,我们就是这样好用的APP","新界面,新业务,新体验！账户明细随时查看,线上业务全面办理,客户服务全程支持!","http://www.zfgjj.cn/tjgjjcms/subSiteApp/content/dtxwsite/zxxwsite/zxxwsite/305049.html");
+						break;	
+				}
+			} );
+		}) 
+		
+		//新闻标题链接获得
+		scroll (); 
+		gonggao();
+		setInterval(gonggao, 1800000 );
+		function gonggao(){
+			var box = document.getElementById("roll");
+			box.innerHTML = '';
+			mui.ajax(localStorage.getItem("interfaceUrl")+'cxsygg.app', {
+					  timeout: 15000,   
+					  dataType: 'json',       
+					  type: 'get',    
+					  success: function(data) {
+						for(var i=0; i<data.data.detail.length; i++) {
+							box.innerHTML+="<li><img src='../img/menu/menu-remen.png' style='padding-top: 1px; height:18px;'/><a onclick=clickGg('"  
+																	 +data.data.detail[i].gglj
+																	 +"',2)><span>" 
+																	 +data.data.detail[i].ggbt
+																	 +"</span></a></li>";    
+						}
+						box.innerHTML+=box.innerHTML;
+					  },        
+					  error: function(data) {  
+					  }    
+			})
+		}
+
+		//提取按钮
+		document.getElementById("tiQu").addEventListener('tap', function(){
+			isLoginMenu(2);
+		})
+		//还贷按钮
+		document.getElementById("huanDai").addEventListener('tap', function(){
+			isLoginMenu(3);
+		})
+		//登录按钮
+		document.getElementById("login").addEventListener('tap', function(){
+			    //根据本地进行登录状态进行判断
+			    if(localStorage.getItem("isLogin") == "true"){
+				    	mui.ajax(localStorage.getItem("interfaceUrl")+'sfLogin.app', {
+				    	      timeout: 10000,
+							  dataType: 'json', 
+							  type: 'get',
+							  success: function(data) {
+							  	if(data.jg == '0'){
+							  		plus.nativeUI.confirm( "是否退出当前登录状态？", function(e){
+											if(e.index==1){
+													mui.ajax(localStorage.getItem("interfaceUrl")+'logout.app', {   
+															  timeout: 10000,
+															  dataType: 'json', 
+															  type: 'post', 
+															  success: function(data) {	
+															  	         plus.nativeUI.toast("退出成功！",{'duration':'long'});
+									                                      localStorage.setItem('isLogin','');   //清除登录状态
+									                                      if(rgfw){
+									                                      	 rgfw.close();
+									                                      }
+															  },
+															  error: function(data) { plus.nativeUI.toast("网络连接异常!",{'duration':'long'}); }
+														    });
+													    }
+											}, "", ["否","是"] );
+							  	}else{
+							  		localStorage.setItem('isLogin','');
+							  		mui.openWindow({
+											id: 'login',
+											url: '../login.html',
+											show: {aniShow: 'slide-in-right',duration:'200'},
+											waiting:{autoShow: true,title:'正在加载...'}
+									});
+							  	}
+							  },
+							  error: function(data) {   //noNet
+							  	    localStorage.setItem('isLogin','');
+								  	mui.openWindow({
+											id: 'login',
+											url: '../login.html',
+											show: {aniShow: 'slide-in-right',duration:'200'},
+											waiting:{autoShow: true,title:'正在加载...'}
+									});
+							  }
+				    })
+			    }else{
+			    	localStorage.getItem("isLogin") == "";
+			    	mui.openWindow({
+										id: 'login',
+										url: '../login.html',
+										show: {aniShow: 'slide-in-right',duration:'200'},
+										waiting:{autoShow: true,title:'正在加载...'}
+								});
+			    }
+		})
+	//我的账户	
+	document.getElementById("myJiaocun").addEventListener('tap', function(){
+			if(localStorage.getItem("isLogin") == "true"){
+				mui.openWindow({
+										id: 'myJiaocun',
+										url: '../mine/myJiaocun.html', 
+										show: {aniShow: 'slide-in-right',duration:'200'},
+										waiting:{ autoShow: true}
+								});
+				}else{
+					plus.nativeUI.toast('请先登录！',{'duration':'long'});
+					mui.openWindow({
+										id: 'login',
+										url: '../login.html',
+										show: {aniShow: 'slide-in-right',duration:'200'},
+										waiting:{autoShow: true}
+								    });
+				}
+			});		
+    //我的贷款按钮
+	document.getElementById("myLoan").addEventListener('tap', function(){
+			if(localStorage.getItem("isLogin") == "true"){
+					mui.openWindow({
+											id: 'myLoan',
+											url: '../mine/myLoan.html', 
+											show: {aniShow: 'slide-in-right',duration:'200'},
+											waiting:{ autoShow: true}
+									});
+					}else{
+						plus.nativeUI.toast('请先登录！',{'duration':'long'});
+						mui.openWindow({
+											id: 'login',
+											url: '../login.html',
+											show: {aniShow: 'slide-in-right',duration:'200'},
+											waiting:{autoShow: true}
+									    });
+					}
+			})
+}   
+		if(window.plus){     
+			plusReady(); 
+		}else{
+			document.addEventListener('plusready',plusReady,false); 
+		}
+
+	    //下载图片方法
+	    function createDownload(dataUrl,tpid,sxh){ 
+	    	var arryoLunBoImgId=new Array();
+	    	arryoLunBoImgId.push(oLunBoImgId1,oLunBoImgId2,oLunBoImgId3/*,oLunBoImgId4*/);
+	   	    oBitmap.loadBase64Data(dataUrl,function(){
+                            },function(){
+                            }); 
+            oBitmap.save('_doc/image/lunboDemo'+tpid+'.png',{overwrite:true},function(){ 
+            },function(){                  
+            });  
+            localStorage.setItem(arryoLunBoImgId[sxh-1],'_doc/image/lunboDemo'+tpid+'.png'); 
+	   }   
+	    //相对路径转绝对路径 
+	    function setImgFromLocal(relativePath) {
+                //本地相对路径转成SD卡绝对路径;
+                var sd_path = plus.io.convertLocalFileSystemURL(relativePath);
+                return sd_path;
+            }
+
+        // 处理点击事件
+        // 默认窗口动画  'zoom-fade-out'
+        var as='pop-in'; 
+		var _openw=null; 
+		function clicked(id,a,s){
+			if(_openw){return;}
+            a||(a=as);
+			if(_openw){
+				_openw.showded=true;
+				_openw.show(a,null,function(){
+					_openw=null;//避免快速点击打开多个页面
+				});
+			}else{
+				_openw=plus.webview.create(id,id,{scrollIndicator:'none',scalable:false,popGesture:'hide'},{preate:true});
+
+				_openw.addEventListener('loaded',function(){//叶面加载完成后才显示
+					s||_openw.show(a,null,function(){
+						_openw=null;//避免快速点击打开多个页面
+					}); 
+					s&&(_openw=null);//避免s模式下变量无法重置
+				},false);
+				_openw.addEventListener('hide',function(){
+					_openw&&(_openw.showded=true); 
+					_openw=null; 
+				},false);
+			}
+		}
+		function lunboJump(url){ 
+			if(url.length < 10){
+				return;
+			}
+			mui.openWindow({
+						id: 'lunboHref',
+						url: '../view/webview_lunboHref.html',
+						show: {aniShow: 'slide-in-right',duration:'300'},
+						extras: {url: url
+						} 
+				   });  
+		}
+		function clickAny(url,title){ 
+			mui.openWindow({
+						id: 'zhuce',
+						url: '../view/webview_embed.html',
+						show: {aniShow: 'slide-in-right',duration:'300'},
+						extras: {url: url,
+							    title: title
+						} 
+				   });  
+		}
+		function clickGg(url){ 
+			mui.openWindow({
+						id: 'gg',
+						url: '../view/webview_Gg.html',
+						show: {aniShow: 'slide-in-right',duration:'300'},
+						extras: {url: url
+						} 
+				   });  
+		}
+		function clickRengong(){
+			if(!rgfw){  
+				mui.openWindow({ 
+						id: 'rgfw',   
+						url: '../view/webview_rgfw.html',
+						show: {aniShow: 'slide-in-right',duration:'300'} 
+				    });
+			}else{ 
+			    plus.webview.getWebviewById('rgfw').show("slide-in-right", 300);
+			}	
+		}
+		//触发自定义登录人工服务功能
+		document.addEventListener('rgService', function(event) {
+				  //plus.webview.getWebviewById('rgfw').close();
+			  });
+		//打开在线咨询页面	  
+		document.addEventListener('createZxzx', function(event) {
+			 mui.openWindow({ 
+						id: 'rgfw',   
+						url: '../view/webview_rgfw.html',
+						show: {aniShow: 'slide-in-right',duration:'300'} 
+				    });	
+		 });
+		 //新闻滚动
+		function scroll (){
+			    var box=document.getElementById("roll"),can=true;
+				var stop=box.scrollTop%30==0&&!can; 
+				if(!stop)box.scrollTop==parseInt(box.scrollHeight/2)?box.scrollTop=0:box.scrollTop++;
+				setTimeout(arguments.callee,box.scrollTop%30?10:1500);
+		};
+		
+		//首次启动页
+		function launchScreen() {
+				//读取本地存储，检查是否为首次启动
+				var showGuide = plus.storage.getItem("lauchFlag"); 
+				if(showGuide){ 
+					plus.navigator.closeSplashscreen(); 
+					plus.navigator.setFullscreen(false);
+				}else{
+					//显示启动导航   
+					mui.openWindow({ 
+						id:'guide',
+						url:'../view/guide.html',
+						show:{aniShow:'none'},
+						waiting:{autoShow:false}
+					});
+			    }
+			}		
+    </script>
+</body>
+</html> 

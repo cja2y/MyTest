@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>setChannel</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <style type="text/css">
+    	html{background-color: #DDDDDD;}
+    	.mui-content{background-color: #DDDDDD;}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">变更签约渠道</h1>
+	</header>
+	<div class="mui-content">
+	  <div id="mainContent" style="display: none;">
+	  	 <span class="setChan">请设置业务办理渠道</span> 
+		 <ul class="ulRight"></ul>
+		 <button id="btnNext" type="button" class="mui-btn mui-btn-blue" style="width: 96%; height: 40px; margin-top: 15px;  margin-left:2%; display: block;">下一步</button>
+	  </div>	
+	  <div id="mui-spinner" class="mui-spinner" style="position: absolute; margin-top: 50%; margin-left: 47%;"></div>   
+	</div>    
+</body>
+  <script type="text/javascript" charset="UTF-8">
+      	mui.init();
+      	var arryLiId=new Array();       //li列表id数组
+      	var qdbgztArryNum;
+      	var newQdbgArry=new Array();
+      	function plusReady(){
+      	  var oUlRight=document.querySelector(".ulRight");
+      	  var oWaitCircle=document.getElementById("mui-spinner");
+      	  mui.ajax(localStorage.getItem("interfaceUrl")+'qdbg.app', {     
+					  timeout: 30000,
+					  dataType: 'json',  
+					  type: 'post',
+					  success: function(data) {
+						  	oWaitCircle.style.display='none';
+						  	document.getElementById("mainContent").style.display='block';
+						  	var arryQdbgzt=data.qyqd.split("|");       //渠道变更状态数组 
+						  	qdbgztArryNum=arryQdbgzt.length;
+						  	for(var key in data.qdlbs){
+						  		var i=0;
+						  		oUlRight.innerHTML+='<li id="'+key+'" class="chooseChecked" style="background-size: 25px;" onclick="a(this.id)"><span>'+data.qdlbs[key]+'</span><input id="radio'+i+'" type="radio"  value="" checked="checked"/></li>';
+						  		i++;
+						  		arryLiId.push(key);
+						  	}
+						  	for(var i=0; i<arryLiId.length; i++){      //获取li的id
+						  		var tempArryLiId=document.getElementById(arryLiId[i]);
+						  		if(arryQdbgzt[i]==arryLiId[i]){
+						  			tempArryLiId.style.background='no-repeat right center url(../img/allImg/blueRight.png)';
+						  			tempArryLiId.style.backgroundColor='#FFFFFF';
+						  			tempArryLiId.style.backgroundPositionX='97%';
+						  			tempArryLiId.checked='checked';
+						  		}else{
+						  			tempArryLiId.style.background='no-repeat right center url(../img/allImg/defaultRight.png)';
+						  			tempArryLiId.style.backgroundColor='#FFFFFF';
+						  			tempArryLiId.style.backgroundPositionX='97%';
+						  			tempArryLiId.checked='';
+						  		}
+	                       }  	
+					  },
+					  error: function(data) { 
+					  	    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});   
+					   } 
+			});	
+			document.getElementById("btnNext").addEventListener('tap',function(){
+				            var oChooseChecked=document.querySelectorAll(".chooseChecked");
+				                //返回清空数组 重新下一步操作
+					      	  		if(newQdbgArry.length=='0'){
+						      	  			for(var i=0; i<oChooseChecked.length; i++){
+						      	  				if(oChooseChecked[i].checked=='checked'){
+						      	  					newQdbgArry.push(oChooseChecked[i].id);
+						      	  				}
+						      	  			}
+					      	  		}else{
+					      	  				newQdbgArry.length="0";         
+					      	  				for(var j=0; j<oChooseChecked.length; j++){
+						      	  				if(oChooseChecked[j].checked=='checked'){
+							      	  					newQdbgArry.push(oChooseChecked[j].id);
+							      	  				}
+					      	  			}
+					           }
+							  	mui.openWindow({
+					                url:'../mine/sjdxyz.html',  
+					                id:'sjdxyz.html',
+					                extras:{
+		                             ywqdInfo: newQdbgArry
+		                           },
+					                show: {aniShow: 'zoom-fade-out', 
+							        duration: '350'
+							    }
+		                   });
+		                   //plus.webview.getWebviewById("../mine/setChannel.html").reload();
+					    });
+		}
+		if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+		function a(key){    //li点击函数
+			    var tempLiId=document.getElementById(key);   //当前点击的li标签id
+			    var oChooseChecked=document.querySelectorAll(".chooseChecked");
+	      	  	if (tempLiId.checked=='checked') {  //已选择，取消
+                    if(qdbgztArryNum=="1"){                     //就选择一个渠道，则不能取消
+                    }else{
+			    	tempLiId.checked='';
+	      	  		tempLiId.style.background='no-repeat right center url(../img/allImg/defaultRight.png)';
+	      	  		tempLiId.style.backgroundColor='#FFFFFF';
+	      	  		tempLiId.style.backgroundPositionX='97%';
+	      	  		qdbgztArryNum=qdbgztArryNum-1;                          //大于一个渠道，已选择渠道数-1
+	      	  		}
+	      	  	}else{                              //未选择，增加
+	      	  		tempLiId.checked='checked';
+	      	  		tempLiId.style.background='no-repeat right center url(../img/allImg/blueRight.png)';
+	      	  		tempLiId.style.backgroundColor='#FFFFFF';
+	      	  		tempLiId.style.backgroundPositionX='97%';
+	      	  		qdbgztArryNum=qdbgztArryNum+1;                         //已选择渠道数+1
+	      	  	}
+			}
+			
+					    
+    </script>
+</html>

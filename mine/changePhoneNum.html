@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>changePhoneNum</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <style type="text/css">
+    	html{
+    		background-color: #DDDDDD;
+    	}
+    	.identNum:active{
+	    	background-color: #555555;
+	    }
+	    .passError{
+    		padding-left: 2%;
+    		margin-bottom: 2px;
+    	}
+    	.passError img{
+    		height: 15px;
+    		margin-right: 3px;
+    		float: left;
+    		margin-top: 11px;
+    	}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">变更签约手机号</h1>
+	</header>
+	<div class="mui-content" style="background-color: #DDDDDD;">
+	   <span class="identifyNum">请输入<span id="sjhm"></span>收到的短信验证码</span>
+	    <div class="wrapNum">
+			<div class="WrapNumInput">
+				<span>验证码</span>
+				<input type="text" id="identifyNumInput" placeholder="短信验证码" maxlength="6"/>
+			</div>
+			<div id="getYzm" class="identNum">获取验证码</div>
+		</div>
+		<div id="error" class="passError" style="visibility:hidden;"><img src="../img/zhuce/u206.png"><p id="errorContent" style="display: inline-block;color: #FF0000;margin: 0px;margin-top: 10px;"></p></div>
+		<button id="btNewPhoneNum" type="button" class="mui-btn mui-btn-blue">验证后绑定新手机号</button>
+		<div class="warmPrompt">
+			<h3>温馨提示</h3>
+			<span>原手机号丢失、不能使用或不在身边？</span>
+			<p>请您携带本人公积金卡和身份证,到公积金管理中心办理手机号变更业务。</p>
+		</div>
+	</div>
+	
+</body>
+<script type="text/javascript">
+  mui.init();
+	function plusReady(){
+		var oBtNewPhoneNum=document.getElementById('btNewPhoneNum');
+		var oError=document.getElementById("error");
+		var oErrorContent=document.getElementById("errorContent");
+		var oGetYzm=document.getElementById("getYzm");
+		var oIdentifyNumInput=document.getElementById("identifyNumInput");
+		getOldSjhm();       
+		var flagSjyzm = '';
+		var ysjhm = '';
+		mui.ajax(localStorage.getItem("interfaceUrl")+'ysjhm.app', {     //获取手机号
+			  timeout: 30000,
+			  dataType: 'json',  
+			  type: 'post',
+			  success: function(data) { 
+					ysjhm = data.ysjhm;	
+			  },
+			  error: function(data) {mui.toast("网络连接异常！");} 
+		}); 
+    	//获取手机验证码
+    	oGetYzm.addEventListener('tap' ,function(){
+    		if(flagSjyzm !== ''){             //获取中
+    			return;
+    		}else{                            //获取
+    			    getSjYzm('403');          //获取验证码
+    			    flagSjyzm = 0;
+	        		var timer = 60;
+	        		var thisThis = this;
+	        		thisThis.style.backgroundColor = '#AAAAAA';
+				    thisThis.innerHTML=timer+'s';
+				    var time = setInterval(function(){ 
+					if(timer >= 1){
+						timer=timer-1;
+						thisThis.innerHTML = timer+'s';
+					}else{
+						thisThis.style.backgroundColor = '#0080d8';
+						thisThis.innerHTML = '获取验证码';
+						flagSjyzm = '';
+						clearInterval(time);
+					}
+				},1000);
+    	    }
+    	})
+		oBtNewPhoneNum.addEventListener('tap',function(){
+				if (oIdentifyNumInput.value!=='') {
+			    oError.style.visibility='hidden';
+				mui.ajax(localStorage.getItem("interfaceUrl")+'yzsjyzm.app', {     
+					  timeout: 30000,
+					  dataType: 'json',  
+					  type: 'post',
+					  data: {
+					  	yzm: oIdentifyNumInput.value,
+					  	sldm: '403'
+					  },
+					  success: function(data) {
+					  	if(data.jg == '0'){
+					  	   oError.style.visibility='hidden'; 
+	                       mui.openWindow({
+						                url:'../mine/newSignSjh.html',  
+						                id:'newSignSjh.html',
+						                show: {aniShow: 'slide-in-right',duration: '350'},
+						                extras: {ysjhm: ysjhm}
+						                
+			                   });
+					  	}else if(data.jg == '-98'){
+					  		loginPlease();
+					  	}else{
+					  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+					  	}
+					},
+					  error: function(data) {
+					        plus.nativeUI.toast("网络连接异常!",{'duration':'long'});  
+					   } 
+			});	
+			}else{
+				oError.style.visibility='visible';
+				oErrorContent.innerHTML="验证码不能为空"
+			}
+		});
+	}
+	if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+</script>
+</html>

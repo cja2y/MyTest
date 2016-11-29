@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>messageCustom</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+ 
+    <style type="text/css">
+    	.mui-content{background-color: #F0F0F0;}
+    	html{background-color: #F0F0F0;}
+    </style>
+</head>
+<body style="background-color: #F0F0F0;">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">短信订制</h1>
+	</header>
+	<div id="wrapGet" class="mui-content"> 
+	  <ul id="UldoAccount" style="margin-bottom: 53px; display: none;"></ul>
+	  <div style="position: fixed; z-index: 10;right: 0; left: 0;bottom: 0;background-color: #F0F0F0;; border-top: 1px solid #DDDDDD;; height: 52px; width: 100%;">
+	  	<button id="btnConfirm" type="button" class="mui-btn mui-btn-blue" style="position: absolute; z-index: 10; bottom: 5px; font-size: 18px; margin-top: 15px; width: 96%; margin-left: 2%; margin-right: 2%;">确认</button>
+	  </div>
+	  <div id="mui-spinner" class="mui-spinner" style="position: absolute; margin-top: 50%; margin-left: 47%;"></div>
+    </div>
+</body>
+<script>
+	mui.init({
+		swipeBack:true //启用右滑关闭功能
+	});
+	var oWrapGet=document.getElementById("wrapGet");
+	var oWaitCircle=document.getElementById("mui-spinner");
+	var oUldoAccount=document.getElementById("UldoAccount");
+	function plusReady(){
+	 var oBtnConfirm=document.getElementById("btnConfirm");
+	 var strTzlbdm='';
+	 var strSfyqy='';
+	 var cssStyle='';
+	 mui.ajax(localStorage.getItem("interfaceUrl")+'xxdzcx.app', {     
+			  timeout: 30000,
+			  dataType: 'json',  
+			  type: 'post',
+			  success: function(data) {
+			  	    if(data.jg == '0'){
+			  	    	oWaitCircle.style.display='none';
+					  	oUldoAccount.style.display='block';
+					  	for(var i=0;i<data.cxdzxx.length;i++){
+					  		if(i!==(data.cxdzxx.length-1)){
+					  			strTzlbdm+=data.cxdzxx[i].tzlbdm+'|';
+					  		}else{
+					  			strTzlbdm+=data.cxdzxx[i].tzlbdm;
+					  		} 
+					  		if(data.cxdzxx[i].sfydy==0){
+					  			data.cxdzxx[i].sfydy="已订阅";
+					  			cssStyle='mui-active';
+			
+					  		}else{ 
+					  			data.cxdzxx[i].sfydy="未订阅"; 
+					  			cssStyle='';
+					  		}
+					  		oUldoAccount.innerHTML+='<li><span>'+data.cxdzxx[i].tzlbmc+'</span><p style="position: absolute; right: 80px; top: 2px; font-size: 12px;">'+data.cxdzxx[i].sfydy+'</p><div class="mui-switch mui-switch-mini '+cssStyle+'"> <div class="mui-switch-handle"></div></div></li>';
+					  		} 
+					  	a();	
+			  	    }else if(data.jg == '-98'){
+			  	    	loginPlease();
+			  	    }else{
+			  	    	plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+			  	    }
+			  },
+			  error: function(data) {
+			  	//requestFailure();
+			  	plus.nativeUI.toast("网络连接异常!",{'duration':'long'});   
+			   } 
+			});
+		
+		oBtnConfirm.addEventListener('tap',function(){
+			var pElements=document.querySelectorAll('p');
+			strSfyqy=''; 
+			for(var i=0;i<pElements.length;i++){
+				if (i!==(pElements.length-1)) {
+					if (pElements[i].innerHTML=="已定制") {
+					strSfyqy+='0'+'|';
+				} else{
+					strSfyqy+='1'+'|'; 
+				}
+				} else{
+					if (pElements[i].innerHTML=="已定制") {
+					strSfyqy+='0';
+				} else{
+					strSfyqy+='1'; 
+				}
+				}
+			}
+			mui.ajax(localStorage.getItem("interfaceUrl")+'xxdz.app', {      
+			  timeout: 30000,
+			  dataType: 'json',    
+			  type: 'post',
+			  data: {
+			  	sfdy:strSfyqy,
+			  	tzlbdm:strTzlbdm
+			  },
+			  success: function(data) { 
+			  	if(data.jg == '0'){
+			  		plus.webview.currentWebview().close();
+			  		plus.nativeUI.toast('修改成功!',{'duration':'long'});
+			  	}else if(data.jg == '-98'){
+			  		loginPlease();
+			  	}else{
+			  		plus.nativeUI.toast(data.sbyy,{'duration':'long'});
+			  	}
+			  },
+			  error: function(data) {
+			  	plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+			   } 
+			});
+		})
+	
+	}
+	if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+	}
+	function a(){ 
+		mui('.mui-content .mui-switch').switch();
+		mui('.mui-content .mui-switch').each(function() { //循环所有toggle
+			  // this.parentNode.querySelector('p').innerText =(this.classList.contains('mui-active') ? '已签约' : '未签约');
+			   this.addEventListener('toggle', function(event) {
+			   this.parentNode.querySelector('p').innerText =(event.detail.isActive ? '已定制' : '未定制');
+			   }); 
+           });
+	}
+	//无网刷新 
+	/*function requestFailure(){ 
+		  	oWaitCircle.style.display='none';
+		  	oWrapGet.innerHTML+='<div class="nowifi" style="background-position-y: 22%;"><p class="firstp" style="top: 48%;">网络请求失败</p><p class="secondp" style="top: 53%;">请检查您的网络</p></div><div class="btn-refresh"><button id="btnRefrash" type="button" class="mui-btn mui-btn-blue btnZdy" style="top: 58%;">刷新</button></div>';
+		  	document.getElementById('btnRefrash').addEventListener('tap',function(){
+		  	   plus.webview.currentWebview().reload(); 
+		  	}); 
+	}*/
+</script>
+</html>  

@@ -1,0 +1,438 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>公积金组合提取</title>
+<script type="text/javascript" src="../../js/mui.min.js"></script> 
+<script src="../../js/tayh_app.js"></script>
+<link rel="stylesheet" type="text/css" href="../../css/mui.min.css"/>
+<link rel="stylesheet" href="../../css/global.css" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" type="text/css" href="../../css/iphone4.css"/>
+</head>
+<style type="text/css">
+    @media (device-height:480px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone4/4s */
+		.boxTitle{
+			height: 30px!important;
+			line-height: 20px!important;
+		}
+    } 
+    @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+		.boxTitle{
+			height: 30px!important;
+			line-height: 20px!important;
+		}
+    }
+	.mui-title{
+		color: #FFFFFF;
+	}
+	.mui-action-back{
+		color: #FFFFFF;
+	}
+	#hiddenBox{
+            margin-top: 30px;
+			width: 100%;
+			background:no-repeat url(../../img/allImg/payBack.png);
+			background-size: 100%;
+			padding-top: 24px;
+			padding-left: 10px;
+			font-size: 14px;
+			font-weight: bold;
+			color: #AAAAAA;
+			display: none;
+			box-shadow:0px 2px 1px rgba(0, 0, 0, .1);
+		}
+		.boxTitle{
+			width: 100%;
+			height: 36px;
+			line-height: 30px;
+			color: #1C86EE;
+			font-size: 15px;
+			border-bottom: 1px solid #EEEEEE;
+			font-weight: bold;
+		}
+		#hiddenBox ul li{
+			height: 22px;
+			width: 100%;
+			line-height: 22px; 
+		}
+		.boxSpan{
+			float: right;
+			padding-right: 10px;
+			color: #000000;
+		}
+		#sjyzm{
+			padding: 0px 15px;
+		}
+        #zhhjLi{
+        	font-size: 15px; 
+        	color: #000000; 
+        	font-weight: bold; 
+        	height: 30px;
+        }
+        #zhhjLi span{
+        	position: absolute;
+        	right: 8px;
+        	height: 30px;
+        }
+         #firstUl li{display: none;}
+</style>
+<body class="page-header-fixed">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">填写提取额度</h1>
+	</header>
+<div id="wrapper">
+        <div class="limitList">
+        	<dl class="clearfix">
+            	<dd class="clearfix blue" style="overflow: hidden;">
+                	<label class="left">贷款账号:</label>
+                    <span id="dkzh" class="left marginR10"></span>
+                	<label class="left">公积金贷款金额:</label>
+                    <span id="dkye" class="left"></span>
+                </dd>
+            	<dd class="clearfix size14">
+                	<label class="left">账户总金额</label>
+                    <span id="zhyehj" class="right orange"><em class="yuan right" style="margin-left: 5px;">元</em></span>
+                </dd>
+                <dt>
+                	<label class="left">提取金额</label>
+                    <span class="right yuan">元</span>
+                    <input id="tqjeInput" class="right" style="width: 65%; padding: 0px; color: #000000;" onkeyup="formatAmount(this)"/>
+                </dt>
+            </dl>
+            <div class="clearfix limitQuestionBox right"> 
+            	<span id="showTiquMx" class="right limitQuestion">显示提取明细</span>
+            </div>
+            <div id="hiddenBox" class="clearfix" style="display: none;">
+            	<div class="boxTitle"><span>账户提取明细</span><span class="right" style="color: #AAAAAA; font-weight: 100; margin-right: 10px;">提取金额/账户金额</span></div>
+        		<ul id="firstUl">
+	        		<li id="zfgjj"><span id="zfgjjJe" class="boxSpan" style="font-weight: normal;"></span></li>
+	        		<li id="bczfgjj"><span id="bczfgjjJe" class="boxSpan" style="font-weight: normal;"></span></li>
+	        		<li id="ayzfgjj" ><span id="ayzfgjjJe" class="boxSpan" style="font-weight: normal;"></span></li>
+            	</ul>
+            	<div style="height: 1px; margin:0px 10px 5px 0px;  border-bottom: 1px dashed #AAAAAA;"></div>
+            	<ul> 
+            		<li id="zhhjLi">账户合计<span id="zhhj"></span></li>
+            	</ul>	
+            </div>
+        </div>  
+	    <div class="nextStep clearfix">
+	    	<a id="onlineZixun" class="consultBtn left"><img src="../../images/consult.png" alt="" /><span>咨询</span></a>
+	        <span id="nextStep" class="nextStepBtn">下一步</span>
+	    </div>
+</div>
+<div id="mask" class="overlay" style="display: none;"></div>
+<div id="Ididentify" class="identify">
+	<div class="identifyHd">
+    	<a class="closeIdentify" id="closeIdentify"><img src="../../images/close.png" alt=""/></a>
+        <h3>验证身份</h3>
+    </div>
+    <div class="identifyBd">
+    	<p id="sjhm"><span>已绑定手机:</span></p>
+        <ul class="identifyWrite">
+        	<li class="clearfix identifyingCode"> 
+            	<img src="../../images/icon_1.png" alt="" />
+                <input id="sjyzm" type="text" placeholder="请输入手机验证码" maxlength="6"/>
+                <span id="hqsjyzm" class="getCode">获取验证码</span>
+            </li>
+            <li class="clearfix password">
+            	<img src="../../images/icon_2.png" alt="" />
+                <input id="ywblmm" type="password" placeholder="请输入业务办理密码" maxlength="6"/>       
+            </li>
+        </ul>
+        <span id="confrim" class="identifyBtn">确认提取</span>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+        	mui.init();
+        	function plusReady(){
+        	var oNextStep=document.getElementById("nextStep");
+        	var oIdidentify=document.getElementById("Ididentify");
+        	var oCloseIdentify=document.getElementById("closeIdentify"); 
+        	var oMask=document.getElementById("mask");
+        	var oConfrim=document.getElementById("confrim");
+        	var oErrorInfo=document.getElementById("errorInfo");
+        	var bczdtqed=plus.webview.currentWebview().bczdtqed;
+        	var zhzje=plus.webview.currentWebview().zhzje;
+        	var oHideBox=document.getElementById("hiddenBox");
+        	var zjlx=localStorage.getItem("zjlx");
+        	var tqje = document.getElementById("tqjeInput");
+        	var zhyehj=plus.webview.currentWebview().zhyehj;
+        	var sldm = plus.webview.currentWebview().sldm;
+        	document.getElementById("dkzh").innerHTML=fourNumSixstar(plus.webview.currentWebview().dkzh);
+        	document.getElementById("dkye").innerHTML=fmoney(plus.webview.currentWebview().dkye)+'元';
+        	document.getElementById("zhyehj").innerHTML+=zhyehj;
+        	document.getElementById("tqjeInput").setAttribute('placeholder','最大提取金额'+bczdtqed);
+        	/*document.getElementById("wrapper").addEventListener('tap',function(){
+        	 	event.stopPropagation();             //阻止事件冒泡
+        		if(oHideBox.style.display=="block"){
+        			oHideBox.style.display='none';
+        		}
+        		})*/
+        	getOldSjhm();   //手机号码获取  
+        	var flagSjyzm = '';
+        	//获取手机验证码
+        	document.getElementById("hqsjyzm").addEventListener('tap' ,function(){
+        		if(flagSjyzm !== ''){             //获取中
+        			return;
+        		}else{                            //获取
+        			    getSjYzmBl('203',sldm);          //获取验证码
+        			    flagSjyzm = 0;
+		        		var timer = 60;
+		        		var thisThis = this;
+		        		thisThis.style.backgroundColor = '#AAAAAA';
+					    thisThis.innerHTML=timer+'s';
+					    var time = setInterval(function(){ 
+						if(timer >= 1){
+							timer=timer-1;
+							thisThis.innerHTML = timer+'s';
+						}else{
+							thisThis.style.backgroundColor = '#0080d8';
+							thisThis.innerHTML = '获取验证码';
+							flagSjyzm = '';
+							clearInterval(time);
+						}
+					},1000);
+        	    }
+        	})
+        	//在线咨询
+            onlineConsult();
+            /*document.getElementById("mask").addEventListener('tap',function(){
+            	document.getElementById("sjyzm").blur();
+            	document.getElementById("ywblmm").blur();
+            })*/
+        	oNextStep.addEventListener('tap',function(){
+        		var oTqjeInput = tqje.value;
+        		if(!oTqjeInput==""){
+        			if(twoSmallNum(tqje.value) > bczdtqed){
+	        			plus.nativeUI.toast('提取金额不能大于最大提取金额！',{'duration':'long'});
+	        		}else{
+	        			if(twoSmallNum(tqje.value) <= 0){
+	        				plus.nativeUI.toast('提取金额不能小于或等于0！',{'duration':'long'});
+	        			}else{
+	        				oIdidentify.style.bottom = '0px';
+        		            oMask.style.display='block';
+	        			}
+        			}
+        		}else{
+        			    plus.nativeUI.toast("请输入正确的提取金额!",{'duration':'long'});
+        		}
+        	});
+        	oCloseIdentify.addEventListener('tap',function(){
+        		oIdidentify.style.bottom = '-222px';
+        		oMask.style.display='none';
+        	});
+        	oConfrim.addEventListener('tap',function(){
+        		//验证身份
+        		if(document.getElementById("sjyzm").value==""){
+				    plus.nativeUI.toast('手机验证码不能为空！',{'duration':'long'});
+				}else if(document.getElementById("ywblmm").value==""){
+					plus.nativeUI.toast('业务办理密码不能为空！',{'duration':'long'});
+				}else if(twoSmallNum(tqje.value) > bczdtqed){
+	        		plus.nativeUI.toast('提取金额不能大于最大提取金额！',{'duration':'long'});
+	        	}else{
+	        		var reg = /(^[0-9]+(.[0-9]{1,2})?$)/; 
+					if(!reg.test(tqje.value)){
+						plus.nativeUI.toast('您输入的提取金额有误，请重新输入。',{'duration':'long'});
+					}else{
+						var w = plus.nativeUI.showWaiting();   //防止快速点击情况的发生
+							setTimeout( function(){
+									w.close();
+					    }, 2500 );
+						returnAyjeBcje(); 
+					}
+				}   
+        });
+        	document.getElementById("showTiquMx").addEventListener('tap',function(){      //点击显示提取明细
+	        	if (oHideBox.style.display=='none') {                                     //如果提取明细隐藏
+	        		if(twoSmallNum(tqje.value) > bczdtqed){                               
+	        			plus.nativeUI.toast('提取金额不能大于最大提取金额！',{'duration':'long'});
+	        		}else{
+	        			tqjeCulculate();           //计算提取明细，并显示                                                                        //提取明细显示
+	        		}	
+				} else{
+					oHideBox.style.display = 'none';                                        //否则隐藏
+				}
+        	})
+        	//显示提取明细
+        	function tqjeCulculate(){
+        	  mui.ajax(localStorage.getItem("interfaceUrl")+'tqedjs.app', {    
+			  timeout: 30000,                       
+			  dataType: 'json',    
+			  type: 'post', 
+			  data: {
+			  qqData: encodeURI(JSON.stringify({"grdm":  plus.webview.currentWebview().grdm,
+			  	       "djbbh": plus.webview.currentWebview().djbbh,
+			  	       "sldm":  sldm,
+			  	       "tqyy": '09',
+			  	       "bczdtqed": bczdtqed,
+			  	       "gjjzh": zhzje,
+			  	       "bczh": plus.webview.currentWebview().bczh,
+			  	       "ayzh": plus.webview.currentWebview().ayzh,
+			           "zhyehj": zhyehj,
+			           "tjgjj": plus.webview.currentWebview().tjgjj,
+		               "tjbc": plus.webview.currentWebview().tjbc,
+		               "tjay": plus.webview.currentWebview().tjay,
+		               "bctqje": twoSmallNum(tqje.value)
+			  })),
+			  ywlb: '203',
+			  ywxl: '09'
+			  },
+			  success: function(data) {
+			  	if(data.jg == '0'){
+			  		var gjjtj=data.data.gjjtj;
+				  	var bctj=data.data.bctj;
+				  	var aytj=data.data.aytj;
+				  	var gjjye=data.data.gjjye;
+				  	var bcye=data.data.bcye;
+				  	var aye=data.data.aye;
+				  	var oZhhj=document.getElementById("zhhj");
+				  	var hadTap=sessionStorage.getItem("hadTap");
+				  	var zjlxLen = zjlx.length;
+				  	if(zjlxLen== 1){
+			  		document.getElementById("firstUl").style.height = '22px';
+			  		oHideBox.style.height = '110px';
+				  	}else if(zjlxLen== 2){
+				  		document.getElementById("firstUl").style.height = '44px';
+				  		oHideBox.style.height = '135px';
+				  	}else if(zjlxLen== 3){
+				  		document.getElementById("firstUl").style.height = '66px';
+				  		oHideBox.style.height = '157px';
+				  	}
+				  	oHideBox.style.display='block';
+				  	if(zjlx.indexOf('G') > -1){
+				  		if(hadTap!=="true"){
+				  			document.getElementById("zfgjj").innerHTML+='住房公积金';
+				  			document.getElementById("zfgjj").style.display = 'block';
+				  		    document.getElementById("zfgjjJe").innerHTML=gjjtj+'/'+gjjye+'元';
+				  		}else{
+				  			document.getElementById("zfgjjJe").innerHTML=gjjtj+'/'+gjjye+'元';
+				  		}
+				  	}
+				  	if(zjlx.indexOf('B') > -1){
+				  		if(hadTap!=="true"){
+				  			document.getElementById("bczfgjj").innerHTML+='补充住房公积金';
+				  			document.getElementById("bczfgjj").style.display = 'block';
+				  		    document.getElementById("bczfgjjJe").innerHTML=bctj+'/'+bcye+'元';
+				  		}else{
+				  			document.getElementById("bczfgjjJe").innerHTML=bctj+'/'+bcye+'元';
+				  		}
+				  	}
+				  	if(zjlx.indexOf('Y') > -1){ 
+				  		if(hadTap!=="true"){
+				  			document.getElementById("ayzfgjj").innerHTML+='按月住房补贴';
+				  			document.getElementById("ayzfgjj").style.display = 'block';
+				  		    document.getElementById("ayzfgjjJe").innerHTML=aytj+'/'+aye+'元';
+				  		}else{
+				  			document.getElementById("ayzfgjjJe").innerHTML=aytj+'/'+aye+'元';
+				  		}
+				  	}
+				  	oZhhj.innerHTML=(gjjtj+bctj+aytj).toFixed(2)+'/'+(gjjye+bcye+aye).toFixed(2)+'元';
+				  	sessionStorage.setItem("hadTap",true);
+			  	}else if(data.jg == '-98'){
+			  		loginPlease();
+			  	}else{
+			  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+			  	}
+			  },      
+			  error: function(data) {
+			  	    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+			  }  
+		});
+    }
+        	//调额度计算返回补充金额，按月金额,公积金金额
+        	function returnAyjeBcje(){
+		        	mui.ajax(localStorage.getItem("interfaceUrl")+'tqedjs.app', {    
+					  timeout: 40000,                       
+					  dataType: 'json',    
+					  type: 'post', 
+					  data: {
+					  qqData: encodeURI(JSON.stringify({"grdm":  plus.webview.currentWebview().grdm,
+					  	       "djbbh": plus.webview.currentWebview().djbbh,
+					  	       "sldm":  sldm,
+					  	       "tqyy": '09',
+					  	       "bczdtqed": bczdtqed,
+					  	       "gjjzh": zhzje,
+					  	       "bczh": plus.webview.currentWebview().bczh,
+					  	       "ayzh": plus.webview.currentWebview().ayzh,
+					           "zhyehj": zhyehj,
+					           "tjgjj": plus.webview.currentWebview().tjgjj,
+				               "tjbc": plus.webview.currentWebview().tjbc,
+				               "tjay": plus.webview.currentWebview().tjay,
+				               "bctqje": tqje.value
+					  })),
+					  ywlb: '203',
+					  ywxl: '09'
+					  },
+					  success: function(data) {
+					  	  if(data.jg == '0'){
+					  	  	 tqywbl(data.data.bctj,data.data.aytj,data.data.gjjtj);
+					  	  }else{plus.nativeUI.toast(data.cwms1,{'duration':'long'});}
+					  },      
+					  error: function(data) {
+					  	  plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+					  }  
+				});
+        	}
+        	//提取业务办理
+        	function tqywbl(bctj,aytj,gjjtj){
+        		var w = plus.nativeUI.showWaiting("正在办理...");   
+        		mui.ajax(localStorage.getItem("interfaceUrl")+'ywbl.app', {    
+					  timeout: 40000,                       
+					  dataType: 'json',    
+					  type: 'post', 
+					  data: { 
+					    ywlb: '203',
+					    ywxl: '09',
+					    sjyzm:  document.getElementById("sjyzm").value,
+					    ywmm: document.getElementById("ywblmm").value,
+					    data: encodeURI(JSON.stringify({
+					    	"grdm": plus.webview.currentWebview().grdm,
+					    	"djbbh": plus.webview.currentWebview().djbbh,
+					    	"sldm": sldm,
+					    	"dkzl": plus.webview.currentWebview().dkzl,
+					    	"gjjje": gjjtj,
+					    	"bcje": bctj,
+					    	"ayje": aytj
+					    }))
+					  },
+					  success: function(data) {
+					  	    w.close();
+					   	    var jg = data.jg;
+					  	    if(jg == "0"){
+					  	    	mui.openWindow({
+										id: 'resultTiqu',
+										url: '../../view/resultTiqu.html',
+										show: {aniShow: 'slide-in-right',duration:'200'},
+										waiting: {autoShow: true,title:'正在加载...'},
+										extras:{
+											ywlx: "203",
+											tqje: tqje.value,/*formatAmountB(tqje.value)*/
+											sldm: sldm
+										}
+								    });
+								    plus.webview.getWebviewById("mine/mine.html").reload();
+					  	    }else if(data.jg == "-99"){
+				  	    	     jumpShouye(data.cwms1);
+				  	        }else{
+					  	    	 datajgRespone({dataJg: jg, cwms: data.cwms1, ywlb: 1}); 
+					  	    }
+					  },      
+					  error: function(data) {
+					  	w.close();
+					  	plus.webview.currentWebview().close();
+					  	plus.nativeUI.toast("您的业务申请已提交，请于“我的办理”中查询业务受理结果，如有疑问请拨打12329咨询。",{'duration':'long'});
+					  }  
+		    }); 
+        	}
+        	}
+        	if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+        </script>
+</html>

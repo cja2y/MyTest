@@ -1,0 +1,138 @@
+@media (device-height:480px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone4/4s */
+    #sfzh span{
+        letter-spacing: 1px;
+    }
+    #passwordDiv span{
+        letter-spacing: 1px;
+    }
+    #yzm span{
+        letter-spacing: 1px;
+    }
+    .beforePayNum{
+    	font-size: 13px;
+    }
+    .beforePayback label{
+    	font-size: 14px;
+    }
+    .loanAccountInfo{
+      	padding: 10px 10px;
+    }
+    .infoLeft{
+    	left: 160px;
+    }  
+    .spanLeft{
+    	left: 225px;
+    }
+    .myloanInfoWrap{
+     	padding: 10px 0px 20px 10px;
+     }
+    .loanBtm label{font-size:12px;}
+	.loanBtm span{font-size:12px;}
+	.limitList .blue label{
+		font-size: 13px;
+	}
+	.limitList .blue span{
+		font-size: 13px;
+	}
+	.limitList .blue .marginR10{
+		margin-right: 5px;
+	}
+	.beforeBackMoney label{
+		font-weight: bold;
+		font-size: 15px;
+	}
+	.limitList dd{padding:0px 5px;}
+	.limitList input {
+		margin-right: 0;
+	}	
+    #againPass{
+    	width: 68%;
+    }	
+    .successIcon{
+    	width: 280px; 
+    	margin: 0 auto;
+    	padding-left: 0;
+    }
+    .listInfomation{
+    	width: 85%;
+    	margin: 0 auto;
+    }
+    .listInfomation li{
+    	padding-left: 25px;
+    }
+    .passMessage{
+    	width: 280px; 
+    	margin: 0 auto;
+    }
+}
+
+
+
+/*IPHONE5*/
+@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+	#sfzh span{
+        letter-spacing: 1px;
+    }
+    #passwordDiv span{
+        letter-spacing: 1px;
+    }
+    #yzm span{
+        letter-spacing: 1px;
+    }
+    .beforePayNum{
+    	font-size: 13px;
+    }
+    .beforePayback label{
+    	font-size: 14px;
+    }
+    .loanAccountInfo{
+      	padding: 10px 10px;
+    }
+    .infoLeft{
+    	left: 160px;
+    }  
+    .spanLeft{
+    	left: 225px;
+    }
+    .myloanInfoWrap{
+     	padding: 10px 0px 20px 10px;
+     }
+    .loanBtm label{font-size:12px;}
+	.loanBtm span{font-size:12px;}
+	.limitList .blue label{
+		font-size: 13px;
+	}
+	.limitList .blue span{
+		font-size: 13px;
+	}
+	.limitList .blue .marginR10{
+		margin-right: 5px;
+	}
+	.beforeBackMoney label{
+		font-weight: bold;
+		font-size: 15px;
+	}
+	.limitList dd{padding:0px 5px;}
+	.limitList input {
+		margin-right: 0;
+	}
+	#againPass{
+    	width: 68%;
+    }
+    .successIcon{
+    	width: 280px; 
+    	margin: 0 auto;
+    	padding-left: 0;
+    }
+    .listInfomation{
+    	width: 85%;
+    	margin: 0 auto;
+    }
+    .listInfomation li{
+    	padding-left: 25px;
+    }
+    .passMessage{
+    	width: 280px; 
+    	margin: 0 auto;
+    }
+}

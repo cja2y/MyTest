@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>loanMingXi</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iphone4.css"/>
+    <style type="text/css">
+    	.mui-content{background-color: #DDDDDD;margin-bottom: 60px;}
+    	html{background-color: #DDDDDD}
+    </style>
+</head>
+<body style="background-color: #EFEFF4;">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">贷款明细</h1>
+	</header>
+    <div class="mui-content">
+        <div class="loanAccountInfo" style="margin-top: 0px; height: 100px;"></div>
+		<ul class="ulMingxiForm">
+			<li id="liFirst"><label>实还日期</label><span>实还本金</span><span>实还利息</span><span>实还罚息</span></li>
+		</ul>
+	</div>
+	<div id="btnJhPz" class="btn_payBack">
+	    <button id="hkjh" type="button" class="mui-btn mui-btn-blue btn_payBackOne">还款计划</button>	
+	    <button id="hkpz" type="button" class="mui-btn mui-btn-blue">还款凭证</button>	
+	</div>
+  <script type="text/javascript" charset="UTF-8">
+      	mui.init();
+      	function plusReady(){
+      		plus.webview.currentWebview().setStyle({scrollIndicator:'none'});
+      		var oLoanAccountInfo=document.querySelector(".loanAccountInfo");
+      		var oUlMingxiForm=document.querySelector(".ulMingxiForm");
+      		var dkzh=plus.webview.currentWebview().dkzh;
+      		var w = plus.nativeUI.showWaiting("正在加载...");   //防止快速点击情况的发生
+      		mui.ajax(localStorage.getItem("interfaceUrl")+'hkmx.app', {         
+			  timeout: 15000,                 
+			  dataType: 'json', 
+			  type: 'post', 
+			  data:{
+			  	dkzh: dkzh
+			  },
+			  success: function(data) {
+			  	w.close();
+			  	if(data.jg == '0'){
+				    oLoanAccountInfo.innerHTML+='<div><label>贷款金额<span style="color: #1C86EE;">'
+				      		                +fmoney(data.dkjhkxxcx.dkje) 
+				      		                +'</span><label class="infoLeft">贷款余额</label><span class="spanLeft" style="color: #FFA500;">'
+				      		                +fmoney(data.dkjhkxxcx.dkye)   
+				      		                +'</span></div><div><label>发放时间</label><span>'
+				      		                +formatDateA(data.dkjhkxxcx.dkqxr)
+				      		                +'</span><label class="infoLeft">到期时间</label><span class="spanLeft">'
+				      		                +formatDateA(data.dkjhkxxcx.dkdqr) 
+				      		                +'</span></div><div><label>下月还款额</label><span>'
+				      		                +fmoney(plus.webview.currentWebview().xqhkje)
+				      		                +'</span><label class="infoLeft">执行年利率</label><span class="spanLeft">'
+				      		                +fmoney(data.dkjhkxxcx.dqnll)+'%'
+				      		                +'</span></div>'  		                
+				      		for(var i=0; i<data.dkjhkxxcx.shmx.length; i++){ 
+				      		oUlMingxiForm.innerHTML+='<li><label>'
+				      		             +formatDateA(data.dkjhkxxcx.shmx[i].shrq)
+				      		             +'</label><span>' 
+				      		             +fmoney(data.dkjhkxxcx.shmx[i].shbj)
+				      		             +'</span><span>'
+				      		             +fmoney(data.dkjhkxxcx.shmx[i].shlx)  
+				      		             +'</span><span class="mfLastSpan">' 
+				      		             +data.dkjhkxxcx.shmx[i].shfx 
+				      		             +'</span></li>'
+				      		} 
+			  	}else if(data.jg == '-98'){
+			  		loginPlease();
+			  	}else{
+			  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+			  	}
+			  }, 
+			  error: function(data) {
+			  	w.close();
+			  	plus.nativeUI.toast("网络连接异常!",{'duration':'long'});   
+			  }
+			});		   
+			//计入还款凭证界面
+			document.getElementById("hkpz").addEventListener('tap',function(){
+			  		wtddqzjc(dkzh,'../mine/actualReturnMoney.html');
+			  	});
+			//进入还款计划界面
+			document.getElementById("hkjh").addEventListener('tap',function(){
+			  		wtddqzjc(dkzh,'../mine/returnMoneyPlan.html');
+			  	});
+		}
+		if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+        
+    </script>
+</html>

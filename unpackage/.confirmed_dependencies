@@ -1,0 +1,297 @@
+{
+  "index.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "fonts/mui.ttf",
+      "css/swiper.3.1.2.min.css",
+      "css/tayh_login.css",
+      "css/microdone-h5.min.css",
+      "css/iphone4.css",
+      "js/microdone-h5.min.js",
+      "img/zhuce/u8.png",
+      "svg/shuzi_1.svg",
+      "img/zhuce/u10.png",
+      "img/zhuce/u206.png",
+      "img/zhuce/u20.png",
+      "js/jquery-1.11.1.min.js",
+      "svg/shuzi_delete_1.svg",
+      "svg/shuzi_shouqi_1.svg",
+      "js/swiper.3.1.2.min.js",
+      "js/demo.js",
+      "svg/DEL.svg",
+      "svg/shift.svg",
+      "svg/shuzi_2.svg",
+      "svg/space.svg",
+      "svg/123.svg",
+      "svg/shouqi.svg",
+      "svg/anjian.svg",
+      "images/navminelink.png",
+      "images/navloanlink.png",
+      "images/navindexlink_1.png",
+      "view/menu.html",
+      "images/navextractlink.png",
+      "js/tayh_app.js",
+      "images/navindexlink.png",
+      "images/navminelink_1.png",
+      "images/navloanlink_1.png",
+      "images/navextractlink_1.png"
+    ],
+    "refer": [
+      "view/passwordReset.html",
+      "mine/mine.html",
+      "view/menu.html",
+      "huandaiService/huanDai.html",
+      "tiquService/getDemo.html",
+      "login.html"
+    ]
+  },
+  "view/passwordReset.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "img/zhuce/zhuce-yzm.png",
+      "img/zhuce/zhuce-sfzh.png",
+      "js/tayh_app.js",
+      "img/zhuce/zhuce-grdm.png",
+      "img/zhuce/zhuce-servicepassword.png"
+    ],
+    "refer": []
+  },
+  "mine/mine.html": {
+    "resources": [
+      "images/userimg.png",
+      "images/topbg.png",
+      "images/mymessagebg.png",
+      "css/global.css",
+      "images/topset.png",
+      "img/allImg/mine_iconMessege.png",
+      "img/allImg/mine_iconService.png",
+      "js/tayh_app.js",
+      "img/allImg/userWomen.png",
+      "img/allImg/mine_JiaoCun.png",
+      "js/mui.min.js",
+      "css/app.css",
+      "css/mui.min.css",
+      "img/menu/mistake-nowifi.png"
+    ],
+    "refer": [
+      "mine/accountSet.html",
+      "mine/myJiaocun.html"
+    ]
+  },
+  "view/menu.html": {
+    "resources": [
+      "img/menu/munu-webquery.png",
+      "img/menu/menu-calculate.png",
+      "img/menu/menu-police.png",
+      "img/menu/menu-returnloan.png",
+      "img/menu/menu-gonggaob.png",
+      "img/lunBo/lunBo3.png",
+      "img/menu/menu-myacount.png",
+      "img/menu/menu-service.png",
+      "css/menu.css",
+      "css/icons-extra.css",
+      "img/menu/menu-news.png",
+      "img/lunBo/lunBo1.png",
+      "img/lunBo/lunBo2.png",
+      "img/menu/menu-myloan.png",
+      "img/menu/menu-daikuan2.png",
+      "img/menu/menu-get.png",
+      "js/share.js",
+      "img/menu/menu-hotquestion.png",
+      "js/update.js",
+      "img/menu/menu-book.png",
+      "img/menu/header-icon-index.png",
+      "img/menu/menu-remen.png",
+      "js/tayh_app.js",
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": [
+      "view/guide.html",
+      "login.html",
+      "view/webview_lunboHref.html",
+      "mine/myJiaocun.html",
+      "mine/myLoan.html",
+      "view/webview_embed.html"
+    ]
+  },
+  "tiquService/getDemo.html": {
+    "resources": [
+      "css/layer.css",
+      "css/app.css",
+      "js/layer.js",
+      "img/get/get-bytj.png",
+      "img/menu/mistake-nowifi.png"
+    ],
+    "refer": []
+  },
+  "view/guide.html": {
+    "resources": [
+      "images/haibao-2.jpg",
+      "images/haibao-3.jpg",
+      "images/haibao-1.jpg"
+    ],
+    "refer": []
+  },
+  "huandaiService/huanDai.html": {
+    "resources": [
+      "img/get/get-bytj.png"
+    ],
+    "refer": []
+  },
+  "login.html": {
+    "resources": [
+      "js/microdone-h5.min.js",
+      "fonts/mui.ttf",
+      "img/zhuce/u8.png",
+      "css/microdone-h5.min.css",
+      "css/iphone4.css",
+      "svg/shuzi_1.svg",
+      "img/zhuce/u10.png",
+      "img/zhuce/u206.png",
+      "css/swiper.3.1.2.min.css",
+      "img/zhuce/u20.png",
+      "js/mui.min.js",
+      "js/jquery-1.11.1.min.js",
+      "svg/shuzi_delete_1.svg",
+      "svg/shuzi_shouqi_1.svg",
+      "js/swiper.3.1.2.min.js",
+      "css/mui.min.css",
+      "css/tayh_login.css",
+      "js/demo.js",
+      "svg/DEL.svg",
+      "svg/shift.svg",
+      "svg/shuzi_2.svg",
+      "svg/space.svg",
+      "svg/123.svg",
+      "svg/shouqi.svg",
+      "svg/anjian.svg",
+      "svg/shuzi_delete_2.svg",
+      "svg/shouqi_2.svg",
+      "js/canvasUtil.js",
+      "js/canvas2image.js",
+      "js/jquery.md5.js",
+      "js/md5.js",
+      "js/sockjs-0.3.min.js",
+      "js/stomp.js"
+    ],
+    "refer": [
+      "view/passwordReset.html",
+      "view/zhuce.html"
+    ]
+  },
+  "mine/accountSet.html": {
+    "resources": [
+      "css/app.css",
+      "js/mui.min.js",
+      "css/global.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "images/linksarrow.png",
+      "js/tayh_app.js"
+    ],
+    "refer": []
+  },
+  "mine/myJiaocun.html": {
+    "resources": [
+      "css/app.css",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "images/linksarrow.png",
+      "js/tayh_app.js",
+      "css/iphone4.css"
+    ],
+    "refer": [
+      "mine/gjjAccountMx.html"
+    ]
+  },
+  "mine/gjjAccountMx.html": {
+    "resources": [
+      "img/allImg/arrowGrey.png",
+      "css/global.css",
+      "img/allImg/shuXian.png"
+    ],
+    "refer": [
+      "view/chooseTime.html"
+    ]
+  },
+  "view/chooseTime.html": {
+    "resources": [
+      "js/mui.picker.min.js",
+      "css/mui.picker.min.css"
+    ],
+    "refer": []
+  },
+  "view/webview_lunboHref.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/menu.css",
+      "js/immersed.js"
+    ],
+    "refer": []
+  },
+  "mine/myLoan.html": {
+    "resources": [
+      "css/app.css",
+      "js/mui.min.js",
+      "css/global.css",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/tayh_app.js",
+      "css/iphone4.css"
+    ],
+    "refer": []
+  },
+  "view/webview_embed.html": {
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/menu.css",
+      "js/immersed.js"
+    ],
+    "refer": []
+  },
+  "view/zhuce.html": {
+    "resources": [
+      "img/zhuce/zhuce-yzm.png",
+      "img/zhuce/zhuce-sfzh.png",
+      "js/tayh_app.js",
+      "img/zhuce/zhuce-grdm.png",
+      "img/zhuce/zhuce-right.png",
+      "img/zhuce/zhuce-servicepassword.png"
+    ],
+    "refer": []
+  },
+  "new_index.html": {
+    "resources": [
+      "js/microdone-h5.min.js",
+      "fonts/mui.ttf",
+      "img/zhuce/u8.png",
+      "css/microdone-h5.min.css",
+      "css/iphone4.css",
+      "js/sockjs-0.3.min.js",
+      "img/zhuce/u10.png",
+      "img/zhuce/u206.png",
+      "css/swiper.3.1.2.min.css",
+      "img/zhuce/u20.png",
+      "js/mui.min.js",
+      "js/jquery-1.11.1.min.js",
+      "js/canvas2image.js",
+      "js/swiper.3.1.2.min.js",
+      "css/mui.min.css",
+      "css/tayh_login.css",
+      "js/demo.js",
+      "js/stomp.js",
+      "js/md5.js"
+    ]
+  }
+}

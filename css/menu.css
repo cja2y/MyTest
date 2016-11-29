@@ -1,0 +1,118 @@
+        /*浮动*/
+		.left {float:left;}
+		.right {float:right;}
+		.clearfix:after {visibility: hidden; display: block; clear: both; height: 0; font-size: 0; content: ".";}
+		
+        .mui-title{
+	    		color: white;
+	    	}
+	    .login{
+	    	float: left;
+	    	background: no-repeat center url(../img/menu/header-icon-index.png);
+	    	background-size: 20px;
+	    	height: 100%;
+	    	width: 40px;
+	    	margin-top: 2px;
+	    }
+	    .mui-bar{
+	    	padding-right: 0px;	
+	    }
+	    .middle-content{
+	    	width: 100%;
+	    	height: 95px;
+	    	overflow: hidden;
+	    	background-color: white;
+	    	border-bottom: solid 1px #DDDDDD;
+	    	font-size: 13px;   	
+	    	text-align: center;
+	    }
+	    .middle-content img{
+	    	height: 50px;
+	    	display: block;
+	    	margin:0px auto 3px auto;
+	    }
+	    .item{   
+	    	display: block;
+	    }
+	    .middle-content div{
+	    	padding-top: 15px;
+	    	width: 25%;
+	    	height: 80px;
+	    	float: left;
+	    	background-size: 50px;
+	    }
+	    .gonggao{
+	    	float: left;
+	    	height: 35px;
+	    	width: 17%;
+	    	background: no-repeat center url(../img/menu/menu-gonggaob.png);
+	    	background-size: 50px;
+	    	background-color: white;
+	    	border-bottom: solid 1px #DDDDDD;
+	    	border-right: solid 1px #DDDDDD;
+	    }
+	    .hot{
+	    	float: left;
+	    	height: 35px;
+	    	width: 83%;
+	    	background-color: white;
+	    	border-bottom: solid 1px #DDDDDD;
+	    	font-size: 13px;
+	    	overflow: hidden;
+	    	line-height: 20px;
+	    }
+	    .hot li{
+	    	list-style-type: none;
+	    	padding-top: 8px;	
+	    }
+	    .hot a{
+	    	color: #555555;
+	    	display: block;
+	    }
+	    .hot img{
+	    	height: 22px; 
+	    	float: left;
+	    	padding-top: 5px;
+	    }
+	    .hot span{
+	    	padding-left: 5px;
+	    	letter-spacing: -1px;
+	    }
+	    .hot ul{
+	    	margin:0px; 
+	    	padding-left: 5px;
+	    }
+	    .bottom-content{
+	    	width: 100%;
+	    	height: 180px;
+	    	background-color: white;
+	    	margin-top: 10px;
+	    	float: left;
+	    	margin-bottom: 20px;
+	    	border-top: solid 1px #DDDDDD;
+	    	font-size: 13px;
+	    }
+	    .bottom-content img{
+	    	height: 40px;
+	    	display: block;
+	    	margin: 15px auto 5px auto;
+	    }
+	    .bottom-content div{
+	    	width: 25%;
+	    	height: 90px;
+	    	float: left;
+	    	text-align: center;
+	    	border-bottom: solid 1px #DDDDDD;
+	    }
+	    .bottom-content div:active{
+	    	background-color: #EFEFF4;
+	    }
+	    .itemb{
+	    	font-size: 13px;
+	    	display: block;
+	    }
+	    .border{
+	    	border-right: solid 1px #DDDDDD;
+	    }
+
+	    

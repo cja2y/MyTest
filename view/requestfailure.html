@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>failure</title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <style type="text/css">
+    	.mui-pull-left{
+    		color: white;
+    	}
+    	.mui-title{
+    		color: white;
+    	}
+    	.nowifi{
+    		position: fixed;
+    		width: 100%;
+    		height: 100%;
+    		background: no-repeat  url(../img/menu/mistake-nowifi.png);
+    		background-position-y: 15%;
+    		background-position-x: 50%;
+    		background-size: 60%;
+    		background-color: #F0F0F0;
+    	}
+    	.firstp{
+    		position: fixed;
+    		font-size: 20px; 
+    		color: #000000; 
+    		top: 51%;
+    		left: 35%;
+    	}
+    	.secondp{
+    		position: fixed;
+    		font-size: 18px; 
+    		color: #C0C0C0;
+    		top: 45%;
+    		left: 35%;
+    		color: #777777;
+    	}
+    	.mui-btn{
+    		position: fixed;
+    		width: 34%;
+    		height: 45px;
+    		font-size: 16px;
+    		border-radius: 10px;
+    		top: 55%;
+    		left: 33%;
+    	}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">错误页面</h1>
+	</header>
+	<div class="mui-content">
+		<div id="nowifiWrap">
+			<!--<div id="noInternet" class="nowifi">
+		    	<p class="firstp">网络请求失败</p>
+		    	<p class="secondp">请检查您的网络</p>
+		    </div>-->
+		    <div class="nowifi">
+		    	<p id="serviceError" class="secondp">asda</p>
+		    </div>
+		    <div class="btn-refresh">
+		    	<button id="btnRefrash" type="button" class="mui-action-back mui-btn mui-btn-blue">返回上一级</button>
+		    </div>
+		</div>
+	    <div id="mui-spinner" class="mui-spinner" style="position: absolute; margin-top: 55%; margin-left: 47%; display: none;"></div>
+	</div>
+</body>
+<script type="text/javascript">
+        	mui.init();
+        	function plusReady(){
+        		var oSpinner=document.getElementById("mui-spinner");
+        		var oNowifiWrap=document.getElementById("nowifiWrap");
+                document.getElementById('btnRefrash').addEventListener('tap',function(){
+                	oSpinner.style.display='block';
+                	oNowifiWrap.style.display='none';
+			  	    plus.webview.currentWebview().reload();
+			  	    oSpinner.style.display='none';
+			  	    oNowifiWrap.style.display='block'; 
+			  	});
+			  	document.getElementById("serviceError").innerHTML = plus.webview.currentWebview().cwms;
+        	}
+        	if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+        </script>
+</html>

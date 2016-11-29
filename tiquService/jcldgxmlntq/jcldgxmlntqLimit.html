@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>解除劳动关系满两年提取</title>
+<script type="text/javascript" src="../../js/mui.min.js"></script> 
+<script type="text/javascript" src="../../js/layer.js"></script>
+<script src="../../js/tayh_app.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="../../css/mui.min.css"/>
+<link rel="stylesheet" href="../../css/global.css" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" type="text/css" href="../../css/layer.css"/>
+</head>
+<style type="text/css">
+	.mui-title{
+		color: #FFFFFF;
+	}
+	.mui-action-back{
+		color: #FFFFFF;
+	}
+	#hiddenBox{
+		background-color: #FFFFFF;
+		width: 100%;
+		margin-top: 45px;
+	}
+	#hiddenBox ul{
+		width: 96%; 
+		margin: auto;
+	}
+	#hiddenBox ul li{
+		line-height: 25px;
+	}
+	.titleZjlx{width: 96%; margin: auto; border-bottom: 1px dashed #AAAAAA;}
+	.blueWeight{color:#0080d8; font-weight: 100;}
+	.fontWeight{font-weight: bold;}
+	.fengexian{width: 100%; height: 1px; margin: 3px auto; border-bottom: 1px solid #AAAAAA;}
+</style>
+<body class="page-header-fixed">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">确认提取额度</h1>
+	</header>
+<div id="wrapper">
+	<div id="scroller">        
+        <div class="limitList">
+        	<dl class="clearfix" style="margin-bottom: 10px;">
+            	<dd class="clearfix size14">
+                	<label class="left">提取金额合计 </label>
+                    <span id="tqjezj" class="right orange"><em id="yehj" class="yuan right"></em></span>
+                </dd>
+            </dl>
+            <div class="clearfix limitQuestionBox right">
+	            <!--<img src="../../images/question.png" class="right">-->
+            	<span id="showTiquMx" class="right limitQuestion">显示提取明细</span>
+            </div>
+            <div id="hiddenBox" class="clearfix" style="display: none;"></div>
+        </div>
+	</div>
+	<div class="nextStep clearfix">
+	    <a id="onlineZixun" class="consultBtn left"><img src="../../images/consult.png" alt="" /><span>咨询</span></a>
+	    <span id="nextStep" class="nextStepBtn">下一步</span>
+	</div>   
+</div>
+<div id="mask" class="overlay" style="display: none;"></div>
+<div id="Ididentify" class="identify">
+	<div class="identifyHd">
+    	<a  class="closeIdentify" id="closeIdentify"><img src="../../images/close.png" alt="" /></a>
+        <h3>验证身份</h3>
+    </div>
+    <div class="identifyBd">
+    	<p id="sjhm">已绑定手机:</p>
+        <ul class="identifyWrite">
+        	<li class="clearfix identifyingCode">
+            	<img src="../../images/icon_1.png" alt="" />
+                <input id="sjyzm" type="text" placeholder="请输入手机验证码" maxlength="6"/> 
+                <span id="hqsjyzm" class="getCode">获取验证码</span>
+            </li>
+            <li class="clearfix password">
+            	<img src="../../images/icon_2.png" alt="" />
+                <input id="ywblmm" type="password" placeholder="请输入业务办理密码" maxlength="6"/>        
+            </li>
+        </ul>
+        <span id="confrim" class="identifyBtn">确认提取</span>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+        	mui.init();
+        	function plusReady(){
+        	var oNextStep=document.getElementById("nextStep");
+        	var oIdidentify=document.getElementById("Ididentify");
+        	var oCloseIdentify=document.getElementById("closeIdentify"); 
+        	var oMask=document.getElementById("mask");
+        	var oConfrim=document.getElementById("confrim");
+        	var oHideBox=document.getElementById("hiddenBox");
+        	var zjlx=localStorage.getItem("zjlx");
+        	var yehj = plus.webview.currentWebview().yehj;
+        	var sldm = plus.webview.currentWebview().sldm;
+        	document.getElementById("yehj").innerHTML= yehj;
+        	getOldSjhm();   //手机号码获取  
+        	var flagSjyzm = '';
+        	//获取手机验证码
+        	document.getElementById("hqsjyzm").addEventListener('tap' ,function(){
+        		if(flagSjyzm !== ''){             //获取中
+        			return;
+        		}else{                            //获取
+        			    getSjYzmBl('201',sldm);          //获取验证码
+        			    flagSjyzm = 0;
+		        		var timer = 60;
+		        		var thisThis = this;
+		        		thisThis.style.backgroundColor = '#AAAAAA';
+					    thisThis.innerHTML=timer+'s';
+					    var time = setInterval(function(){ 
+						if(timer >= 1){
+							timer=timer-1;
+							thisThis.innerHTML = timer+'s';
+						}else{
+							thisThis.style.backgroundColor = '#0080d8';
+							thisThis.innerHTML = '获取验证码';
+							flagSjyzm = '';
+							clearInterval(time);
+						}
+					},1000);
+        	    }
+        	})
+        	//在线咨询
+            onlineConsult();
+        	document.getElementById("showTiquMx").addEventListener('tap',function(){
+        		if(oHideBox.style.display == 'none'){                   //判断显示或隐藏
+        			if(sessionStorage.getItem('hadTap') !== "true") {   //判断是否点击过，减少访问服务器次数
+						mui.ajax(localStorage.getItem("interfaceUrl")+'xhtqqzjc.app', {     
+							  timeout: 15000,
+							  dataType: 'json',     
+							  type: 'post',       
+							  data: {  
+							  	ywlb: "201",
+							  	ywxl: "16",
+							  	ywlsh: plus.webview.currentWebview().ywlsh
+							  },        
+							  success: function(data) { 
+							  	if(data.jg == '0'){
+							  			oHideBox.innerHTML = '';
+										if(zjlx.indexOf('G') > -1){
+											oHideBox.innerHTML+='<div class="titleZjlx" style="padding-top: 10px;"><span class="blueWeight">住房公积金账户</span></div><ul style="margin-top: 10px;"><li><span id="tqje" class="right blueWeight">'
+											                  +data.response.gjjzhye
+											                  +'</span>账户余额</li><li><span class="right">'
+											                  +data.response.gjjzhjx
+						            			              +'</span>当前结息</li><li class="fengexian"></li><li class="fontWeight"><span class="right">'
+						            			              +data.response.gjjzh
+						            			              +'</span>提取合计</li></ul>';  
+									  	}
+									  	if(zjlx.indexOf('B') > -1){
+									  		oHideBox.innerHTML+='<div class="titleZjlx" style="margin-top: 10px;"><span class="blueWeight">补充住房公积金账户</span></div><ul style="margin-top: 10px;"><li><span id="tqje" class="right blueWeight">'
+											                  +data.response.bczhye
+											                  +'</span>账户余额</li><li><span class="right">'
+											                  +data.response.bczhjx
+						            			              +'</span>当前结息</li><li class="fengexian"></li><li class="fontWeight"><span class="right">'
+						            			              +data.response.bczh
+						            			              +'</span>提取合计</li></ul>';
+									  	}
+									  	if(zjlx.indexOf('Y') > -1){
+									  		oHideBox.innerHTML+='<div class="titleZjlx" style="margin-top: 10px;"><span class="blueWeight">按月住房补贴账户</span></div><ul style="margin-top: 10px;"><li><span id="tqje" class="right blueWeight">'
+											                  +data.response.ayzhye
+											                  +'</span>账户余额</li><li><span class="right">'
+											                  +data.response.ayzhjx
+						            			              +'</span>当前结息</li><li class="fengexian"></li><li class="fontWeight"><span class="right">'
+						            			              +data.response.ayzh
+						            			              +'</span>提取合计</li></ul>';
+									  	}
+									  	oHideBox.style.display = 'block';
+									  	sessionStorage.setItem("hadTap",true);
+							  	}else if(data.jg == '-98'){
+							  		    loginPlease();
+							  	}else{
+							  		    plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+							  	}
+							  },     
+							  error: function(data) { 
+							  	        plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+							   }
+							});
+				  }else{
+					   	    oHideBox.style.display = 'block';
+					   }
+        		}else{
+        			oHideBox.style.display = 'none';
+        		}
+        	})
+        	oNextStep.addEventListener('tap',function(){
+        		oIdidentify.style.bottom = '0px';
+        		oMask.style.display='block';
+        	});
+        	oCloseIdentify.addEventListener('tap',function(){
+        		oIdidentify.style.bottom = '-222px';
+        		oMask.style.display='none';
+        	});
+        	oConfrim.addEventListener('tap',function(){
+        		var valueSjyzm = document.getElementById("sjyzm").value;
+        		var valueYwblmm = document.getElementById("ywblmm").value;
+        		if(valueSjyzm==""){
+        			plus.nativeUI.toast("手机验证码不能为空!",{'duration':'long'});
+				}else if(valueYwblmm==""){
+					plus.nativeUI.toast("业务办理密码不能为空!",{'duration':'long'});
+				}else{
+					 xhtqYwbl(valueSjyzm,valueYwblmm,"201","16",yehj);       //办理销户提取业务
+				}
+            });
+        	}
+        	if(window.plus){
+			    plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+        </script>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>chooseTime</title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link href="../css/app.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+    <style type="text/css"> 
+        body{background-color: #EFEFF4;} 
+        .mui-content li{background-color: #FFFFFF;} 
+        .mui-media-body{height: 60px;}
+        span{line-height: 60px;}
+        p{display: inline-block; float: right; line-height: 60px; margin-right: 20px;}
+        .ui-alert {text-align: center;padding: 20px 10px;font-size: 16px;}
+    </style> 
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">选择时间段</h1> 
+	</header> 
+	<div class="mui-content">
+		  <li class="btn mui-table-view-cell" id='demo1' data-options='{"type":"date"}'>
+			<a class="mui-navigate-right" id="gjjzhdk" style="font-size: 20px; padding-bottom: 0px; padding-top: 0px;">
+				<div class="mui-media-body" style="font-size: 16px;">
+					<span>选择开始时间</span><p id='result1'></p>
+				</div>
+			</a>
+		  </li> 
+		  <li class="btn mui-table-view-cell" id='demo2' data-options='{"type":"date"}'>
+			<a class="mui-navigate-right" href="#account" style="font-size: 20px; padding-bottom: 0px; padding-top: 0px;">
+				<div class="mui-media-body" style="font-size: 16px; border: none; ">
+					<span>选择结束时间</span><p id='result2'></p>
+				</div>
+			</a>
+		  </li>
+		  <button id="btnChooseTime" type="button" class="mui-btn mui-btn-blue mui-btn-block" style="width: 96%; margin: 20px 2%; height: 45px; line-height: 10px;">确认</button>
+    </div>
+<script src="../js/mui.picker.min.js"></script>  
+<script>
+    var timerOne = document.getElementById("result1");
+    var timerTwo = document.getElementById("result2");
+    mui.init();
+	function plusReady(){
+		document.getElementById("btnChooseTime").addEventListener('tap',function(){
+			    var webviewId=plus.webview.currentWebview().webviewId;
+			    if (timerOne.innerHTML=='' || timerTwo.innerHTML=='') {
+			    	plus.nativeUI.toast("选择的时间段不能为空!",{'duration':'long'});
+			    } else{
+			    	if (timerOne.innerHTML >= timerTwo.innerHTML) {
+			    	  plus.nativeUI.toast("选择的时间段范围有误!",{'duration':'long'});
+				    } else{
+		                plus.webview.currentWebview().close();  
+		                mui.fire(plus.webview.getWebviewById(webviewId), 'chooseTime',{ksrq: timerOne.innerHTML.replace(/-/g,""),jsrq: timerTwo.innerHTML.replace(/-/g,"")});
+				    }
+			    }
+			})
+	}
+	if(window.plus){
+				plusReady();
+			}else{
+				document.addEventListener('plusready',plusReady,false);
+			}
+	document.getElementById("demo1").addEventListener('tap', function() {
+				var dDate = new Date();
+				var minDate = new Date();
+				minDate.setFullYear(2014, 0, 1);
+				var maxDate = new Date();
+				plus.nativeUI.pickDate(function(e) {
+					var d = e.date;
+					if((d.getMonth() + 1) > 9){   //月份 
+						if(d.getDate() > 9 ){
+							timerOne.innerHTML = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+						}else{
+							timerOne.innerHTML = d.getFullYear() + "-" + (d.getMonth() + 1) + "-0" + d.getDate();
+						}
+					}else{
+						if(d.getDate() > 9 ){
+							timerOne.innerHTML = d.getFullYear() + "-0" + (d.getMonth() + 1) + "-" + d.getDate();
+						}else{
+							timerOne.innerHTML = d.getFullYear() + "-0" + (d.getMonth() + 1) + "-0" + d.getDate();
+						}
+					}
+				}, function(e) {}, {
+					title: "请选择日期",
+					date: dDate,
+					minDate: minDate,
+					maxDate: maxDate
+				});
+	})
+	document.getElementById("demo2").addEventListener('tap', function() {
+				if(timerOne.innerHTML == ''){
+					plus.nativeUI.toast('请先选择开始时间！',{'duration':'long'});
+					return;
+				}
+				var dDate = new Date();
+				var minDate = new Date();
+				minDate.setFullYear(2014, 0, 1);
+				var maxDate = new Date();
+				plus.nativeUI.pickDate(function(e) {
+					var d = e.date;
+					if((d.getMonth() + 1) > 9){   //月份 
+						if(d.getDate() > 9 ){
+							timerTwo.innerHTML = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+						}else{
+							timerTwo.innerHTML = d.getFullYear() + "-" + (d.getMonth() + 1) + "-0" + d.getDate();
+						}
+					}else{
+						if(d.getDate() > 9 ){
+							timerTwo.innerHTML = d.getFullYear() + "-0" + (d.getMonth() + 1) + "-" + d.getDate();
+						}else{
+							timerTwo.innerHTML = d.getFullYear() + "-0" + (d.getMonth() + 1) + "-0" + d.getDate();
+						}
+					}
+				}, function(e) {}, {
+					title: "请选择日期",
+					date: dDate,
+					minDate: minDate,
+					maxDate: maxDate
+				});
+	})
+</script>
+</body>
+</html>

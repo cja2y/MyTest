@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Condition</title>
+	<script src="../js/mui.min.js"></script>    
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <style type="text/css">
+        body{
+        	background-color: #DDDDDD;
+        }
+    	.mui-pull-left{
+    		color: white;
+    	}
+    	.mui-title{
+    		color: white;
+    	}
+    	.blue{
+    		float: left;
+    		height: 44px;
+    		width: 1%;
+    		margin-top: 10px;
+    		background-color: #1C86EE;
+    	}
+    	.djtqed{
+    		float: left;
+    		height: 44px;
+    		width: 99%;
+    		margin-top: 10px;
+    		background-color: white;
+    		border-bottom: solid 1px #CCCCCC;
+    		border-top: solid 1px #CCCCCC;
+    		padding-top: 14px;
+    		padding-left: 10px;
+    		color: #0062CC;
+    		font-weight: bolder;
+    	}
+    	.content{
+    		width: 100%;
+    		background-color: white;
+    		margin-top: 54px;
+    		height: auto;
+    		padding-top: 20px;
+    		padding-left: 4%;
+    		padding-right: 4%;
+    	}
+    	.picture{
+    		height: 200px;
+    		border: solid 1px #DDDDDD;
+    		margin-bottom: 10px;
+    	}
+    	p{
+    		padding-bottom: 10px;
+    	}
+    	.bottom-content{
+    		background-color: white;
+    		height: auto;
+    		padding-left: 4%;
+    		padding-right: 4%;
+    		clear: both;
+    		padding-top: 10px;
+    	}
+    	img{
+    		height: 198px;
+    		width: 100%;
+    	}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">必备条件</h1>
+	</header>
+	<div id="mui-content" class="mui-content"></div>
+	<script type="text/javascript" charset="UTF-8"> 
+	  	mui.init();
+	  	function plusReady(){
+	  		plus.webview.currentWebview().setStyle({scrollIndicator:'none'});
+	  		var arryYs = plus.webview.currentWebview().arryYs;
+	  		var oContent = document.getElementById("mui-content");  
+	  		var ysxqDingWei = plus.webview.currentWebview().ysxqDingWei;
+	  		for(var i=0; i<arryYs.length; i++){
+	  			oContent.innerHTML+='<div class="blue" style="height: 44px;"></div><div class="djtqed"><span>' 
+	  			+arryYs[i].ysmc
+	  			+'</span></div><div id="content'+i+'" class="content"><div id="pictureWrp'+i+'" class="picture"><img id="picture'+i+'" src=""></div>'
+                +arryYs[i].ysms
+	  			+'</div>'
+	  			showYaosumsPic(arryYs[i].yssmtpid,i);
+	  		}
+	  		var ysoneHeight0 = document.getElementById("content"+0).clientHeight;
+	  		var ysoneHeight1 = document.getElementById("content"+1).clientHeight;
+	  		var ysoneHeight3 = ysoneHeight0+ysoneHeight1;
+	  		if(arryYs.length == "2"){
+	  				if(ysxqDingWei == "1"){
+		  				oContent.style.marginBottom = "20px";
+	                    mui.scrollTo(0,0); 
+		  			}else if(ysxqDingWei == "2"){
+		  				oContent.style.marginBottom = ysoneHeight0+54+"px";
+		  				mui.scrollTo(ysoneHeight0+54,10);
+		  			}
+	  			}else{
+	  				if(ysxqDingWei == "1"){
+		  				oContent.style.marginBottom = "20px";
+	                    mui.scrollTo(0,10); 
+		  			}else if(ysxqDingWei == "2"){
+		  				oContent.style.marginBottom = "20px";
+		  				mui.scrollTo(ysoneHeight0+54,10);
+		  			}else if(ysxqDingWei == "3"){
+		  				oContent.style.marginBottom = 270+"px";
+		  				mui.scrollTo(ysoneHeight3+128,10);
+		  			}
+	  			}
+	  	//显示要素说明图片
+	  	function showYaosumsPic(yaosuTbid,i){
+	  		if(yaosuTbid.length == 0){
+	  			document.getElementById("pictureWrp"+i).style.display = 'none'; 
+	  		}else{
+	  			mui.ajax(localStorage.getItem("interfaceUrl")+'getTpxx.app', {        
+					  timeout: 15000,                       
+					  dataType: 'json',     
+					  type: 'post',       
+					  data: { 
+					  	tpid: yaosuTbid   
+					  },        
+					  success: function(data) {    //显示获取到的要素图标
+					  	 var pictrueId = "picture"+i;
+					     document.getElementById("picture"+i).src = "data:image/png;base64,"+data.result.tpxx;  
+					  },     
+					  error: function(data) {
+					  	plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+					   } 
+				});
+	  		}
+	  	}
+	  	}
+	  	if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+	</script>	
+</body>
+</html>

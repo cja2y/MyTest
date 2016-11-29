@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>gjjAccountMx</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <style type="text/css">
+    	.mui-content{background-color: #DDDDDD;margin-bottom: 60px;}
+    	html{background-color: #DDDDDD}
+    	.activeTime{border-bottom: 3px solid #007AFF;}
+    	.defaultTime{border-bottom: 1px solid #CCCCCC;}
+    </style>
+</head>
+<body style="background-color: #EFEFF4;">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">住房公积金账户明细</h1>
+	</header>
+    <div class="mui-content">
+		<div class="timeBlockWarp clearfix" style="position: fixed; width: 100%;">
+			<div id="timeBlockOne" class="timeLastThree activeTime  left"><span>最近3个月</span></div>
+	        <div id="timeBlockTwo" class="timeLastSix defaultTime left"><span>最近6个月</span></div>
+	        <div id="timeBlockThree" class="chooseTime defaultTime left"><span>选择时间段</span></div>
+		</div>
+		<ul class="gjjAccountMxForm" style="margin-top: 45px;">
+			<li id="liFirst"><label>记账日期</label><span>业务摘要</span><span>发生金额</span></li>
+		</ul>
+		<ul id="dataMx" class="gjjAccountMxForm"></ul>
+	</div>	
+  <script type="text/javascript" charset="UTF-8">
+      	mui.init();
+      	function plusReady(){
+      		var oTimeBlockOne=document.getElementById("timeBlockOne");
+      		var oTimeBlockTwo=document.getElementById("timeBlockTwo");
+      		var oTimeBlockThree=document.getElementById("timeBlockThree");
+      		var oDataMx=document.getElementById("dataMx");
+      		mui.ajax(localStorage.getItem("interfaceUrl")+'grmxz.app', {   
+					  timeout: 5000,
+					  dataType: 'json', 
+					  type: 'post',
+					  data: {
+					    zjlx: "G",
+					    zjyf: "0"
+					  }, 
+					  success: function(data) {
+					  	console.log(JSON.stringify(data));
+					  	if(data.jg == '0'){
+					  		mxcx(data);
+					  	}else if(data.jg == '-98'){
+					  		loginPlease();
+					  	}else{
+					  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+					  	}
+					  },
+					  error: function(data) {
+					        plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+					    }
+					}); 
+      		
+      		oTimeBlockTwo.addEventListener('tap',function(){
+      			var w = plus.nativeUI.showWaiting("正在加载...");   //防止快速点击情况的发生
+      			oDataMx.innerHTML = '';
+      			oTimeBlockTwo.style.borderBottom='3px solid #007AFF';
+      			oTimeBlockOne.style.borderBottom='1px solid #CCCCCC';
+                oTimeBlockThree.style.borderBottom='1px solid #CCCCCC';
+      			mui.ajax(localStorage.getItem("interfaceUrl")+'grmxz.app', {   
+					  timeout: 5000,
+					  dataType: 'json', 
+					  type: 'post',
+					  data: {
+					    zjlx: "G",
+					    zjyf: "1"
+					  }, 
+					  success: function(data) {	
+					  	console.log(JSON.stringify(data));
+						  	if(data.jg == '0'){
+						  		w.close();
+						  	    mxcx(data);
+						  	}else if(data.jg == '-98'){
+						  		loginPlease();
+						  	}else{
+						  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+						  	} 
+					  },
+					  error: function(data) {
+						  	w.close();
+							plus.nativeUI.toast("网络连接异常!",{'duration':'long'});   
+					    }
+					});
+      		});
+      		oTimeBlockOne.addEventListener('tap',function(){
+      			var w = plus.nativeUI.showWaiting("正在加载...");   //防止快速点击情况的发生
+      			oDataMx.innerHTML = '';
+      			oTimeBlockOne.style.borderBottom='3px solid #007AFF';
+      			oTimeBlockTwo.style.borderBottom='1px solid #CCCCCC';
+                oTimeBlockThree.style.borderBottom='1px solid #CCCCCC';
+      			mui.ajax(localStorage.getItem("interfaceUrl")+'grmxz.app', {   
+					  timeout: 5000,
+					  dataType: 'json', 
+					  type: 'post',
+					  data: {
+					    zjlx: "G",
+					    zjyf: "0"
+					  }, 
+					  success: function(data) {
+					  	console.log(JSON.stringify(data));
+					  	if(data.jg == '0'){
+					  		w.close();
+					  	    mxcx(data);
+					  	}else if(data.jg == '-98'){
+					  		loginPlease();
+					  	}else{
+					  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+					  	} 
+					  },
+					  error: function(data) {
+					  	    w.close();
+						    plus.nativeUI.toast("网络连接异常!",{'duration':'long'}); 
+					    }
+					});
+      		});
+      		//时间段点击事件
+      		oTimeBlockThree.addEventListener('tap',function(){
+      			var webviewId=plus.webview.currentWebview().id;
+      			mui.openWindow({    
+						id: 'chooseTime.html',
+						url: '../view/chooseTime.html', 
+						extras:{
+							webviewId: webviewId
+                        },
+						show: {aniShow: 'slide-in-right',duration:'300'},       
+						waiting:{ autoShow: false}
+					    });
+      		})
+	      	//自定义触发选择时间段 
+	      	document.addEventListener('chooseTime', function(event) {
+	      		    var w = plus.nativeUI.showWaiting("正在加载...");   //防止快速点击情况的发生
+	      		    oDataMx.innerHTML = '';
+	      		    var ksrq=event.detail.ksrq;
+	      		    var jsrq=event.detail.jsrq;
+	      		    
+	      		    console.log("ksrq : "+ksrq+"jsrq : "+jsrq);
+	      		    oTimeBlockThree.style.borderBottom='3px solid #007AFF';
+			        oTimeBlockOne.style.borderBottom='1px solid #CCCCCC';
+	      			oTimeBlockTwo.style.borderBottom='1px solid #CCCCCC';
+	      			mui.ajax(localStorage.getItem("interfaceUrl")+'grmxz.app', {   
+						  timeout: 5000, 
+						  dataType: 'json', 
+						  type: 'post',
+						  data: {
+						    zjlx: "G", 
+						    qsrq: ksrq,
+						    zzrq: jsrq
+						  }, 
+						  success: function(data) {	
+						  	console.log(JSON.stringify(data));
+						  	if(data.jg == '0'){
+						  		w.close();
+						  	    mxcx(data);
+						  	}else if(data.jg == '-98'){
+						  		loginPlease();
+						  	}else{
+						  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+						  	}
+						  },
+						  error: function(data) {
+						  	w.close();
+						    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});   
+						    }
+						});
+	            });
+      		function mxcx(data){
+				for(var i=0; i<data.grmxzzd.detail.length; i++){
+					var fsje=data.grmxzzd.detail[i].fsje;
+					if(fsje.toString().indexOf('-') > -1){
+						fsje = '-' + fmoney(fsje.toString().replace("-","")); 
+					}
+		  		    oDataMx.innerHTML+='<li><label>'
+		                              +formatDateA(data.grmxzzd.detail[i].jzrq)  
+		                              +'</label><span>'
+		                              +data.grmxzzd.detail[i].ywzy
+		                              +'</span><span class="colorChange">'
+		                              +fsje
+		                              +'</span></li>';
+					//改变金额的颜色和正负号                              
+			        if(fsje.toString().indexOf('-') > -1){ 
+					      document.querySelectorAll(".colorChange")[i].style.color="red";
+				    }else{
+				    	  document.querySelectorAll(".colorChange")[i].style.color="green";
+				    	  document.querySelectorAll(".colorChange")[i].innerHTML='+'+fmoney(fsje.toString());
+			        }                      
+				}
+				
+				  	 
+		}
+		}
+		if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+		
+    </script>
+</html>

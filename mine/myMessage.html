@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>我的消息</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js" type="text/javascript" charset="utf-8"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <style type="text/css">
+    	.mui-content{margin-bottom: 20px; margin-top: -10px;}
+        li{background-color: #FFFFFF; margin-top: 10px;} 
+    	.mui-table-view-cell img{ height: 55px; width: 55px;}
+    	.conditionStyle{background-color: white;}   
+        .conditionStyle span{font-size: 14px; padding-left: 45%; line-height: 35px;}
+        h4{padding-top: 16px; padding-left: 10px; width: 40%; float: left;}
+        #ywxcxxData{font-size: 20px; padding-bottom: 0px; padding-top: 0px;}  
+        .mui-media-body{font-size: 16px;}
+        .mui-ellipsis{
+    		width: 60%;	
+    		padding-left: 10px;
+    		padding-top: 18px;
+    		letter-spacing: -1px;
+    		float: right;
+    		text-align: right;
+    	}
+    	.hidCondition{
+    		width: 100%;
+    		background-color: #F7F7F7;
+    		font-size: 14px;
+    		border-top: 1px solid #DDDDDD;
+    		padding: 5px 16px 5px 16px; 
+    	}
+    	.mui-media-body {
+		    height: 50px;
+		}
+    </style>
+</head>
+<body style="background-color: #EFEFF4;">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">我的消息</h1>
+	</header>
+		<div class="mui-content">
+	       <div id="wraper" style="margin-top: 10px; background-color: #DDDDDD;"></div>
+		</div>    
+</body>
+  <script type="text/javascript" charset="UTF-8">
+      	mui.init();  
+      	function plusReady(){
+      	   plus.webview.currentWebview().setStyle({scrollIndicator:'none'});
+      	   var w = plus.nativeUI.showWaiting();
+           mui.ajax(localStorage.getItem("interfaceUrl")+'cxtzxx.app', {     
+			  timeout: 20000,
+			  dataType: 'json',  
+			  type: 'post',
+			  success: function(data) {
+			  	w.close();
+			  	if(data.jg =='0'){
+			  		for(var i = 0; i < data.cxtzxx.length; i++){
+			  			document.getElementById("wraper").innerHTML += '<li class="mui-table-view-cell"><a id="ywxcxxData"><div class="mui-media-body"><h4>'
+			  			+data.cxtzxx[i].xxlx
+			  			+'</h4><p class="mui-ellipsis">'
+			  			+data.cxtzxx[i].tzsj
+			  			+'</p></div></a></li><div><div class="conditionStyle" onclick="clickedHidCondition('+i+')"><span>查看内容</span></div><div id="hidElements'+i+'" class="hidCondition" style="display:none;">'
+			  			+data.cxtzxx[i].tznr
+			  			
+			  		}
+			  	}else{
+			  		plus.nativeUI.toast(data.sbyy,{'duration':'long'}); 
+			  	}
+			  },
+			  error: function(data) {
+			  	w.close();
+			  	mui.toast("网络连接异常！");   
+			   } 
+			});
+
+		}
+		if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+		
+		function clickedHidCondition(i){
+	      		var oElements=document.getElementById("hidElements"+i);
+	      		var oHidConditions=document.querySelectorAll(".hidCondition");
+	      		if (oElements.style.display=='none'){
+	      			for(var i=0;i<oHidConditions.length;i++){
+	      		    oHidConditions[i].style.display= 'none';
+	      			} 
+	      			oElements.style.display= 'block';
+	      		}else{ 
+	      			for(var i=0;i<oHidConditions.length;i++){  
+	      		    oHidConditions[i].style.display= 'none';
+	      			}
+	      		}
+		    }
+    </script>
+</html>

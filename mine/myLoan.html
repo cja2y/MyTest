@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>myLoan</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iphone4.css"/>
+    <style type="text/css">
+    	.mui-content{background-color: #DDDDDD}
+    	html{background-color: #DDDDDD} 
+    </style> 
+</head>
+<body style="background-color: #EFEFF4;">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">我的贷款</h1>
+	</header>
+	<div id="contentId" class="mui-content"></div>    	   
+</body>
+  <script type="text/javascript" charset="UTF-8">
+      	mui.init();
+      	function plusReady(){
+      		var oContentId=document.getElementById("contentId");
+      		var dkzh="";
+      		mui.ajax(localStorage.getItem("interfaceUrl")+'zgdkxx.app', {         
+			  timeout: 6000,                 
+			  dataType: 'json', 
+			  type: 'get',
+			  success: function(data) {
+			  	if( data.jg == '0'){
+			  		var length = data.xzgdkxxcx.detail.length;
+				  	oContentId.innerHTML+='<div class="myloanInfoWrap"><div><label>用户姓名：</label><span>'
+			                            +localStorage.getItem("zgxm")
+			                            +'</span></div><div><label>单位名称：</label><span>'
+				                        +data.xzgdkxxcx.detail[0].dwmc
+				                        +'</span></div><div><label>单位代码：</label><span>'
+				                        +data.xzgdkxxcx.detail[0].dwdm
+				                        +'</span></div></div>'/*<div><label>个人代码：</label><span>'
+				                        +localStorage.getItem("grdm")
+				                        +'</span></div>*/
+				  	for(var i=0; i < length; i++){
+				  		                var dkzh=data.xzgdkxxcx.detail[i].dkzh;
+								  		oContentId.innerHTML+='<div id='+dkzh+' class="loanAccount" title='+data.xzgdkxxcx.detail[i].xqhkje+'><div class="orangeDiv"></div><label>贷款账号</label><p>'
+								  		+fourNumSixstar(dkzh)
+								  		+'</p> <span>明细</span> <img src="../images/linksarrow.png"> </div><div class="loanAccountInfo"> <div><label>申请编号</label><span>'
+								  		+data.xzgdkxxcx.detail[i].sqbh
+								  		+'</span></div><div><label>贷款银行</label><span>'
+								        +data.xzgdkxxcx.detail[i].dkyhmc
+								        +'</span></div><div><label>担保方式</label><span>'
+								        +dbfsFormat(data.xzgdkxxcx.detail[i].dbfs)
+								        +'</span></div><div><label>身份证号</label><span>'
+								        +fourNumSixstar(data.xzgdkxxcx.detail[i].sfzh)
+								        +'</span></div></div><div class="butPlanProof"><button type="button"  title='+dkzh+' class="mui-btn mui-btn-yellow mui-btn-outlined actualReturnMoney right">还款凭证</button><button type="button" title='+dkzh+' class="mui-btn mui-btn-blue mui-btn-outlined returnMoneyPlan right">还款计划</button></div>'
+				  	}
+				  	for(var i=0; i < length; i++){
+	                	        //遍历贷款明细
+		                	    document.getElementsByClassName("loanAccount")[i].addEventListener('tap',function(){  
+									  		dkzh = this.id;  
+									  		xqhkje = this.title;
+									  		mui.openWindow({    
+												id: 'loanMingXi.html',
+												url: '../mine/loanMingXi.html',
+												extras: {
+													dkzh: dkzh,
+													xqhkje: xqhkje
+												},
+												show: {aniShow: 'slide-in-right',duration:'300'},     
+												waiting:{
+													      autoShow: true,
+													      title:'正在加载...',
+													     }
+											   }) 
+									}); 
+							    //遍历还款计划
+							    document.getElementsByClassName("returnMoneyPlan")[i].addEventListener('tap',function(){  
+									  		var dkzh=this.title;
+									  		wtddqzjc(dkzh,'../mine/returnMoneyPlan.html');
+									});
+								//遍历实际还款
+							    document.getElementsByClassName("actualReturnMoney")[i].addEventListener('tap',function(){  
+									  		var dkzh=this.title;
+									  		wtddqzjc(dkzh,'../mine/actualReturnMoney.html');
+								    });  
+	                }
+			  	}else if(data.jg == '-98'){
+			  		loginPlease();
+			  	}else{
+			  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+			  	}
+			  }, 
+			  error: function(data) {  
+			  	    plus.nativeUI.toast("网络连接异常!",{'duration':'long'}); 
+			   } 
+			}); 
+		}
+		if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+		//担保方式格式转变
+		function dbfsFormat(dbfs){
+			if(dbfs=="1"){ 
+				return "抵押";
+			}else if(dbfs=="2"){ 
+				return "质押";
+			}else{
+				return "保证";
+			}
+		}
+
+    </script>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>result</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/common.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style type="text/css">
+    	body{
+    		height: 100%;
+    		width: 100%;
+    	}
+    	html{
+    		height: 100%;
+    		width: 100%;
+    	}
+    </style>
+</head>
+<body>
+	<div class="shareBox">
+		<ul class="clearfix">
+	    	<li id="wxFriendsCircle" class="left"><a href="#"><img src="../images/share_1.png" alt="" /><span>朋友圈</span></a></li>
+	    	<li id="wxFrifend" class="left"><a href="#"><img src="../images/share_2.png" alt="" /><span>微信</span></a></li>
+	    	<li id="xinlangWb" class="left"><a href="#"><img src="../images/share_3.png" alt="" /><span>微博</span></a></li>
+	    	<li id="qqFriends" class="left"><a href="#"><img src="../images/share_4.png" alt="" /><span>QQ</span></a></li>
+	    	<li class="left"><a href="#"><img src="../images/share_5.png" alt="" /><span>QQ空间</span></a></li>
+	    </ul>
+	    <a href="#" id="cancelShare" class="cancelShare" onclick="back()"><span style="font-size:16px;">取消分享</span></a>
+	</div>
+</body>
+<script type="text/javascript">   
+	mui.init();
+	function plusReady(){
+		
+	}	
+	if(window.plus){
+		plusReady();
+	}else{
+		document.addEventListener('plusready',plusReady,false);
+	}
+</script>
+</html>

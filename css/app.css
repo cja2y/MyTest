@@ -1,0 +1,1148 @@
+/*get*/
+.mui-media-body{
+    		border-bottom: solid 1px #DDDDDD;
+    		height: 80px;
+    		word-break: break-all;
+    		word-wrap: break-word;
+    		line-height: 90%;
+    	}
+    	li{
+    		list-style-type: none;
+    	}
+    	
+    	.mui-ellipsis{
+    		width: 75%;	
+    		padding-left: 10px;
+    		letter-spacing: -1px;
+    	}
+    	.conditionStyle{
+    		width: 100%;
+    		height: 35px;
+    		background: no-repeat url(../img/get/get-bytj.png);
+    		background-size: 20px;
+    		background-position-x: 40%;
+    		background-position-y: 60%;
+    	}
+    	.hidConditions{
+    		width: 100%;
+    		height: 120px;
+    		background-color: #DDDDDD;
+    		font-size: 14px;
+    	}
+    	
+    	.hidConditions  img{
+    		width: 70px;
+    		height: 70px;
+    	}
+/*payBackCalculate*/
+
+		.mui-title{
+			color: #FFFFFF;
+		}
+		.mui-action-back{
+			color: #FFFFFF;
+		}
+
+		.beforeBackMoney{
+			width: 70%;
+			margin-bottom: 10px;
+		}
+		.beforeBackMoney label{
+			font-weight: bold;
+			font-size: 16px;
+		}
+		.BeforeBackInterest{
+			width: 100%;
+			height: 45px;
+			background-color: #FFFFFF;
+			line-height: 45px;
+			font-size: 15px;
+			color: #999999;
+			
+		}
+		.BeforeBackInterest label{
+			padding-left: 10px;
+
+		}
+		.BeforeBackInterest span{
+			padding-right: 10px;
+		}
+		#btnCalculateInterest{
+			width: 30%; 
+			margin: 0px; 
+			float: right; 
+			background-color: #0081d8; 
+			color: #FFFFFF; 
+			border-radius: 0px; 
+			height: 43px; 
+			text-align: center; 
+			line-height: 33px; 
+			font-size: 16px;
+		}
+		.inputYuan{
+			padding-left: 3px;
+		}
+		.payAllNum{
+			color: #FF8942;
+		}
+		.payAllNum em{
+			color:#8F8F94;
+		}
+		#hiddenBox{
+            margin-top: 5px;
+			width: 100%;
+			background:no-repeat url(../img/allImg/payBack.png);
+			background-size: 100%;
+			padding-top: 24px;
+			padding-left: 10px;
+			font-size: 14px;
+			font-weight: bold;
+			color: #AAAAAA;
+			display: none;
+			box-shadow:0px 2px 1px rgba(0, 0, 0, .1);
+		}
+		.boxTitle{
+			width: 100%;
+			height: 40px;
+			line-height: 30px;
+			color: #1C86EE;
+			font-size: 14px;
+			border-bottom: 1px solid #EEEEEE;
+			font-weight: bold;
+		}
+		#hiddenBox ul li{
+			height: 40px;
+			width: 100%;
+			line-height: 40px;
+		}
+		.boxSpan{
+			float: right;
+			padding-right: 10px;
+			color: #000000;
+		}
+
+/*result*/
+        .mui-pull-left{
+    		color: white;
+    	}
+    	.mui-title{
+    		color: white;
+    	}
+    	.main-content{
+    		width: 100%;
+    		background-color: #FFFFFF;
+    		padding-bottom: 10px;
+    	}
+    	.successIcon{
+    		padding-top: 15px;
+    		padding-left: 15px;
+    		font-size: 30px;
+    		font-weight: 900;
+    		width: 350px; 
+    		margin: 0 auto;
+    	}
+    	.successIcon span{
+    		height: 60px;
+    		display: inline-block;
+            line-height: 70px;
+            margin-left: 10px;
+            text-align: center;
+    	}
+    	.successIcon img{
+    		height: 60px;
+    		float: left;
+    	}
+    	.listInfomation{
+    		margin-top: 5px;
+    		width: 350px; 
+    		margin: 0 auto;
+    	}
+    	.listInfomation li{
+    		line-height: 25px;
+    		padding-left: 88px;
+    		font-size: 15px;
+    		color: #929292;
+    		font-weight: 100;
+    	}
+    	.listInfomation li span{
+    		padding-left: 5px;
+    	}
+    	.passMessage{
+    		margin: 15px;
+    		width: 350px; 
+    		margin: 0 auto;
+    	}
+    	.passMessage p{
+    		line-height: 25px;
+    	}
+    	.pass{
+    		color: #000000;
+    	}
+    	.evaluateStar{
+    		position:relative; 
+    		margin:30px 0px 10px 0px; 
+    		padding-top:25px; 
+    		border-top:1px 
+    		solid #d9d9d9;
+    	}
+    	.starBd{
+    		padding-bottom:10px;
+    		text-align:center;
+    		height: 50px;
+    	}
+    	.starBd ul{
+    		list-style: none;
+    	}
+    	.evaluateStar h3{
+    		position:absolute;
+    		top: -7px; 
+    		left:50%; 
+    		margin-left:-90px; 
+    		padding:0px 10px; 
+    		font-size:14px; 
+    		color:#444;
+    		background-color: #FFFFFF;
+    	}
+    	.evaluateStar img{
+    		width: 35px; 
+    		margin:0px 5px;
+    	}
+    	.appraise{
+    		padding:10px 0px; 
+    		background-color:#ededed; 
+    		border-top:1px solid #d9d9d9; 
+    		border-bottom:1px solid #d9d9d9;
+    	}
+    	.appraise input{
+    		display:block; 
+    		width:95%; 
+    		height:46px; 
+    		line-height:46px; 
+    		margin:0px auto; 
+    		padding:0px 5px; 
+    		background-color:#fff; 
+    		border:1px solid #d9d9d9; 
+    		border-radius:10px;
+    		font-size: 15px;
+    		text-indent: 5px;
+    	}
+    	.appraise span{
+    		display: block;
+    		float: left;
+    		height: 35px;
+    		width: 31.2%;
+    		background-color: #FFFFFF;
+    		border-radius: 5px;
+    		margin: 0px 1% 10px 1%; 
+    		text-align: center;
+    		line-height: 35px;
+    	}
+    	.btns{
+    		padding:10px 0px 10px 0px; 
+    		text-align:center;
+    	}
+    	.share{
+    		display:inline-block; 
+    		width:45%; 
+    		height:42px; 
+    		line-height:42px; 
+    		margin:0px 5px; 
+    		background-color:#0080d7; 
+    		border-radius:6px; 
+    		font-size:16px; 
+    		color:#fff;
+    	}
+    	#tiJiao{
+    		display:inline-block; 
+    		width:96%; 
+    		height:42px; 
+    		line-height:42px; 
+    		margin:5px 2%; 
+    		background-color:#0080d7; 
+    		border-radius:6px; 
+    		font-size:16px; 
+    		color:#fff;
+    		text-align:center;
+    	}
+    	.backIndex{
+    		display:inline-block; 
+    	    width:45%; 
+    	    height:42px; 
+    	    line-height:42px; 
+    	    margin:0px 5px; 
+    	    background-color:#0080d7; 
+    	    border-radius:6px; 
+    	    font-size:16px; 
+    	    color:#fff;
+    	}
+    	.cancelShare{
+    		display:block; 
+            font-size: 16px;
+    		height: 32%;
+    		background:url(../images/cancelshare.png) repeat;
+    		text-align:center; 
+    		font-size:18px;
+    		color:#fff;
+    	}
+    	.shareBox{
+    		/*display:none; */
+    		height: 23%;
+    		position:fixed; 
+    		top:0px; 
+    		width: 100%;
+    		padding-top:10px; 
+    		background:url(../images/bg.png) repeat; 
+    		z-index:20;
+    	}
+    	.shareBox ul{margin:0px 10px 10px 10px;}
+		.shareBox li{width:20%;}
+		.shareBox img{display:block; width:75%; margin:0px auto;}
+		.shareBox span{display:block; text-align:center; font-size:14px; color:#fff; padding-top: 2%;}
+/*chooseLoan*/    	
+    	.showLoan{height:38px; line-height:38px; margin-bottom:10px; background-color:#fff; border-bottom:1px solid #d9d9d9; font-size:14px; color:#bfbfbf;position: fixed;width: 100%;z-index: 999;}	
+    	.showLoan label{margin-left:10px;}
+    	.showLoan div{display: inline-block;}
+		.radioLabel{color:#404040;}
+		.radioLabel input{margin:13px 5px 0px 0px;}
+		.loanBox{margin:0px 10px 10px 10px; background-color:#fff; border:1px solid #d9d9d9; border-radius:8px; position: relative;}
+		.loanBoxSlt{position:relative; border:3px solid #50a2f7;}
+		.loanBoxSlt .choosed{display:block; position:absolute; top:0px; right:0px; width:30px; height:30px;}	
+    	.loanTop{padding:10px; border-bottom:1px solid #d9d9d9;}
+		.loanTop img{width:50px; height:50px; margin-right:10px;}
+		.loanTop dl{margin-top:5px;}
+		.loanTop dt{font-size:14px; color:#404040;}
+		.loanTop dd label{font-size:12px; color:#b2b2b2;}
+		.loanCenter{margin:0px 10px; padding:10px 0px 0px 0px; border-bottom:1px solid #d9d9d9;}
+		.loanCenter label{font-size:14px; color:#404040;}
+		.loanCenter span{font-size:16px;}
+		.loanCenter em{margin-bottom:5px; font-size:12px; color:#b2b2b2;}
+		.loanCenter .orange{color:#f78b2b;}
+		.loanCenter .blue{color:#316cbf;}
+		.loanBtm{margin:0px 10px; padding:10px 0px;}
+		.loanBtm label{font-size:14px; color:#b2b2b2;}
+		.loanBtm span{font-size:14px;}
+		.nextStep{position:absolute; bottom:0px; width:100%; height:60px; padding-left:54px; background-color:#fff; border-top:1px solid #cacaca;}/*1C86EE*/
+        .nextStepBtn{display:inline-block; width:95%; height:40px; line-height:40px; margin-top:10px; background-color: #A4A4A4; border-radius:5px; font-size:16px; color:#fff; text-align:center;} 
+        .consultBtn{position:absolute; left:0px; top:0px; margin:13px 15px 0px 15px; text-align:center;}
+		.consultBtn img{display:block; width:24px; height:20px;}
+		.consultBtn span{display:block; font-size:12px;}
+		.radioWord {color: #000000; font-weight: 900; }	
+        .mui-radio.mui-left label {padding-right: 15px; padding-left: 45px;}
+        .imgChoosedOne{position:absolute; top:0px; right:-1px; width:30px; height:30px; display:block;}
+        #imgChoosedTwo{position:absolute; top:0px; right:0px; width:30px; height:30px; display:none;}
+        .spouse{position: fixed; bottom: -154px; width:100%; background-color:#ededed; z-index:9999; transition: all 0.2s;}
+		.spouseId{padding:0px 0px 0px 40px;}
+		.spouseId img{position:absolute; top:8px; left:8px; width:20px; height:20px;}
+		.spouseId input{width:100%; height:40px; line-height:40px; background-color:#fff; border:none; font-size: 14px;}	
+		.identifyBtn{display:block; width:85%; height:40px; line-height:40px; margin:10px auto; background-color:#0080d8; border-radius:10px; font-size:16px; color:#fff; text-align:center;}
+		.identifyHd{position:relative; height:40px; line-height:40px; border-bottom:1px solid #CCCCCC; border-top:1px solid #CCCCCC; text-align:center; font-size:16px;}
+		.identifyHd img{position:absolute; left:15px; top:12px; width:16px; height:18px;}
+		.identifyHd h3{line-height: 40px;}
+		.identifyWrite{width:85%; margin:10px auto 0px auto; background-color:#fff; border:2px solid #0080d8; border-radius:5px;}
+        .identifyWrite li{position:relative; height:40px; line-height:40px;}
+        .marginL3{margin-left: 3px;}
+/*cancelSign*/       
+        .kindlyReminder{
+        	background-color: #FFFFFF;
+        }
+        .kindlyReminder p{
+        	color: #FF0000;
+        	padding: 10px 15px;
+        }
+        .identifyNum{
+        	background-color: #DDDDDD;
+        	padding: 10px 0px 5px 10px;
+        	width: 100%;
+        	display: block;
+        	color:#858585;
+        	font-size: 14px;
+        }
+        #identifyNumInput{
+        	width: 60%;
+        	border: none;
+        	font-size: 16px;
+        	text-indent: 5px;
+        	padding-left: 0px;
+        }
+        .WrapNumInput{
+        	width: 70%;
+        	background-color:#FFFFFF ;
+        	font-size: 16px;
+        	font-weight: 600;
+        	height: 45px;
+        	line-height: 45px;
+        	position: absolute;
+        	top: 0;
+        	left: 0;
+        	border-bottom: 1px solid #DDDDDD;
+        }
+        .WrapNumInput span{
+        	padding-left: 15px;
+        	font-size: 16px;
+        }
+        .identNum{
+        	width: 30%;
+        	background-color: #0080D8;
+        	color: white;
+        	font-size: 14px;
+        	text-align: center;
+        	line-height: 45px;
+        	position: absolute;
+        	top: 0;
+        	right: 0;
+        }
+        .doPassword{
+        	width: 100%;
+        	height: 45px;
+        	background-color: #FFFFFF;
+        	border-bottom: 1px solid #DDDDDD;
+        	line-height: 45px;
+        }
+        .doPassword span{
+        	width: 30%;
+        	font-size: 16px;
+        	font-weight: 600;
+        	padding-left: 16px;
+        }
+        .wrapNum{
+        	position: relative;
+        	height: 45px;
+        }
+        #ServicePass{
+        	width: 60%;
+        	border: none;
+        	font-size: 16px;
+        	text-indent: 5px;
+        }
+        .ServicePass{
+        	width: 60%;
+        	border: none;
+        	font-size: 16px;
+        	text-indent: 5px;
+        }
+        #dxyzm{
+        	width: 60%;
+        	border: none;
+        	font-size: 16px;
+        	text-indent: 5px;
+        }
+        #againPass{
+        	width: 60%;
+        	border: none;
+        	font-size: 16px;
+        	text-indent: 5px;
+        }
+        #buttCancle{
+        	width: 96%;
+        	margin: 2%; 
+        	margin-top: 10px;
+        	display: block;
+        	height: 40px;
+        	font-size: 16px;
+        }
+/*accountSetting*/
+        .wrapSetLi li{
+        	background-color: #FFFFFF; 
+        	border-bottom: solid 1px #DDDDDD;
+        	padding-left: 10px;
+        	background: no-repeat right center url(../images/linksarrow.png);
+        	background-size: 10px;
+        	background-position-x: 95%;
+        	background-color: #FFFFFF;
+        	height: 55px;
+        	line-height: 55px;
+        	}
+        .wrapSetLi span{
+        	color: #000000;
+        	font-size: 15px;
+        	margin-right: 10%;
+        }
+/*newQueryPass*/ 
+        .newPassword{
+        	width: 100%;
+        	height: 45px;
+        	background-color: #FFFFFF;
+        	border-bottom: 1px solid #DDDDDD;
+        	line-height: 45px;
+        }
+        .newPassword span{
+        	width: 30%;
+        	font-size: 16px;
+        	font-weight: bold;
+        	padding-left: 16px;
+        }
+        .newYzm{
+        	width: 100%;
+        	height: 45px;
+        	background-color: #FFFFFF;
+        	border-bottom: 1px solid #DDDDDD;
+        	line-height: 45px;
+        	margin-top: 10px;
+        }
+        .newYzm span{
+        	width: 30%;
+        	font-size: 16px;
+        	font-weight: bold;
+        	padding-left: 16px;
+        }
+        #newPass{
+        	width: 70%;
+        	border: none;
+        	font-size: 16px;
+        	text-indent: 5px;
+        }
+        #resetPass{
+        	width: 70%;
+        	border: none;
+        	font-size: 16px;
+        	text-indent: 5px;
+        }
+        #newPassYzm{
+        	width: 50%;
+        	border: none;
+        	font-size: 16px;
+        	text-indent: 5px;
+        }
+/*changePhoneNum*/        
+        #btNewPhoneNum{
+        	width: 96%;
+        	margin: 10px auto;
+        	display: block;
+        	height: 40px;
+        	font-size: 16px;
+        	margin: 10px 2% 0 2%;
+        }
+        #chphIdentifyNum{
+        	width: 60%;
+        	border: none;
+        	font-size: 16px;
+        	text-indent: 5px;
+        	padding-left: 28px;
+        }
+        .warmPrompt{
+        	position: absolute;
+        	bottom: 0;
+        	height: 120px;
+        	width: 100%;
+        	border-top: 1px solid #BBBBBB;
+        }
+        .warmPrompt h3{
+        	font-size: 16px;
+        	color: #AAAAAA;
+            margin-top: -10px;
+            text-align: center;
+            background-color: #DDDDDD;
+            width: 80px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0px 5px;
+        }
+        .warmPrompt span{
+        	display: block;
+        	font-size: 16px;
+        	margin: 10px;
+        }
+        .warmPrompt p{
+        	display: block;
+        	font-size: 16px;
+        	margin: 10px;
+        	line-height: 18px;
+        	font-size: 14px;
+        }
+/*eletronSign*/        
+        .imgElesign{
+            height: 200px;
+            display: block;
+            margin: 30px auto;
+        }
+        #wrapImgElesign{
+        	position: relative;
+        }
+        #wrapImgElesign p{
+        	position: absolute;
+        	top: 0;
+        	right: 5px;
+        	width: 52%;
+        }
+/*setChannel*/
+        .setChan{
+        	display: inline-block;
+        	padding: 5px 10px;
+        	font-size: 14px;
+        	color: #AAAAAA;
+        }
+        .ulRight li{
+        	height: 50px;
+        	width: 100%;
+        	border-bottom: 1px solid #EEEEEE;
+        	line-height: 50px;
+        	font-size: 16px;
+        }
+        .ulRight input{
+        	float: right;
+        	margin-right: 15px;
+        	margin-top: 20px;
+        	display: none;
+        }
+       .ulRight span{
+       	padding-left: 10px;
+       }
+       .defaultRight{
+	       	background-size: 25px;
+       }
+/*doAccountMessage*/    
+       #UldoAccount{
+       	margin-top: 15px;
+       }
+       #UldoAccount li{
+       	height: 50px;
+       	background-color: #FFFFFF;
+       	border-bottom: 1px solid #EEEEEE;
+       	line-height: 50px;
+       	display: block;
+       	position: relative;
+       	font-size: 16px;
+       }
+       #UldoAccount span{
+       	padding-top: 2px;
+       	display: block;
+       	padding-left: 10px;
+       }
+       .choosChannel{
+       	height: 35px;
+       	background-color: #DDDDDD;
+       	padding-left: 10px;
+       	line-height: 35px;
+       }
+       .mui-switch{
+       	position: absolute;
+       	top: 8px;
+       	right: 10px;
+       }
+/*myLoan*/       
+     .myloanInfoWrap{
+     	background-color: #1C86EE;
+     	width: 100%;
+     	padding: 20px 0 10px 0;
+     	font-size: 14px;
+     }
+     .myloanInfoWrap span{
+     	float: left;
+     	text-align: left;
+     	width: 75%;
+     	color: #FFFFFF;
+     	display: block;
+     }
+     .myloanInfoWrap div{
+     	line-height: 25px;
+     	overflow: hidden;
+     	width: 100%;
+     }
+     .myloanInfoWrap label{
+     	float: left;
+     	text-align: right;
+     	display: block;
+     	width: 25%;
+     	color: #CCCCCC;
+     }
+     .loanAccount{
+     	height: 45px;
+     	background-color: #FFFFFF;
+     	line-height: 45px;
+     	position: relative;
+     	top: 10px;
+     	overflow: hidden;
+     	border-bottom: 1px solid #EEEEEE;
+     }
+     .loanAccount label{
+        padding-left: 15px;
+        font-size: 16px;
+     }
+     .loanAccount p{
+     	display: inline-block;
+     	color: orange;
+     	padding-left: 30px;
+     }
+     .loanAccount span{
+     	display: inline-block;
+     	font-size: 15px;
+     	color: #AAAAAA;
+     	position: absolute;
+     	right: 30px;
+     }
+     .loanAccount img{
+     	display: inline-block;
+     	position: absolute;
+     	height: 15px;
+     	right: 15px;
+     	top: 15px;
+     }
+    .orangeDiv{
+    	position: absolute;
+    	left: 0px;
+    	top: 10px;
+    	height: 25px;
+    	width: 5px;
+    	background: #F78B2B;
+    }
+    .loanAccountInfo{
+    	margin-top: 10px;
+    	background-color: #FFFFFF;
+    	padding: 10px 30px;
+    	border-bottom: 1px solid #EEEEEE;
+    	position: relative;
+    }
+    .loanAccountInfo span{
+     	color: #000000;
+     	margin-left: 10px;
+     	font-size: 14px;
+    }
+    .loanAccountInfo label{
+     	color: #929292;
+     	font-size: 14px;
+    }
+    .loanAccountInfo div{
+     	margin-top: 5px;
+    }
+    .butPlanProof{
+    	height: 55px;
+    	width: 100%;
+    	background-color: #FFFFFF;
+    	border-bottom: 1px solid #EEEEEE;
+    }
+    .butPlanProof button{
+    	display: block;
+    	margin-right: 10px;
+    	margin-top: 11px;
+    }
+/*myJiaocun*/
+    .blueDiv{
+    	position: absolute;
+    	left: 0px;
+    	top: 10px;
+    	height: 25px;
+    	width: 5px;
+    	background: #1C86EE;
+    }
+    .jc_zfgjj{
+     	height: 45px;
+     	background-color: #FFFFFF;
+     	line-height: 45px;
+     	position: relative;
+     	top: 10px;
+     	overflow: hidden;
+     	border-bottom: 1px solid #EEEEEE;
+    }
+    .jc_zfgjj label{
+        padding-left: 15px;
+        font-size: 16px;
+    }
+    .jc_zfgjj p{
+     	display: inline-block;
+     	color: #1C86EE;
+     	font-size: 18px;
+    }
+    .jc_zfgjj span{
+     	display: inline-block;
+     	font-size: 15px;
+     	color: #AAAAAA;
+    }
+    .jc_zfgjj img{
+     	display: inline-block;
+     	position: absolute;
+     	height: 15px;
+     	right: 15px;
+     	top: 15px;
+    } 
+    #moneyNumber{
+    	color: #1C86EE;
+    	font-size: 18px;
+    	margin-right: 80px;
+    	float: right;
+    }
+    .infoLeft{
+    	position: absolute;
+    	left: 200px;
+    }
+    .spanLeft{
+    	position: absolute;
+    	left: 265px;
+    }
+ /*myHandleProgress*/   
+    .restOfTime{
+    	background-color: #FFFFFF;
+    	width: 100%;
+    	height: 45px;
+    	line-height: 45px;
+    }
+    .restOfTime span{
+    	font-size: 14px;
+    	padding-left: 15px;
+    	font-size: 15px;
+    }
+    .restOfTime p{
+    	display: inline-block;
+    	float: right;
+    	padding-right: 10px;
+    	font-size: 16px;
+    }
+    .restOfTime label{
+    	float: right;
+    	color: #FFA500;
+    	font-size: 16px;
+    }
+    .whiteDiv{
+    	width: 100%;
+    	height: 15px;
+    	margin-top: 10px;
+    	background-color: #FFFFFF;
+    }
+    #handleProcess li{
+    	background-color: #FFFFFF;
+    	height: 60px;
+    	width: 100%;
+    	line-height: 20px;
+    	font-size: 15px;
+    	padding-left: 15px;
+    }
+    #handleProcess span{
+    	float: right;
+    	padding-right: 10px;
+    	font-size: 14px;
+    	color: #AAAAAA;
+    	
+    }
+    .btn_payBack{
+    	background-color: #FFFFFF;
+    	height: 60px;
+    	width: 100%;
+    	position: fixed;
+    	bottom: 0px;
+    	z-index: 999px;
+    	border-top: solid 1px #EEEEEE;
+    }
+    .btn_payBack button{
+    	height: 44px;
+    	margin-top: 8px;
+    	width: 45%;
+    }
+    .btn_payBackOne{
+    	margin-left: 5%;
+    }
+    #handleProcess img{
+    	height: 58px;
+    	display: inline-block;
+    	margin-right: 5px;
+    	float: left;
+    }
+/*loanMingXi*/
+    .ulMingxiForm{
+    	margin-top: 10px;
+    	line-height: 40px;
+    }
+    .ulMingxiForm li{
+    	height: 40px;
+    	background-color:#FFFFFF;
+    	border-bottom: solid 1px #CCCCCC;
+    	font-size: 14px;
+    }
+    #liFirst{
+    	background-color: #555555;
+    	color: #FFFFFF;
+    }
+    .ulMingxiForm label{
+    	display: inline-block;
+    	width: 31%;
+    	text-align: center;
+    }
+    .ulMingxiForm span{
+    	width: 23%;
+    	display: inline-block;
+    	text-align: center;
+    }
+    .mfLastSpan{
+    	color: #808080;
+    }
+/*gjjAccount*/
+    .gjjAccountMxForm{
+    	margin-top: 10px;
+    	line-height: 40px;
+    	color: #000000;
+    }
+    .gjjAccountMxForm li{
+    	height: 40px;
+    	background-color:#FFFFFF;
+    	border-bottom: solid 1px #CCCCCC;
+    	font-size: 14px;
+    }
+    .gjjAccountMxForm label{
+    	display: inline-block;
+    	width: 34%;
+    	text-align: center;
+    }
+    .gjjAccountMxForm span{
+    	width: 33%;
+    	display: inline-block;
+    	text-align: center;
+    }
+    .fontGreen{
+    	color: #41AE32;
+    }
+    .fontRed{
+    	color: #FF0000;
+    }
+    .timeLastThree{
+    	height: 40px;
+    	width: 33%;
+    	background: no-repeat right url(../img/allImg/shuXian.png);
+    	background-size: 2px;
+    	background-color: #FFFFFF;
+    }
+    .timeLastSix{
+    	height: 40px;
+    	width: 33%;
+    	background: no-repeat right url(../img/allImg/shuXian.png);
+    	background-size: 2px;
+    	background-color: #FFFFFF;
+    }
+    .chooseTime{
+    	height: 40px;
+    	width: 34%;
+    	background: no-repeat right url(../img/allImg/arrowGrey.png);
+    	background-size: 10px;
+    	background-position-x: 90%;
+    	background-color: #FFFFFF;
+    }
+    .timeBlockWarp span{
+    	line-height: 40px;
+    }
+    .timeBlockWarp{
+    	text-align: center;
+    	font-size: 14px;
+    }
+/*mineDeal*/
+    .innerHandle{
+    	margin-top: 10px;
+    	background-color: #FFFFFF;
+    }
+    .serviceNumIn{
+    	height: 40px;
+    	width: 100%;
+    	border-bottom: 1px solid #DDDDDD;
+    	line-height: 40px;
+    	padding-left: 5%;
+    	font-size: 15px;
+    	font-weight: 900;
+    }
+    .handleState{
+    	padding-right: 5%;
+    }
+    .beforePayback{
+    	padding: 0px 5%;
+    	font-weight: 900;
+    }
+    .beforePayback label{
+    	font-size: 15px;
+    	display: inline-block;
+    	padding-top: 12px;
+    	padding-bottom: 5px;
+    }
+    .beizhu{
+    	height: 45px;
+    	width: 90%;
+    	margin: 0px auto;
+    	border-top: 1px dashed #DDDDDD;
+    	color: #A4A4A4;
+    	font-size: 14px;
+    	font-weight: 900;
+    }
+    .beforePayback li{
+    	display: inline-block;
+    	color: #A4A4A4;
+    	margin-bottom: 7px;
+    	padding-right: 15px;
+    	font-size: 13px; 
+    }
+    .beforePayNum{
+    	color: #007AFF;
+    	font-size: 18px;
+    	font-weight: 600;
+    	margin-top: 12px;
+    }
+    .orange{
+    	color: #FD7802;
+    }
+    .green{
+    	color: #41AE32;
+    }
+    .red{
+    	color: #FF0000;
+    }
+    .planFailed{
+    	color: #000000;
+    	font-size: 12px;
+    	height: 45px;
+    	width: 85%;
+    	padding-top: 5px;
+    	color: #FF0000;
+    }
+/*actualReturnMoney*/    
+
+    .timeReal{
+    	height: 40px;
+    	width: 100%;
+    	border-bottom: 1px solid #DDDDDD;
+    	line-height: 40px;
+    	padding-left: 5%;
+    	font-size: 16px;
+    	font-weight: 900;
+    }
+    .deteReal{
+    	margin-right: 5%;
+    	font-size: 13px;
+    }
+    .actualDate{
+    	margin-right: 10px;
+    	color: #A4A4A4;
+    	font-size: 14px;
+    }
+    .moneyInfo li{
+    	display: inline-block;
+    	overflow: hidden;
+    	width: 30%;
+    }
+    .moneyInfo ul{
+        margin: 20px 0px;
+        text-align: center;
+    }
+    .aliFont{
+    	font-size: 14px;
+    }
+    .bliFont{
+    	margin-top: -15px;
+    	color: #6C6C6C;
+    }
+    #rightWindow{
+    	width: 160px;
+    	height: 105px;
+    	background: no-repeat url(../img/allImg/realReturn_window.png);
+    	background-size: 100%;
+    	position: fixed;
+    	top: 41px;
+    	right: -3px;
+    	text-align: center;
+    	z-index: 99999;
+    }
+     #rightWindow a{
+     	width: 160px;
+    	height: 50px;
+    	line-height: 50px;
+    	font-size: 14px;
+     }
+
+    #rightWindow img{
+     	height: 20px;
+     	float: left;
+     	margin: 15px -15px 0px 20px;
+    }
+    #wtddyw{
+    	width: 160px;
+    	height: 50px;
+    	line-height: 50px;
+    	font-size: 14px;
+    }
+/*mine*/
+    #topWrapper{
+    	background: no-repeat url(../images/topbg.png);
+    	background-size: 100% 100%;
+    	height:210px;
+    	position: relative;
+    	color: #FFFFFF;
+    }  
+    .topSet{position:absolute; top:30px; right:20px; width:24px; height:24px; background:url(../images/topset.png) no-repeat; background-size:100% 100%;}
+    .userInfo{margin:85px 0px 0px 5px}
+    .userInfo dt{font-size: 18px;}
+    .userImg{width:70px; height:70px; margin:70px 10px 0px 10%;}
+    .mineNav{height:42px; line-height:42px; margin-bottom:12px; background-color:#fff; border-bottom:1px solid #d9d9d9;}
+    .myMessageLink{width:50%; height:42px; line-height:42px; background:url(../images/mymessagebg.png) no-repeat right; text-align:center; font-size:16px;}
+    .myMessageLink span{white-space:nowrap;}
+    .myBusinessLink{width:50%; height:42px; line-height:42px; text-align:center; font-size:16px;}
+	.myMessageLink a{display:inline-block; white-space:nowrap;}
+	.myMessageLink img{display:inline-block; width:20px; height:19px; margin-top:12px; margin-right:5px;}
+	.myBusinessLink a{display:inline-block; white-space:nowrap;}
+	.myBusinessLink img{display:inline-block; width:16px; height:19px; margin-top:11px; margin-right:5px;}
+	.myJiaoCun{background-color: #FFFFFF; position: relative;}
+	.myJiaoCunTab{width: 90%; height: 45px; margin: 0px auto; border-bottom: solid 1px #d9d9d9;line-height: 45px;}
+	.myJiaoCunTab img{height: 25px; margin-top: 9px; float: left;}
+	.myJiaoCunTab span{font-size: 16px; margin: 1px 5px; display: inline-block;}
+	.fundQuestion{display:inline-block; width:16px; height:16px; margin-top: 14px; margin-left: 6px;  background:url(../images/question.png) no-repeat;}
+	.gjj{height: 45px; line-height:45px; font-size: 16px; margin: 0px auto; border-bottom: 1px dotted #d9d9d9; margin: 0px 4%;}
+    .myJiaoCun em{display: inline-block; color: #1C86EE;}
+    .numGjj{float: right;}
+    .em1Gjj{margin-right: 3px; font-size: 18px;}
+    .em2Gjj{font-size: 24px;}
+    .em3Gjj{font-size: 18px;}
+    .gjjCalculate{height: 70px; padding-top: 18px; font-size: 16px; margin: 0px auto; border-bottom: 1px solid #d9d9d9; margin: 0px 4%;}
+    .subtraction{font-size:13px; color:#999; margin:0px 1px;}
+    .plus{display: inline-block; font-size:13px; color:#999; margin: 0px 1px;} 
+    .gjjCalculate dl{margin:0px; font-family:arial;}
+	.gjjCalculate dt{font-size:13px; color:#999; font-family:arial;}
+	.gjjCalculate dd{font-size:13px; color:#999;}
+	.jiaoZhiTime{height: 40px; line-height: 40px; color:#999; font-family:arial; margin: 0px 4%;}
+	.depositLeft{position:absolute; top:50%; left:0px; width:22px; height:44px; margin-top:-22px; background:url(../images/depositleft.png) no-repeat; background-size:100% 100%; z-index:110; display: blcok; opacity: 0.7;}
+    .depositRight{position:absolute; top:50%; right:0px;  width:22px; height:44px; margin-top:-22px; background:url(../images/depositright.png) no-repeat; background-size:100% 100%; z-index:110; display: blcok; opacity: 0.7;}
+    .loanYuE{height: 45px; line-height:45px; font-size: 16px;border-bottom: 1px dotted #CCCCCC; margin: 0px 4%;}
+    .noLoan{height: 90px; float: left;  font-size: 15px; background-color:#FFFFFF; margin: 0px 4%;}
+	.loanYuE em{display: inline-block; color: #FFA500;}
+	.links{margin-bottom:20px; margin-top: 15px;  background-color:#fff; border-top:1px solid #d9d9d9;}
+	.links li{height:42px; line-height:42px; font-size:16px;}
+    .linksImg_1{border-bottom:1px solid #E5E5E5;}
+	.linksImg_2{border-bottom:1px solid #d9d9d9;}
+	.linksImg_1 img{width:18px; height:20px; margin:10px 9px 0px 12px;}
+	.linksImg_2 img{width:22px; height:20px; margin:10px 9px 0px 12px;}
+	.links img.linksArrow{width:12px; height:22px;}
+/*resuestFailure */
+    .mui-pull-left{color: white;}
+    .mui-title{color: white;}
+    .nowifi{position: fixed;width: 100%;height: 100%;background: no-repeat  url(../img/menu/mistake-nowifi.png);background-position-y: 15%;background-position-x: 50%;background-size: 60%;background-color: #F0F0F0;}
+    .firstp{position: fixed;font-size: 20px; color: #000000; top: 51%;left: 35%;}
+    .secondp{position: fixed;font-size: 17px; color: #C0C0C0;top: 56%;left: 35%;}
+    .btnZdy{position: fixed;width: 30%;height: 45px;font-size: 20px;border-radius: 10px;top: 61%;left: 36%;}
+
+    .nowifii{position: fixed;width: 100%;height: 100%;background: no-repeat  url(../img/menu/mistake-nowifi.png);background-position-x: 50%;background-size: 55%;background-color: #F0F0F0;}
+    .firstpp{position: fixed;font-size: 20px; color: #000000; top: 70%;left: 35%;}
+    .secondpp{position: fixed;font-size: 17px; color: #C0C0C0;top: 75%;left: 35%;}
+    .btnZdyy{position: fixed;width: 30%;height: 45px;font-size: 20px;border-radius: 10px;top: 80%;left: 36%;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

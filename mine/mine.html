@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>mine</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>    
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>   
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>       
+    <style type="text/css">     
+    	html{background-color: #EEEEEE;}   
+        .mui-content{background-color: #EEEEEE;}   
+        .mui-slider .mui-slider-group .mui-slider-item img {width:25px;}         
+        .borderTopBot{border-top: 1px solid #d9d9d9; border-bottom: 1px solid #d9d9d9;} 
+        .hidden{display: none;} 
+        .noloanLv{margin-left: 15px; margin-top: 10px;}
+        #zgxm{font-weight: bold;}  
+        .marginOne{margin: 0 1px;}
+    @media (device-height:480px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone4/4s */
+      .nowifii{background: none;}
+      .firstpp{left: 33%;}
+      .secondpp{top: 76%;left: 33%;}
+      .btnZdyy{width: 30%;height: 40px;top: 83%;left: 36%;}
+    }
+    @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+      .nowifii{background: none;}
+      .firstpp{left: 33%;}
+      .secondpp{top: 76%;left: 33%;}
+      .btnZdyy{width: 30%;height: 40px;top: 83%;left: 36%;}
+    }
+    </style> 
+</head>   
+<body> 
+	<div id="contentWrap" class="mui-content">
+	    <div id="topWrapper">
+	    	<a id="../mine/accountSet.html"  class="topSet" onclick="clicked(this.id)"></a>
+	    	<img id="iconXb" src="../images/userimg.png" alt="" class="userImg left"/>
+            <dl class="left userInfo"> 
+                <dt id="yhm"></dt> 
+                <dd id="zgxm">身份证号: </dd> 
+                <dd id="scdlsj">上次登录时间: </dd> 
+                <dd id="dlqd">上次登录渠道: </dd>
+            </dl>
+	    </div> 
+	    <div id="messService" class="mineNav clearfix">  
+            <div id="myMessage" class="left myMessageLink"><a class="clearfix"><img src="../img/allImg/mine_iconMessege.png" alt="" class="left" /><span>我的消息</span></a></div>  <!--onclick="clicked(this.id)"-->
+            <div id="../mine/mineDeal.html" class="right myBusinessLink" onclick="clicked(this.id)"><a class="clearfix"><img src="../img/allImg/mine_iconService.png" alt="" class="left" /><span>我的办理</span></a></div>
+        </div>
+        <!--我的缴存-->
+        <div id="sliderJc"  class="mui-slider borderTopBot hidden" style="background-color: #FFFFFF; display: none;">
+            <!--<a id="jcArrowL" class="depositLeft"></a>    
+			<a id="jcArrowR" class="depositRight"></a>  -->  
+	        <div id="jiaocunWrap" class="mui-slider-group">
+	        	<div class="mui-slider-item"></div>  
+	        </div> 
+	    </div>     
+	    <!--我的贷款-->  
+	    <div id="sliderDk" class="mui-slider borderTopBot" style="background-color: #FFFFFF; margin: 12px 0;">
+	     	<!--<a id="dkArrowL" class="depositLeft"></a>    
+			<a id="dkArrowR" class="depositRight"></a>-->
+	        <div id="daikuanWrap" class="mui-slider-group">
+	        	<div class="mui-slider-item"></div>
+	        </div>
+	    </div>  
+        <!--<ul id="longQianyue" class="links hidden"> 
+        	<li id="lkbl" class="clearfix linksImg_1">
+            	<img src="../images/links_1.png" alt="" class="left" /><span class="left">龙卡办理</span><img src="../images/linksarrow.png" class="right linksArrow" />
+			</li>
+            <li id="qy" class="clearfix linksImg_2">
+            	<img src="../images/links_2.png" alt="" class="left" /><span class="left">签约</span><img src="../images/linksarrow.png" class="right linksArrow" />
+            </li> 
+        </ul>-->
+	</div>
+</body>	
+<script type="text/javascript" charset="UTF-8">
+      	mui.init();
+      	function plusReady(){  
+			/*plus.webview.currentWebview().setStyle({scrollIndicator:'none'});*/
+			var oLinksImg_1 = document.getElementById("lkbl"); 
+			var oLinksImg_2 = document.getElementById("qy");  
+			var oDaikuanWrap = document.getElementById("daikuanWrap"); 
+			var oJiaocunWrap = document.getElementById("jiaocunWrap");
+			var oSliderJc = document.getElementById("sliderJc"); 
+			var oSliderDk = document.getElementById("sliderDk");   
+			//alert(plus.webview.currentWebview().id);
+			
+			document.getElementById("yhm").innerHTML=localStorage.getItem('zgxm');
+		  	document.getElementById("zgxm").innerHTML +=fourNumSixstar(localStorage.getItem("token_sfzh"));
+		  	document.getElementById("scdlsj").innerHTML += formatDateB(localStorage.getItem("scdlsj"));
+		  	document.getElementById("dlqd").innerHTML += dlqdName(localStorage.getItem("dlqd"));
+			 
+			//性别
+			 if(localStorage.getItem('zgxb') == "0"){                   //判断性别,性别返回值在login接口 
+		  	   	  document.getElementById("iconXb").setAttribute('src','../img/allImg/userWomen.png'); 
+		  	    }  
+			myJiaoCun();
+			myDaiKuan();
+			document.addEventListener('refreshBtn', function(event) {
+				myJiaoCun();
+			    myDaiKuan();
+			})
+			function myJiaoCun(){ 
+				//我的缴存信息         
+				mui.ajax(localStorage.getItem("interfaceUrl")+'getGrjcxx.app', {            
+				  timeout: 30000,                   
+				  dataType: 'json',
+				  type: 'post',      
+				  success: function(data) {
+				  	oJiaocunWrap.innerHTML='';   
+				  	var len = data.result.detail.length;     
+				  	/*if(len < 2){
+				  		document.getElementById("jcArrowL").style.display = 'none';
+				  		document.getElementById("jcArrowR").style.display = 'none';  
+				  	}*/
+				  	for(var i=0; i<len; i++){      
+				  	var zjlxx=zjlx(data.result.detail[i].zjlx);	  
+				  	var zhye=fmoney(data.result.detail[i].zhye); 
+				  	var zhye1=lastMoney(zhye)[0];  
+				  	var zhye2=lastMoney(zhye)[1];
+				  	var ncye=fmoney(data.result.detail[i].ncye);
+				  	var bnjc=fmoney(data.result.detail[i].bnjc);
+				  	var bntq=fmoney(data.result.detail[i].bntq);     
+				  	var jx=fmoney(data.result.detail[i].jx); 
+				  	var jzny=formatDate(data.result.detail[i].jzny); 
+				  	var jcje=fmoney(data.result.detail[i].jcje);    
+				  	oJiaocunWrap.innerHTML+='<div id='+i+' class="mui-slider-item mui-control-content"><div class="myJiaoCun clearfix"><div id="../mine/myJiaocun.html" class="myJiaoCunTab clearfix" onclick="clicked(this.id)"><img src="../img/allImg/mine_JiaoCun.png"/><span>我的缴存</span><span style="position: absolute; right: 40px; font-size: 14px; color: #1C86EE;">查看更多...</span></div><div class="gjj"><span class="left">'
+				  	                        +zjlxx
+				  	                        +'</span><div class="numGjj"><em class="em1Gjj">￥</em><em class="em2Gjj">'
+	                                        +zhye1
+	                                        +'<em class="em3Gjj">.'+zhye2+'</em></em></div></div><div class="gjjCalculate clearfix"><dl class="left"><dt>'  
+	                                        +ncye 
+	                                        +'</dt><dd>年初余额</dd></dl><dl class="left"><dt class="marginOne">+</dt><dd class="marginOne">+</dd></dl><dl class="left"><dt>' 
+	                                        +bnjc
+	                                        +'</dt><dd>本年缴存</dd></dl><dl class="left"><dt class="marginOne">-</dt><dd class="marginOne">-</dd></dl><dl class="left"><dt>' 
+					                        +bntq 
+					                        +'</dt><dd>本年提取</dd></dl><dl class="left"><dt class="marginOne">+</dt><dd class="marginOne">+</dd></dl><dl id="jiexiHide" class="left"><dt>'
+					                        +jx
+					                        +'</dt><dd>结息</dd></dl></div><div class="jiaoZhiTime clearfix"><span class="left">缴至年月</span><span class="left" style="margin-left: 25%;">'
+					                        +jzny
+					                        +'</span><span class="right">￥'
+					                        +jcje
+					                        +'</span></div></div></div>'
+				    }
+				  	if(data.dqrq < 20160701){       //七月一号之前的结息不显示
+				  		document.getElementById("plusHide").style.display = 'none';
+				  		document.getElementById("jiexiHide").style.display = 'none';
+				  	};
+				  	oSliderJc.style.display='block';  
+				  	document.getElementById("messService").style.display='block';   
+				  	//oLongQianyue.style.display='block';
+				  },  
+				  error: function(data) {
+				  	oSliderJc.style.display='none';  
+				  	oSliderDk.style.display='none';
+				    requestFailure();
+				    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+				   } 
+				});
+			}	
+			function myDaiKuan(){
+				//我的贷款信息
+				mui.ajax(localStorage.getItem("interfaceUrl")+'getGrdkxx.app', {             
+				  timeout: 30000,                
+				  dataType: 'json', 
+				  type: 'post',      
+				  success: function(data) { 
+				  oDaikuanWrap.innerHTML='';
+				  if(data.jg=="0"){
+				  	var len = data.result.detail.length; 
+				  	/*if(len < 2){ 
+				  		document.getElementById("dkArrowL").style.display='none';
+				  		document.getElementById("dkArrowR").style.display='none';
+				  	}*/
+				  	for(var i=0;i<len;i++){        
+				  	var dkzh=data.result.detail[i].dkzh;      
+				  	var dkye=fmoney(data.result.detail[i].dkye,2);     
+				  	var dkye1=lastMoney(dkye)[0];  
+				  	var dkye2=lastMoney(dkye)[1];        
+				  	var xqhky=formatDate(data.result.detail[i].xqhky);   
+				  	var dkje=fmoney(data.result.detail[i].dkje,2); 
+				  	var yhbj=fmoney(data.result.detail[i].yhbj); 
+				  	var xqhkje=fmoney(data.result.detail[i].xqhkje,2);     
+				  	oDaikuanWrap.innerHTML+='<div class="mui-slider-item"><div class="myJiaoCun clearfix"><div id="../mine/myLoan.html" class="myJiaoCunTab clearfix" onclick="clicked(this.id)"><img src="../img/allImg/mine_myLoan.png"/><span>我的贷款</span><span style="position: absolute; right: 40px; font-size: 14px; color: orange;">查看更多...</span></div><div class="loanYuE"><span class="left">贷款余额</span><div class="numGjj"><em class="em1Gjj">￥</em><em id="dkye" class="em2Gjj">' 
+				  	                        +dkye1
+				  	                        +'<em class="em3Gjj">.'+dkye2+'</em></em></div></div><div class="gjjCalculate clearfix"><dl class="left"><dt>'
+				  	                        +dkje
+				  	                        +'</dt><dd>贷款金额 </dd></dl><dl class="left"><dt class="marginOne">-</dt><dd class="marginOne">-</dd></dl><dl class="left"><dt>'
+				  	                        +yhbj
+				  	                        +'</dt><dd>已还本金</dd></dl></div><div class="jiaoZhiTime clearfix"><span class="left">下期还款</span><span class="left" style="margin-left: 25%;">'
+				  	                        +xqhky 
+				  	                        +'</span><span class="right">￥'
+				  	                        +xqhkje
+				  	                        +'</span></div></div></div>';      
+				  	//dkjd(dkzh);
+				  } 
+				  }else{ 
+				  	/*document.getElementById("dkArrowL").style.display = 'none';
+				  	document.getElementById("dkArrowR").style.display = 'none';*/
+				  	var zczgdke=fmoney(data.dkxx.zczgdke,2);
+				  	var zczgdke1=lastMoney(zczgdke)[0];  
+				  	var zczgdke2=lastMoney(zczgdke)[1]; 
+				  	oDaikuanWrap.innerHTML+='<div class="mui-slider-item"><div class="myJiaoCun clearfix"><div class="myJiaoCunTab clearfix"><span>我的贷款</span></div><div class="loanYuE clearfix"><span class="left">政策最高贷款额</span><div class="numGjj"><em class="em1Gjj">￥</em><em id="dkye" class="em2Gjj">'
+				  	                      +zczgdke1+'<em class="em3Gjj">.'
+				  	                      +zczgdke2
+				  	                      +'</em></em></div></div><div class="noLoan clearfix"><div><span>公积金贷款年利率</span><em class="noloanLv" style="color: #41AE32;">'
+		        			              +data.dkxx.gjjdknll+"%"
+		        			              +'</em></div><div><span>比商业银行住房贷款基准利率低</span><em class="noloanLv" style="color: #41AE32;">'
+		        				          +data.dkxx.syyhdkjzll+"%"
+		        				          +'</em></div></div></div>'
+				  }   
+				  	oSliderDk.style.display='block'; 
+				  },  
+				  error: function(data) { 
+				  	oSliderDk.style.display='none';
+				  	oSliderJc.style.display='none';
+				    requestFailure();
+				    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+				    }
+				}); 
+			}	
+			//龙卡办理进度 
+			/*function lkbljd(){ 
+				  var zkztArry=new Array(); 
+				  var slrqArry=new Array(); 
+				  mui.ajax(localStorage.getItem("interfaceUrl")+'lkbljdcx.app', {               
+				  timeout: 15000,                  
+				  dataType: 'json',   
+				  type: 'post',      
+				  success: function(data) { 
+				  	for(var i=0; i<data.grdkbljdcx.detail.length; i++){       
+				  		zkztArry.push(data.lkbljdcx.detail[i].zkzt);
+				  		slrqArry.push(data.lkbljdcx.detail[i].slrq);
+				  	}
+				    oLinksImg_1.addEventListener('tap',function(){ 
+						mui.openWindow({     
+						id: 'myHandleProgress.html',
+						url: '../mine/dragonCardProcess.html',
+						show: {aniShow: 'slide-in-right',duration:'300'},
+						extras:{
+					      zkzt: zkztArry,
+					      slrq: slrqArry
+					    },
+						waiting:{ autoShow: false}
+					    });
+					});  
+				  },  
+				  error: function(data) {   
+				  }
+				}); 
+			}*/
+			//贷款进度
+			/*function dkjd(dkzh){
+				  var bljgArry=new Array();
+				  var zzrqArry=new Array();
+				  mui.ajax(localStorage.getItem("interfaceUrl")+'grdkbljdcx.app', {             
+				  timeout: 20000,                  
+				  dataType: 'json',  
+				  type: 'post',       
+				  data:{
+				  	dkzh: dkzh    
+				  },  
+				  success: function(data) {  
+				  	for(var i=0;i<data.grdkbljdcx.jdmx.length;i++){         
+				  		bljgArry.push(data.grdkbljdcx.jdmx[i].bljg);
+				  		zzrqArry.push(data.grdkbljdcx.jdmx[i].zzrq);
+				  	}
+				    oLinksImg_2.addEventListener('tap',function(){ 
+						mui.openWindow({  
+						id: 'myHandleProgress',     
+						url: '../mine/myHandleProgress.html',   
+						show: {aniShow: 'slide-in-right',      
+						       duration: '300' 
+						},
+						extras:{
+					      bljg: bljgArry,
+					      zzrq: zzrqArry
+					    },
+						waiting:{ autoShow: true}
+			    });
+			    }); 
+				  },  
+				  error: function(data) {   
+				  }
+				});
+			}*/
+			//我的消息
+			document.getElementById("myMessage").addEventListener('tap', function(){
+				mui.openWindow({  
+						id: 'myMessage',     
+						url: '../mine/myMessage.html',   
+						show: {aniShow: 'slide-in-right',      
+						       duration: '300' 
+					    },
+						waiting:{ autoShow: true}
+			    });
+			})
+		}
+		if(window.plus){
+			plusReady(); 
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+		var as='pop-in'; 
+		var _openw=null;
+		function clicked(id,a,s){
+			if(_openw){return;}  
+            a||(a=as); 
+			if(_openw){
+				_openw.showded=true;
+				_openw.show(a,null,function(){
+					_openw=null;//避免快速点击打开多个页面
+				});
+			}else{
+				_openw=plus.webview.create(id,id,{scrollIndicator:'none',scalable:false,popGesture:'hide'},{preate:true});
+				_openw.addEventListener('loaded',function(){//叶面加载完成后才显示
+					s||_openw.show(a,null,function(){
+						_openw=null;//避免快速点击打开多个页面
+					});
+					s&&(_openw=null);//避免s模式下变量无法重置
+				},false); 
+				_openw.addEventListener('hide',function(){
+					_openw&&(_openw.showded=true);    
+					_openw=null; 
+				},false);
+			}  
+		}
+		 
+		//无网刷新
+		function requestFailure(){  
+			  	document.getElementById("contentWrap").innerHTML+='<div class="nowifii"><p class="firstpp">网络请求失败</p><p class="secondpp">请检查您的网络</p></div><div class="btn-refresh"><button id="btnRefrash" type="button" class="mui-btn mui-btn-blue btnZdyy" onclick = "refrash();">刷新</button></div>';
+		} 
+		function refrash(){
+			 plus.webview.currentWebview().reload();
+		}
+		//zjlx类型转换
+		function zjlx(zjlx){
+		var zjlx=zjlx;
+    	if(zjlx=="G"){
+    		zjlx="住房公积金";
+    	}else if(zjlx=="B"){
+    		zjlx="补充公积金";
+    	}else{
+    		zjlx="按月住房补贴";
+    	}
+    	return zjlx;
+		}
+</script>
+
+</html>

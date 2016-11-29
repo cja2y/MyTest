@@ -1,0 +1,527 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+   <title>登录</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<meta name="x5-orientation" content="portrait">
+	<meta name="screen-orientation" content="portrait">
+	<meta name="viewport" content="initial-scale=1,width=device-width, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta content="yes" name="apple-touch-fullscreen">
+  <meta name="App-Config" content="fullscreen=yes,useHistoryState=yes,transition=yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no">
+	<link rel="stylesheet" type="text/css" href="./css/demo.css">
+	<link rel="stylesheet" type="text/css" href="./css/microdone-h5.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/swiper.3.1.2.min.css">
+	<link href="./css/mui.min.css" rel="stylesheet"/>
+	<link href="./css/tayh_login.css" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" href="css/iphone4.css"/>
+	</style>
+	<script type="text/javascript" src="./js/mui.min.js"></script>
+	<script type="text/javascript" src="./js/jquery-1.11.1.min.js"></script>
+ <!-- <script type="text/javascript" src="./js/zepto.min.js"></script>-->
+	<script type="text/javascript" src="./js/demo.js"></script>
+	<script type="text/javascript" src="./js/microdone-h5.min.js"></script>
+  <script type="text/javascript" src="./js/swiper.3.1.2.min.js"></script>
+  <script type="text/javascript" src="./js/canvas2image.js"></script>
+  <script type="text/javascript" src="./js/md5.js"></script>
+  <script type="text/javascript" src="./js/sockjs-0.3.min.js"></script>
+  <script type="text/javascript" src="./js/stomp.js"></script>
+  <script type="text/javascript">
+  	var index = 0;
+        var socket;
+        var host = "ws://114.55.232.244:4821/ws";
+
+        try {
+            if ('WebSocket' in window) {
+                socket = new WebSocket(host);
+            } else if ('MozWebSocket' in window) {
+                socket = new MozWebSocket(host);
+            } else {
+                alert('error', 'sorry,your browser does not support websocket');
+            }
+        } catch (e) {
+            alert("dasfasdf");
+        }
+       // 打开Socket 
+     socket.onopen = function(event) { 
+
+  // 发送一个初始化消息
+ // socket.send('I am the client and I\'m listening!'); 
+
+  // 监听消息
+  
+   socket.onmessage = function(event) { 
+    console.log('Client received a message',event); 
+	console.log(index++);
+	if(event.data!=undefined){
+	//sleep(1000);
+	
+	var json = event.data;
+	
+	json["img"] = "dasfasdfasdfasdf";
+									send(json);
+
+	}
+  }; 
+
+  // 监听Socket的关闭
+  socket.onclose = function(event) { 
+    console.log('Client notified socket has closed',event); 
+  }; 
+
+  // 关闭Socket.... 
+  //socket.close() 
+};
+function sleep(n) {
+    var start = new Date().getTime();
+    while(true)  {
+		if(new Date().getTime()-start > n) break;
+    }
+}
+function send(value){
+if(value.length<=0){
+	alert("请输入内容");
+	return;
+}
+socket.send(value); 
+}
+
+function closeSocket(){
+socket.close();
+}
+  	
+  	
+  </script>
+  
+  <script type="text/javascript">
+		function convertImageToCanvas(image) {
+	var canvas = document.createElement("canvas");
+	canvas.width = image.width;
+	canvas.height = image.height;
+	canvas.getContext("2d").drawImage(image, 0, 0);
+
+	return canvas;
+	
+}
+		
+	</script>
+	
+	
+	<script type="text/javascript">
+		function convertCanvasToImageStr(canvas) {
+	      var image = new Image();
+	      image.src = canvas.toDataURL("image/png");
+	      return canvas.toDataURL("image/png");
+}
+		
+	</script>
+	<script type = "text/javascript">
+		function gjjLogin(){
+			mui.ajax('http://b.jianbing.com/gjj/gatewayRobot.php?d=', {    
+		  timeout: 15000,                       
+		  dataType: 'json',    
+		  type: 'get', 
+		  data:{
+		  	   f:'login',
+           passport:'winform2',
+           cv:'winform',
+           yys_cid :-1,
+		  },
+		  success: function(data) {
+		  	   console.log(JSON.stringify(data));
+		  },
+		  error: function(data) {
+		
+		  	mui.toast("网络连接异常!");
+		  }  
+	});
+	
+		}
+	</script>
+ <!-- <script src="js/tayh_app.js" type="text/javascript" charset="utf-8"></script>-->
+	<script type="text/javascript">
+		var kb = new keyBoard({
+			"chaosMode" : 0,// 混乱模式,0:无混乱;1:打开时乱一次;2:每输入一个字符乱一次,默认值0
+			"pressStatus" : 1,// 按键状态,0:按下、抬起按键无变化;1:按下、抬起按键的颜色变化,默认值0
+			"kbType" : 1// 键盘类型,0:全键盘;1:纯数字键盘,默认值0   
+		});
+		var passGuard1 = new passGuard({
+			"mappurl" : localStorage.getItem("interfaceUrl")+"sendMapping.app",//申请映射表的地址
+			"maxLength" : 6,// 最大输入长度
+			"regExp1" : "[\\S\\s]",// 输入过程限制的正则
+			"regExp2" : "[\\S\\s]{6,12}",
+			"displayMode" : 0,// 显示形式,0:星号;1:明文,默认值0
+			"callBack":cb5,//正则二匹配成功时回调此方法
+		  "errorCallBack":cb6,//正则二匹配失败时回调此方法
+			"rsaPublicKey" : "3081890281810092d9d8d04fb5f8ef9b8374f21690fd46fdbf49b40eeccdf416b4e2ac2044b0cfe3bd67eb4416b26fd18c9d3833770a526fd1ab66a83ed969af74238d6c900403fc498154ec74eaf420e7338675cad7f19332b4a56be4ff946b662a3c2d217efbe4dc646fb742b8c62bfe8e25fd5dc59e7540695fa8b9cd5bfd9f92dfad009d230203010001"// rsa公钥
+		});
+
+		function cb5(){
+			console.log("密码符合要求。");
+		}
+
+		function cb6(){
+			console.log("密码不符合要求。");
+		}
+		
+	</script>
+  </head>
+  <body>
+	  <header class="mui-bar mui-bar-nav">
+		   <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		   <h1 class="mui-title">登录</h1>
+		   <div class="barZhuce" id="btZhuce">注册</div>
+	  </header>
+	  <div class="mui-content" style="margin-top: 10px;">
+        <div id="sfzh" class="zhuce"><span>身 份 证 号:</span></div><div><input id="input_sfzh" type="text" class="text" maxlength="18"/></div>
+	      <div id="passwordDiv" class="zhuce"><span>查 询 密 码:</span></div><div><input id="kb1" type="text" class="text" /></div>
+	      <script>passGuard1.generate("kb1",kb,1);</script>
+	      <script>
+	      
+	     
+	      console.log("select!");
+	      </script>
+	      <script>$("#kb_n_0").trigger("click");</script>
+	      
+	      <div id="yzm" class="zhuce" style="width: 40%;"><span>验 证 码:</span></div><div><input id="input_yzm" type="text" class="text" maxlength="6" style="width: 35%;"/></div><img id="imgYzmMine" style="width: 25%; height: 50px; background-color: #FFFFFF; float: right;" />
+	      <div class="passError" style="visibility: hidden;"><img src="img/zhuce/u206.png"><p id="errorMessege">密码错误,请重新输入</p></div>
+	      <button id="cjbtn" type="button" class="mui-btn mui-btn-blue" style="font-size: 18px; margin-top: 3px;">登录</button>
+	      <script>
+	      	
+	      </script>
+	      <div class="forgetPass"><a id="view/passwordReset.html"  onclick="clicked(this.id);">忘记密码</a></div>
+    </div>
+</body>
+<script type="text/javascript">
+				kb.generate();
+				var Le = $(".default").length,
+					reciveId = "",
+					pm,cs = 0,ago,winHeight,
+					add = 1;
+				var arrPlace = new Array();
+				for(var i=1;i<=Le;i++){
+					arrPlace.push($("#kb"+i).attr("placeholder"))
+				}
+</script>
+<script>
+function createUpload() {
+	var task = plus.uploader.createUpload( "http://api.dama2.com:7766/app/d2File", {}, function ( t, status ) {
+		// 上传完成
+		if ( status == 200 ) {
+			alert( "Upload success: " + t.url );
+		} else {
+			alert( "Upload failed: " + status );
+		}
+	});
+	task.addFile( "_www/a.doc", {key:"testdoc"} );
+	task.addData( "string_key", "string_value" );
+	//task.addEventListener( "statechanged", onStateChanged, false );
+	task.start();
+}</script>
+<script type="text/javascript">
+	function getSign(imgData){
+		return hex_md5('e9cd57222f08a8012b03f9163a7177cb'+'jianghejun2002'+imgData);
+	}
+	
+</script>
+
+
+<script type="text/javascript">
+	 mui.init();  
+	 
+	function plusReady(){
+    var imgData="data:image/jpeg;base64,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oAP+GfU/6GVv/AL/AOzoAP8Ahn1P+hlb/wAAv/s6AD/hn1P+hlb/AMAv/s6AD/hn1f8AoZT/AOAX/wBnQB2HgHwCvgcXw/tH7b9t8v8A5Y7Nm3d7nrupjOyXp070hDqACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAqX9qL6wuLQME8+J492MldwxnH40AeSj9n5P+hmP/gH/APZ0AL/wz8v/AEMp/wDAP/7OgA/4Z9X/AKGU/wDgH/8AZ0Ad14E8G/8ACFaPPp4vftglnM2/ytmMqoxjJ/u/rTGdR39/SkIdQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAH//Z";
+		//send('{type:"login",data:{"freeNum":5,"id":"1","totalNum":5,"type":"yzm"}}');
+	
+    console.log('cja2y md5'+hex_md5("51gjj"));
+		
+		$.ajax('http://kaifa.jianbing.com/gjj/gatewayRobot.php?d=', {    
+		  timeout: 15000,                       
+		  dataType: 'json',    
+		  type: 'get', 
+		  data:{		  	
+		  	   f:'login',
+           passport:'winform2',
+           cv:'winform',
+           yys_cid:'-1',      
+		  },
+		  success: function(data) {
+		  	   console.log(JSON.stringify(data));
+		  },
+		  error: function(data) {
+		  	mui.toast("网络连接异常!");
+		  }  
+	});
+	
+	
+//		$.ajax({
+//			type:"get",
+//			dataType: 'json', 
+//			url:"http://b.jianbing.com/gjj/gatewayRobot.php?d=",
+//			data:{
+//		  	   f:'getJobs',
+//       num:'1',
+//       tag:'1',
+//     
+//		  },
+//		  success: function(data) {
+//		  	   console.log(JSON.stringify(data));
+//		  },
+//		  error: function(data) {
+//		  	mui.toast("网络连接异常!");
+//	  }  
+//		});
+	
+	   
+	   
+		var oImgYzm=document.getElementById("imgYzmMine");
+		var token_sfzh="token_sfzh";
+		var oButton=document.querySelector('button');
+		var oPassError=document.querySelector('.passError');
+		
+		
+		var reg =/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
+		oImgYzm.src=localStorage.getItem("interfaceUrl")+'verifyCode.app';//https://www.zhihu.com/captcha.gif
+		//oImgYzm.src='https://www.zhihu.com/captcha.gif';
+		oImgYzm.onload=function(){
+	
+			var myImage = convertCanvasToImageStr(convertImageToCanvas(oImgYzm));
+			
+			  wc = plus.webview.currentWebview();
+			 // console.log("cja2y img"+getBaseData(myImage.replace('data:image/png;base64,','')));
+			  console.log("cja2y sign"+getSign(convertImageToCanvas(oImgYzm)));
+	     console.log("cja2y base"+"***"+myImage);
+		   
+		   $.ajax({
+        type: "POST",
+        dataType:'json',
+        url: 'http://114.55.232.244:8088/dama/dama.htm',
+        data: {
+            fileDataBase64:myImage,
+            type:'106',
+            sign:hex_md5(myImage + "51gjj")
+           // sign:hex_md5("51gjj")
+        },
+        success: function (result) {
+            //callback(result)
+            //console.log(JSON.stringify(result));
+          //console.log($.parseJSON(result).code);
+          result = $.parseJSON(result);
+          if(result.code==0){
+                dologin('120101198101162064','071012',result.data);
+            }
+        },
+        error: function(data) {
+            //alert("error:"+data.responseText);
+             console.log(JSON.stringify(data));
+         }
+    }); 	
+	    
+		}
+//		oImgYzm.addEventListener('load',function(){
+//			
+//		
+//		});
+		
+		//var bitmap = plus.nativeObj.Bitmap.getBitmapById();
+	
+		
+		localStorage.setItem('onlineClicked','false');
+		oImgYzm.addEventListener('tap',function(){
+			oImgYzm.src = localStorage.getItem("interfaceUrl")+'verifyCode.app'+"?"+new Date().getTime();
+			console.log("cja2y yzm"+oImgYzm);
+		});
+		
+		
+	
+		
+		
+//		if(!localStorage.getItem(token_sfzh)==""){
+//		document.getElementById("input_sfzh").value = staySixAllStar(localStorage.getItem(token_sfzh));
+//	}
+//		oButton.addEventListener('tap',function(){
+//			var inputSfzh = document.getElementById("input_sfzh");
+//			var pass= document.getElementById("kb1").value;
+//			var yzm= document.getElementById("input_yzm").value;
+//			if(inputSfzh.value.length == 18 && /^\d{12}\*{6}$/.test(inputSfzh.value)){                //取本地身份证号
+//				   dologin(localStorage.getItem('token_sfzh'),pass,yzm);
+//			}else{                                                                                    //取输入的身份证号
+//				   dologin(inputSfzh.value,pass,yzm);
+//			}
+//	  });	
+//	   document.getElementById("btZhuce").addEventListener('tap',function(){ 
+//			mui.openWindow({
+//						id: 'zhuce',
+//						url: 'view/zhuce.html',
+//						show: {aniShow: 'zoom-fade-out',duration:'300'},
+//				    });	
+//	  });
+	
+	  
+	  $("#kb1").trigger("select");
+	  //$("#cjbtn").trigger("tap");
+	  
+	  //oButton.trigger("tap");
+	 
+	  //$("#kb_p_0").trigger("tap");
+	 
+	 
+	 
+	//  $("#kb_p_0").trigger("click");
+	  /*ajax*/
+  function dologin(user, pass,yzm) {  
+  	
+  			 console.log("cja2y log str :"+getPasswordString("071012"));
+
+
+	
+				
+			  var wd = plus.nativeUI.showWaiting();           //wait	
+			  oPassError.style.visibility="hidden";
+			  //console.log(formSubmit()+"cja2y");
+		    mui.ajax(localStorage.getItem("interfaceUrl")+'login.app', {   
+			  timeout: 15000,
+			  dataType: 'json', 
+			  type: 'post',
+			  data: {
+			    user: user,
+			    pass: myFormSubmit(pass),                          //加密后返回的密码
+			    yzm:  yzm  
+			  }, 
+			  success: function(data) {	
+			  	console.log("cja2y login data  "+JSON.stringify(data));
+			  	    wd.close();
+				  	  if(data.jg == '0'){
+					  		  localStorage.setItem(token_sfzh, user);
+					  		  localStorage.setItem('zgxm', data.user.yhm);	
+					  		  localStorage.setItem('grdm', data.user.grdm);
+					  		  localStorage.setItem('zgxb', data.user.xb);
+					  		  localStorage.setItem('zjlx', data.user.zjlx);
+					  		  localStorage.setItem('lkkh', data.user.lkkh);
+					  		  localStorage.setItem('scdlsj', data.user.dlsj);
+					  		  localStorage.setItem('dlqd', data.user.dlqd);
+		              //mui.fire(plus.webview.getLaunchWebview(), 'eventTap');
+		              //触发人工服务重新载入
+//		              mui.fire(plus.webview.getWebviewById('view/menu.html'), 'rgService');
+//		              mui.back(); 
+           
+mui.ajax(localStorage.getItem("interfaceUrl")+'getPersonalAccount.app', {    
+		  timeout: 15000,                       
+		  dataType: 'json',    
+		  type: 'get', 
+		  success: function(data) {
+		  	   console.log(JSON.stringify(data));
+		  },
+		  error: function(data) {
+		
+		  	mui.toast("网络连接异常!");
+		  }  
+	});
+	
+	mui.ajax(localStorage.getItem("interfaceUrl")+'grmxz.app', {   
+						  timeout: 5000, 
+						  dataType: 'json', 
+						  type: 'post',
+						  data: {
+						    zjlx: "G", 
+						    qsrq: 19890101,
+						    zzrq: 20161001
+						  }, 
+						  success: function(data) {	
+						  	console.log(JSON.stringify(data));
+						  	mui.ajax(localStorage.getItem("interfaceUrl")+'logout.app', {   
+															  timeout: 15000,
+															  dataType: 'json', 
+															  type: 'post', 
+															  success: function(data) {	
+															  	console.log(JSON.stringify(data));
+															  	 if(data.jg == '0'){
+				        	                        mui.fire(plus.webview.getLaunchWebview(), 'logout');
+					  		                          mui.toast('退出成功！');
+					  		                          mui.back();
+				                                              } else if(data.jg == '-98'){
+				        	                                     loginPlease();
+				                                              }else{
+				                                           	  plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+				                                              }     
+															  	       //  plus.nativeUI.toast("退出成功！",{'duration':'long'});
+									                                //      localStorage.setItem('isLogin','');  
+									                             //mui.fire(plus.webview.getLaunchWebview(), 'logout');      
+									                          //清除登录状态
+									                                      //mui.clear();
+									                                    // mui.reload();
+									                                   // var wobj = plus.webview.getWebviewById("HBuilder");//注意 HBuilder 是   1.html 的 ID  你如果1.html 有ID   要替换掉HBuilder，  
+                                                      // wobj.reload(true);  
+															  },
+															  error: function(data) { plus.nativeUI.toast("网络连接异常!",{'duration':'long'}); }
+														    });
+						  	
+						  },
+						  error: function(data) {						 
+						    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});   
+						    }
+						});
+
+				  	}else{
+				  		    oImgYzm.src=localStorage.getItem("interfaceUrl")+'verifyCode.app'+"?"+new Date().getTime();
+				  		    plus.nativeUI.toast(data.cwms1,{'duration':'long'}); 
+				  	}	
+			  },
+			  error: function(data) {
+				    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+				    wd.close();
+			    }
+			});
+			
+		};
+	}
+	
+	
+	if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+		/*点击*/
+	  var as='zoom-fade-out'; 
+		var _openw=null;
+		function clicked(id,a,s){
+			if(_openw){return;}
+            a||(a=as);
+			if(_openw){
+				_openw.showded=true;
+				_openw.show(a,null,function(){
+					_openw=null;//避免快速点击打开多个页面
+				});
+			}else{
+				_openw=plus.webview.create(id,id,{scrollIndicator:'none',scalable:false,popGesture:'hide'},{preate:true});
+
+				_openw.addEventListener('loaded',function(){//叶面加载完成后才显示
+					s||_openw.show(a,null,function(){
+						_openw=null;//避免快速点击打开多个页面
+					});
+					s&&(_openw=null);//避免s模式下变量无法重置
+				},false);
+				_openw.addEventListener('hide',function(){
+					_openw&&(_openw.showded=true);
+					_openw=null;
+				},false);
+			}
+		}
+		//保留前12位，其余全为***
+		function staySixAllStar(num){  
+			var n=num.substring(0,num.length-6) + num.substring(0,num.length-12).replace(/\w/g, '*');
+			return n; 
+		}
+		
+		
+		
+</script>
+</html>

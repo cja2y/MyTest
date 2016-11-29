@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>changeQueryPass</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iphone4.css"/>
+    <style type="text/css">
+    	html{
+    		background-color: #DDDDDD;
+    	}
+    	.passError{
+    		padding-left: 2%;
+    	}
+    	.passError img{
+    		height: 15px;
+    		margin-right: 3px;
+    		float: left;
+    		margin-top: 13px;
+    	}
+    	p{
+    		display: inline-block;
+    		color: #FF0000;
+    		margin: 0px;
+    		margin-top: 10px;
+    	}
+    	.identNum:active{
+	    	background-color: #555555;
+	    }
+	    #imgYzm{
+    		width: 25%;
+    		height: 45px;
+    		float: left;
+    		background-color: #EEEEEE;
+    		margin-top: 10px;
+    		border-bottom: 1px solid #DDDDDD;
+    		border-left: 1px solid #DDDDDD;
+    	}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">修改查询密码</h1>
+	</header>
+	<div class="mui-content" style="background-color: #DDDDDD;">
+		<div class="doPassword" style="margin-top: 15px;"><span>原查询密码:</span><input id="ServicePass" type="password" placeholder="请输入原查询密码" maxlength="6" style="padding-left: 35px;" onkeyup="value=value.replace(/[^\d]/g,'')"/></div>
+		<div class="doPassword"><span>新查询密码:</span><input id="dxyzm" type="password" placeholder="请输入新查询密码" maxlength="6" style="padding-left: 35px;" onkeyup="value=value.replace(/[^\d]/g,'') "/></div> 
+		<div class="doPassword"><span>确认新密码:</span><input id="againPass" type="password" placeholder="请再次输入新查询密码" maxlength="6" style="padding-left: 35px;" onkeyup="value=value.replace(/[^\d]/g,'') "/></div> 
+		<div class="doPassword left" style="margin-top: 10px; width: 75%;"><span>验证码:</span><input id="yzm" style="width: 70%;border: none;font-size: 16px;text-indent: 5px;" type="text" maxlength="6" style="padding-left: 35px;" onkeyup="value=value.replace(/[^\d-]/g,'')"/></div><img class="left" id="imgYzm"/>
+		<div id="error" class="passError left" style="visibility: hidden; margin-bottom: 5px;"><img src="../img/zhuce/u206.png"><p id="errorContent"></p></div>
+		<button id="buttCancle" type="button" class="mui-btn mui-btn-blue" style="margin-top: 80px;">确定修改</button>
+	</div>
+</body>
+<script type="text/javascript">
+  mui.init();
+	function plusReady(){
+		var oButtCancle=document.getElementById('buttCancle');
+		var oServicePass=document.getElementById('ServicePass');
+		var oError=document.getElementById("error");
+		var oErrorContent=document.getElementById("errorContent");
+		var oXmm=document.getElementById("dxyzm");
+		var oAgainPass=document.getElementById("againPass");
+		var oYzm=document.getElementById("yzm");
+		var oImgYzm=document.getElementById("imgYzm");
+		oImgYzm.src=localStorage.getItem("interfaceUrl")+'verifyCode.app';
+		oImgYzm.addEventListener('tap',function(){
+			oImgYzm.src=localStorage.getItem("interfaceUrl")+'verifyCode.app'+"?"+new Date().getTime();
+		}); 
+		oButtCancle.addEventListener('tap',function(){
+			if (oServicePass.value == '' || oXmm.value == '' || oAgainPass.value == '' || oYzm.value =='') {
+				oError.style.visibility='visible';
+				oErrorContent.innerHTML = '请输入完整的信息！';
+			}else{
+				if(oXmm.value == oServicePass.value){
+					oError.style.visibility='visible';
+					oErrorContent.innerHTML = '新密码不能与旧密码相同！';
+				}else{
+						if(/([0-9])\1{5}/.test(oXmm.value) || localStorage.getItem('token_sfzh').substring(8,14) == oXmm.value){
+							    		oError.style.visibility='visible';
+						                oErrorContent.innerHTML="密码不能为生日或6位相同数字！"
+						}else{
+							    if (oXmm.value !== oAgainPass.value) {
+							    	oError.style.visibility='visible';
+							    	oErrorContent.innerHTML = "两次输入的密码不一致！";
+							    }else{
+							    	    oError.style.visibility='hidden';
+								    	mui.ajax(localStorage.getItem("interfaceUrl")+'modifypwd.app', {     
+											  timeout: 30000,
+											  dataType: 'json',  
+											  type: 'post',
+											  data: {
+											  	ycxmm: oServicePass.value,
+											  	xcxmm: oXmm.value,
+											  	yzm: oYzm.value
+											  },
+											  success: function(data) {
+											  	if(data.jg == '0'){
+											  	  plus.nativeUI.toast("变更成功!",{'duration':'long'});
+												  mui.back();
+										  	    }else if(data.jg == '-98'){
+										  	      loginPlease();
+										  	    }else{
+										  	      oImgYzm.src=localStorage.getItem("interfaceUrl")+'verifyCode.app'+"?"+new Date().getTime();
+										  	      plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+										  	    }
+											},
+											  error: function(data) {
+											  	  plus.nativeUI.toast("网络连接异常!",{'duration':'long'});  
+											   } 
+									    });
+							        }
+							    }
+				}
+			}
+		});
+/*			if (!oServicePass.value=='') {
+				oError.style.visibility='hidden';
+				if(!) {  
+					oError.style.visibility='hidden';
+					if(!oAgainPass.value==''){
+						oError.style.visibility='hidden';
+							if (oXmm.value==oAgainPass.value) {
+							oError.style.visibility='hidden';
+						    if(!oYzm.value==''){
+						    	if(/([0-9])\1{5}/.test(oXmm.value) || localStorage.getItem('token_sfzh').substring(8,14) == oXmm.value){
+						    		oError.style.visibility='visible';
+					                oErrorContent.innerHTML="密码不能为生日或6位相同数字！"
+						    	}else{
+								    	oError.style.visibility='hidden';
+								    	mui.ajax(localStorage.getItem("interfaceUrl")+'modifypwd.app', {     
+											  timeout: 5000,
+											  dataType: 'json',  
+											  type: 'post',
+											  data: {
+											  	ycxmm: oServicePass.value,
+											  	xcxmm: oXmm.value,
+											  	yzm: oYzm.value
+											  },
+											  success: function(data) {
+											  	if(data.jg == '0'){
+											  	  plus.nativeUI.toast("变更成功!",{'duration':'long'});
+												  mui.back();
+										  	    }else if(data.jg == '-98'){
+										  	      loginPlease();
+										  	    }else{
+										  	      plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+										  	    }
+											},
+											  error: function(data) {
+											  	  plus.nativeUI.toast("网络连接异常!",{'duration':'long'});  
+											   } 
+									    });
+						    	}
+						
+						    }else{
+						    	oError.style.visibility='visible';
+					            oErrorContent.innerHTML="验证码不能为空"
+						    }
+						} else{
+							oError.style.visibility='visible';
+						    oErrorContent.innerHTML="两次输入的密码不一致";
+						}
+					}else{
+						oError.style.visibility='visible';
+					    oErrorContent.innerHTML="重复密码不能为空";
+					}
+				 }else{
+					oError.style.visibility='visible';
+					oErrorContent.innerHTML="新密码不能为空"
+			     }
+			}else{
+				oError.style.visibility='visible';
+				oErrorContent.innerHTML="旧密码不能为空"
+			}
+		*/
+	}
+	if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+</script>
+</html>

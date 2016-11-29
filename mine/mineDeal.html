@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>gjjAccountMx</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iphone4.css"/>
+    <style type="text/css">
+    	.mui-content{background-color: #DDDDDD;margin-bottom: 60px;}
+    	html{background-color: #DDDDDD}
+    	
+    </style>
+</head>
+<body style="background-color: #EFEFF4;">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">我的办理</h1>
+	</header>
+    <div class="mui-content">
+		<div class="timeBlockWarp clearfix" style="position: fixed; width: 100%;">
+			<div id="mdtimeBlockOne" class="timeLastThree left" style="border-bottom: 3px solid #007AFF;"><span>最近3个月</span></div>
+	        <div id="mdtimeBlockTwo" class="timeLastSix left" style="border-bottom: 1px solid #CCCCCC;"><span>最近6个月</span></div>
+	        <div id="mdtimeBlockThree" class="chooseTime left" style="border-bottom: 1px solid #CCCCCC;"><span>选择时间段</span></div>
+		</div>
+		<div id="myDealWrap" style="margin-top: 50px;"></div>
+	</div>
+  <script type="text/javascript" charset="UTF-8">
+      	mui.init();
+      	function plusReady(){
+      		var oTimeBlockOne=document.getElementById("mdtimeBlockOne");
+      		var oTimeBlockTwo=document.getElementById("mdtimeBlockTwo");
+      		var oTimeBlockThree=document.getElementById("mdtimeBlockThree");
+      		var oMyDealWrap=document.getElementById("myDealWrap");
+      		wdywbl("0");
+      		oTimeBlockTwo.addEventListener('tap',function(){
+      			oTimeBlockTwo.style.borderBottom='3px solid #007AFF';
+      			oTimeBlockOne.style.borderBottom='1px solid #CCCCCC';
+                oTimeBlockThree.style.borderBottom='1px solid #CCCCCC';
+                wdywbl("1");
+      		});
+      		
+      		oTimeBlockOne.addEventListener('tap',function(){
+      			oTimeBlockOne.style.borderBottom='3px solid #007AFF';
+      			oTimeBlockTwo.style.borderBottom='1px solid #CCCCCC';
+      			oTimeBlockThree.style.borderBottom='1px solid #CCCCCC';
+      			wdywbl("0");
+      		});
+      		
+      		oTimeBlockThree.addEventListener('tap',function(){
+      			var webviewId=plus.webview.currentWebview().id;
+      			mui.openWindow({
+						id:'chooseTime',
+						url:'../view/chooseTime.html',
+						extras:{
+							webviewId: webviewId
+                        },
+						show:{aniShow: 'slide-in-right',duration:'300'},
+						waiting:{
+							autoShow:false
+						}
+					});
+      		});
+      		//自定义触发选择时间段 
+	      	document.addEventListener('chooseTime', function(event) {
+	      	    	var w = plus.nativeUI.showWaiting("正在加载...");   //防止快速点击情况的发生
+	      		    oMyDealWrap.innerHTML='';
+	      		    var ksrq=event.detail.ksrq;
+	      		    var jsrq=event.detail.jsrq;
+	      		    oTimeBlockThree.style.borderBottom='3px solid #007AFF';
+			        oTimeBlockOne.style.borderBottom='1px solid #CCCCCC';
+	      			oTimeBlockTwo.style.borderBottom='1px solid #CCCCCC';
+	      			mui.ajax(localStorage.getItem("interfaceUrl")+'wdbl.app', {   
+						  timeout: 15000,
+						  dataType: 'json', 
+						  type: 'post',
+						  data: {
+						    qsrq: ksrq,
+						    zzrq: jsrq
+						  }, 
+						  success: function(data) {	
+						  	if(data.jg == '0'){
+						  		w.close();  
+						  	    insertHtml(data);
+						  	}else if(data.jg == '-98'){
+						  		loginPlease();
+						  	}else{
+						  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+						  	} 
+						  },
+						  error: function(data) {
+							  	w.close();
+							    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});  
+						   } 
+						});
+	            });
+      		//我的业务办理
+      		function wdywbl(zjyf){
+      			oMyDealWrap.innerHTML='';
+      			var w = plus.nativeUI.showWaiting("正在加载...");   //防止快速点击情况的发生
+      			mui.ajax(localStorage.getItem("interfaceUrl")+'wdbl.app', {    
+					  timeout: 15000,
+					  dataType: 'json', 
+					  type: 'post',
+					  data: {
+					    zjyf: zjyf
+					  }, 
+					  success: function(data) {
+					  	w.close();
+					  	if(data.jg == '0'){
+					  	    insertHtml(data);
+					  	}else if(data.jg == '-98'){
+					  		loginPlease();
+					  	}else{
+					  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+					  	}
+					  },
+					  error: function(data) {
+					  	w.close();
+					    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+					    }
+					});
+      		}
+      		//动态插入HTML
+	  		function insertHtml(data){
+  		  	      for(var i=0; i<data.wdcx.detail.length; i++){
+				  		oMyDealWrap.innerHTML+='<div class="innerHandle"><div class="serviceNumIn"><label style="padding-right: 10px;">业务编号</label><span>'
+				  		                               +data.wdcx.detail[i].sldm
+				  		                               +'</span></div><div class="beforePayback"><label>'
+				  		                               +data.ywlb[data.wdcx.detail[i].ywzl]
+				  		                               +'</label><span class="beforePayNum right">￥ '
+				  		                               +fmoney(data.wdcx.detail[i].ywje)
+				  		                               +'</span><ul><li>'
+				  		                               +formatDateA(data.wdcx.detail[i].ywrq)
+				  		                               +'</li><li>'
+				  		                               +formatTime(data.wdcx.detail[i].ywsj)
+				  		                               +'</li><li>' 
+				  		                               +data.qdlb[data.wdcx.detail[i].ywqd]
+				  		                               +'</li></ul></div><div class="beizhu"><label class="left" style="height: 45px; width: 15%; display: inline-block; line-height: 45px;">备注</label><span class="right planFailed">'
+				  		                               +data.wdcx.detail[i].bz
+				  		                               +'</span></div></div>'
+				  		                               
+												  		if(data.wdcx.detail[i].bz.length < 10){    //小于10的一般都是4个的显示
+												  			var objPlanFailed = document.getElementsByClassName("planFailed")[i];
+												  			if(data.wdcx.detail[i].bz.length == 0){
+												  			    objPlanFailed.innerHTML = '受理成功';
+								  		  	         	    }
+								  		  	      		    objPlanFailed.style.textAlign = 'right';
+								  		  	      		    objPlanFailed.style.paddingTop = '0px';
+								  		  	      		    objPlanFailed.style.lineHeight = '45px';
+								  		  	      		    objPlanFailed.style.fontSize = '14px';
+								  		  	      		    objPlanFailed.style.color= '#32CD32';    //绿色
+								  		  	      		    if(data.wdcx.detail[i].ywzt !== '0' && data.wdcx.detail[i].bz.length !== 0){objPlanFailed.style.color= '#FF0000';}   //红色
+								  		  	         }
+				  	                           }
+	  		  }
+      		
+		}
+      /*	<span class="handleState right orange">'
+				  		                               +data.wdcx.detail[i].ywzt
+				  		                               +'</span>*/
+		if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+        
+    </script>
+</html>

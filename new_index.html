@@ -1,0 +1,616 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>天津公积金模拟</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="pragma" content="no-cache">
+		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="expires" content="0">
+		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+		<meta http-equiv="description" content="This is my page">
+		<meta name="x5-orientation" content="portrait">
+		<meta name="screen-orientation" content="portrait">
+		<meta name="viewport" content="initial-scale=1,width=device-width, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta name="App-Config" content="fullscreen=yes,useHistoryState=yes,transition=yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no,email=no">
+		<link rel="stylesheet" type="text/css" href="./css/demo.css">
+		<link rel="stylesheet" type="text/css" href="./css/microdone-h5.min.css">
+		<link rel="stylesheet" type="text/css" href="./css/swiper.3.1.2.min.css">
+		<link href="./css/mui.min.css" rel="stylesheet" />
+		<link href="./css/tayh_login.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/iphone4.css" />
+		</style>
+		<script type="text/javascript" src="./js/mui.min.js"></script>
+		<script type="text/javascript" src="./js/jquery-1.11.1.min.js"></script>
+		<!-- <script type="text/javascript" src="./js/zepto.min.js"></script>-->
+		<script type="text/javascript" src="./js/demo.js"></script>
+		<script type="text/javascript" src="./js/microdone-h5.min.js"></script>
+		<script type="text/javascript" src="./js/swiper.3.1.2.min.js"></script>
+		<script type="text/javascript" src="./js/canvas2image.js"></script>
+		<script type="text/javascript" src="./js/md5.js"></script>
+		<script type="text/javascript" src="./js/sockjs-0.3.min.js"></script>
+		<script type="text/javascript" src="./js/stomp.js"></script>
+		<script type="text/javascript">
+			var index = 0; 
+			var socket;
+			var host = "ws://114.55.232.244:4821/ws";
+
+			try {
+				if('WebSocket' in window) {
+					socket = new WebSocket(host);
+				} else if('MozWebSocket' in window) {
+					socket = new MozWebSocket(host);
+				} else {
+					alert('error', 'sorry,your browser does not support websocket');
+				}
+			} catch(e) {
+				alert("dasfasdf");
+			}
+			// 打开Socket 
+			socket.onopen = function(event) {
+				// 发送一个初始化消息
+				// socket.send('I am the client and I\'m listening!'); 
+				socket.send('{type:"login",data:{"freeNum":1,"id":"1","totalNum":1,"type":"tjgjj"}}');
+				// 监听消息
+				socket.onmessage = function(event) {
+
+					//alert('Client received a message',JSON.stringify(event.data)); 
+					console.log("cja2y message" + event.data);
+					console.log(index++);
+					tjGjjPassword = '';
+					tjGjjCardId = '';
+					tjGjjJobId = '';
+					tjGjjGeneralData = {};
+                    tjGjjDetailData = [];
+                    tjGjjTotalJson = {};
+                    //var  mes = event.data.replace("\","")
+                 var taskInfo = document.getElementById("gjjAccountLoginInfo");
+                  taskInfo.innerText = event.data;
+                    var mes = eval("(" + event.data + ")"); 
+                    eventData = mes;
+                    console.log("cja2y event data job "+JSON.stringify(eventData));
+                    var mes1 = eval("(" + mes.data + ")"); 
+					if(mes1.jobs){
+						
+						var myInfo = mes1.jobs[0];
+						console.log("cja2y info1"+myInfo);
+						var myInfo1 = myInfo["json"];
+						var myInfo2 = eval("(" + myInfo1 + ")");
+						console.log("cja2y info2"+myInfo1);
+						tjGjjCardId = myInfo2.ID;//'120101198101162064';
+					    tjGjjPassword = myInfo2["password"];
+					    tjGjjJobId = mes1.jobs[0].sid;
+					    //console.log("cja2y info"+tjGjjCardId+tjGjjPassword+tjGjjJobId);
+					    imgReload();
+					}
+					//send(event.data);
+					//GjjTask('');
+					
+
+				};
+
+				// 监听Socket的关闭
+				socket.onclose = function(event) {
+					console.log('Client notified socket has closed', event);
+				};
+
+				// 关闭Socket.... 
+				//socket.close() 
+			};
+
+			function sleep(n) {
+				var start = new Date().getTime();
+				while(true) {
+					if(new Date().getTime() - start > n) break;
+				}
+			}
+
+			function send(value) {
+
+				if(value.length <= 0) {
+					alert("请输入内容");
+					return;
+				}
+				socket.send(value);
+			}
+
+			function closeSocket() {
+				socket.close();
+			}
+		</script>
+
+		<script type="text/javascript">
+			function convertImageToCanvas(image) {
+				var canvas = document.createElement("canvas");
+				canvas.width = image.width;
+				canvas.height = image.height;
+				canvas.getContext("2d").drawImage(image, 0, 0);
+				return canvas;
+			}
+		</script>
+		<script type="text/javascript">
+			function convertCanvasToImageStr(canvas) {
+				var image = new Image();
+				image.src = canvas.toDataURL("image/png");
+				return canvas.toDataURL("image/png");
+			}
+		</script>
+		<script type="text/javascript">
+			var kb = new keyBoard({
+				"chaosMode": 0, // 混乱模式,0:无混乱;1:打开时乱一次;2:每输入一个字符乱一次,默认值0
+				"pressStatus": 1, // 按键状态,0:按下、抬起按键无变化;1:按下、抬起按键的颜色变化,默认值0
+				"kbType": 1 // 键盘类型,0:全键盘;1:纯数字键盘,默认值0   
+			});
+			var passGuard1 = new passGuard({
+				"mappurl": localStorage.getItem("interfaceUrl") + "sendMapping.app", //申请映射表的地址
+				"maxLength": 6, // 最大输入长度
+				"regExp1": "[\\S\\s]", // 输入过程限制的正则
+				"regExp2": "[\\S\\s]{6,12}",
+				"displayMode": 0, // 显示形式,0:星号;1:明文,默认值0
+				"callBack": cb5, //正则二匹配成功时回调此方法
+				"errorCallBack": cb6, //正则二匹配失败时回调此方法
+				"rsaPublicKey": "3081890281810092d9d8d04fb5f8ef9b8374f21690fd46fdbf49b40eeccdf416b4e2ac2044b0cfe3bd67eb4416b26fd18c9d3833770a526fd1ab66a83ed969af74238d6c900403fc498154ec74eaf420e7338675cad7f19332b4a56be4ff946b662a3c2d217efbe4dc646fb742b8c62bfe8e25fd5dc59e7540695fa8b9cd5bfd9f92dfad009d230203010001" // rsa公钥
+			});
+
+			function cb5() {
+				console.log("密码符合要求。");
+			}
+
+			function cb6() {
+				console.log("密码不符合要求。");
+			}
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+
+			<h1 class="mui-title">天津公积金任务处理</h1>
+			<div class="barZhuce" id="btZhuce">长连接</div>
+		</header>
+		<div class="mui-content" style="margin-top: 10px;">
+			<!--<div id="sfzh" class="zhuce"><span>身 份 证 号:</span></div><div><input id="input_sfzh" type="text" class="text" maxlength="18"/></div>
+	      <div id="passwordDiv" class="zhuce"><span>查 询 密 码:</span></div><div><input id="kb1" type="text" class="text" /></div>-->
+			<!--<script>passGuard1.generate("kb1",kb,1);</script>	  -->
+			<!--<div  style="width:30%"><span>当前验证码</span></div><img id="imgYzmMine" style="width: 25%; height: 50px; background-color: #FFFFFF; float: right;" /><div>-->
+			<!--<div id="yzm" class="zhuce" style="width: 40%;"><span>验 证 码:</span></div><div><input id="input_yzm" type="text" class="text" maxlength="6" style="width: 35%;"/></div><img id="imgYzmMine" style="width: 25%; height: 50px; background-color: #FFFFFF; float: right;" />-->
+			<!-- <button id="cjbtn" type="button" class="mui-btn mui-btn-blue" style="font-size: 18px; margin-top: 3px;">登录</button>	 -->
+
+			<img id="imgYzmMine" style="width: 25%; height: 50px; background-color: #FFFFFF; margin-left: 150px;" />
+
+		</div>
+		<div><span style="float: left; margin-top: 20px;">当前登陆用户信息:</span></div>
+		<div><textarea id="gjjAccountLoginInfo" style="align-content: center;height: 200px;">{}</textarea></div>
+		<div><span>查询成功数:</span>
+			<tr id="success_number">000</tr>
+		</div>
+		<div><span>查询失败数:</span>
+			<tr id="failed_number">000</tr>
+		</div>
+		<div><span>打码错误数:</span>
+			<tr id="yzm_failed_number">000</tr>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		function getSign(imgData) {
+			return hex_md5('e9cd57222f08a8012b03f9163a7177cb' + 'jianghejun2002' + imgData);
+		}
+	</script>
+
+	<script type="text/javascript">
+		mui.init();
+		var mappArray;
+		var beginTime;
+		var endTime;
+
+        var successNumer = 0;
+        var failNumber = 0;
+        var codeFailNumer = 0;
+        var succesTask = document.getElementById("success_number");
+		var failTask = document.getElementById("failed_number");
+		var codeError = document.getElementById("yzm_failed_number");
+		function plusReady() {
+			
+			
+			
+			
+			
+			
+			document.getElementById("btZhuce").addEventListener('tap', function() {
+				mui.toast("click");
+				send('{type:"login",data:{"freeNum":1,"id":"1","totalNum":1,"type":"tjgjj"}}');
+				//send('http://114.55.232.244:4821/api/gjj?cityId=tianjing');
+			});
+
+			//		$.ajax('http://kaifa.jianbing.com/gjj/gatewayRobot.php?d=', {    
+			//		  timeout: 15000,                       
+			//		  dataType: 'json',    
+			//		  type: 'get', 
+			//		  data:{		  	
+			//		  	   f:'login',
+			//         passport:'winform2',
+			//         cv:'winform',
+			//         yys_cid:'-1',      
+			//		  },
+			//		  success: function(data) {
+			//		  	   console.log(JSON.stringify(data));
+			//		  },
+			//		  error: function(data) {
+			//		  	mui.toast("网络连接异常!");
+			//		  }  
+			//	});
+
+			var oImgYzm = document.getElementById("imgYzmMine");
+			var token_sfzh = "token_sfzh";
+			var oButton = document.querySelector('button');
+			var oPassError = document.querySelector('.passError');
+
+			var reg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
+			
+			
+			//oImgYzm.src=localStorage.getItem("interfaceUrl")+'verifyCode.app';//https://www.zhihu.com/captcha.gif
+			//oImgYzm.src='https://www.zhihu.com/captcha.gif';
+			oImgYzm.onload = function() {
+
+				var myImage = convertCanvasToImageStr(convertImageToCanvas(oImgYzm));
+				beginTime = (+new Date);
+				wc = plus.webview.currentWebview();
+				console.log("cja2y sign" + getSign(convertImageToCanvas(oImgYzm)));
+				console.log("cja2y base" + "***" + myImage);
+
+				//"http://120.26.227.26:4821/JBServices/CheckCode"
+				
+				
+				var imgJson = {};
+				imgJson.name = "3";
+				imgJson.data = myImage.replace("data:image/png;base64,","");
+				//imgJson.data = "iVBORw0KGgoAAAANSUhEUgAAAFoAAAAyCAYAAADcD8w1AAADu0lEQVR4Xu2ZS0hUURjHz2SUREZFCT2XhURigzVm2GY2uWiworCIWggSmCvBtm4ThKACEVwUkWJEw7QoCDdJhmFDpCG0jB5gDyMiCjLrTNyZM9fz+M7jnjt35tydd/7fOf/z+/7z3csYW/p3oRCvofgJ8O6d2btgrarwyf3V3NJDR38pLR0LG7SS6xCLRI3A1mjNcKCBTatprQEq6TIHWgsfvDiyoFe0HoCfkqH88+CZ9hrQBSILGnrAUtEFCvr3zhdF51z5pqFUzm3dhxLonosJNHBtapnZ81/35u/dWD8jPEy89r8mO1+ow39PdJwS1ooELcNjIonVz5VAY4cs2J57Ejp5IloDPOA06FZpBLhZYKBZnkUNIKGXE3hl0JBUywSENXZMpD01dBVsJdPZDdbKCEsGNMQ0a6ZDasPWaIEO23yU9o8M6NH5FGqvzTDZ3p5LK3M/U9emXAsttAp68OlLqq8LB+tBfjFsfPGAgxbyiR6/2wUuO7ztNVhLCq2AZgEmjYhgd1xqR8OXR3MlonTLkigL0CRkFkysEYHG8DBsfHnAZYGy9B5o1bRCfASaaAhkiEm/xjTwsgK9L9mDEj8eqXCl1lxv2YyyzUkUnxxHXRMfkddUyDfDv2DJgZ4+cjbvsfHhLS60oNJM2xRDr+ofz3202JvMgZe5Sg40aZ6Eju/7wdNA0x6KKgmkQSQTjcGTlwg872Foam4HNqMhbxoybx2ihPJGhwg85K0DArx7/2ze5sn08SLL1kDTkmtyvMjMaBI8L+3+BvBg929IoN6Fwk/H/loroHnjQQW2zW+LDmwy0tKgl9aNoNi306Jvcv4tAAujDBr7J2E3fX6+7Oyr6gv/Ifcn2xNHErToYShMgaSABC2a1R5o7dEBTTQ+C2QsQDQQLjIzGrIeqZEBjesw7KbZBb2HoSpo2ghRhVw9dmcZqys7dufuqbwuYpCspMpCZjVRenTIpgHy4FKB4/ehk2hTr3c8NoGD9jZX+Yn03OJ03vvNqkZuj1VBH2tLoHvpqaIHnn8j0VyGhM8aaIgZnoaETurWzAwoLT3YMKJUp1oUGdCsA/obIEq+KijdusiD1gVgq77iQW/fs5HK+u2rL0Z7UPGgSZpbN1Wj959+5m6xGoA/U2mCEdAf+ubQlr46owkIazEStkkPRkBjQw42vy1lBzrTvFY7iKnJ79pr+BcwBtq4szJb0IG21NCYpX0qfhsH2lIEHGgH2hIBS9u4RDvQlghY2sYl2oG2RMDSNi7RDrQlApa2+QuzXvg5juQC8gAAAABJRU5ErkJggg==";
+                console.log("cja2y new post data: "+JSON.stringify(imgJson));
+    
+				checkcodeId = {};
+		    	$.ajax({
+					type: "POST",
+					dataType: 'text',
+					contentType: 'application/json',
+					url: 'http://120.26.227.26:4821/JBServices/CheckCode',
+					data: JSON.stringify(imgJson),
+					success: function(result) {
+						result = $.parseJSON(result);
+						console.log("cja2y new code: "+JSON.stringify(result));
+						result = JSON.stringify(result);
+						
+						//result = result.replace(/\\/g,"");
+						console.log("cja2y new code: "+result);
+						
+						var resultJson = eval("("+JSON.stringify(result)+")");
+						console.log("cja2y new code: "+resultJson);
+						resultJson = eval("("+resultJson+")");
+						//console.log("cja2y new json: "+resultJson.CheckCodeResult.Msg);
+						
+						
+						if(resultJson.CheckCodeResult.Code == 0) {
+						
+						
+						//var temp = "Wyc4OScsICcxMDYnLCAnODgnLCAnMzknLCAnMzMnLCAnOTYnLCAnNzInLCAnNDUnLCAnODMnLCAnNjUnLCAnMTA0JywgJzg3JywgJzk5JywgJzg0JywgJzcxJywgJzY5JywgJzEwMScsICc3OCcsICc2MScsICc4MCcsICcxMTMnLCAnMTEyJywgJzUzJywgJzEyMicsICc1OScsICc2MicsICc3NicsICcxMDMnLCAnMTAyJywgJzkwJywgJzQwJywgJzkxJywgJzg1JywgJzgyJywgJzc3JywgJzYzJywgJzEyMScsICcxMTknLCAnNDcnLCAnMTA5JywgJzUwJywgJzcwJywgJzEyMCcsICc0MScsICc0MycsICc5MicsICc4NicsICcxMTAnLCAnMTAwJywgJzk1JywgJzY4JywgJzQ4JywgJzU2JywgJzk4JywgJzM2JywgJzU4JywgJzQ5JywgJzExNycsICc2NCcsICcxMTgnLCAnMTA4JywgJzEyNCcsICcxMDUnLCAnNTQnLCAnNzUnLCAnOTMnLCAnNDInLCAnNjcnLCAnNDQnLCAnODEnLCAnMTA3JywgJzEyNScsICc1MScsICc1NScsICczNycsICcxMjMnLCAnMTExJywgJzk0JywgJzM4JywgJzc0JywgJzUyJywgJzU3JywgJzQ2JywgJzk3JywgJzY2JywgJzc5JywgJzExNScsICc2MCcsICcxMjYnLCAnMzUnLCAnMTE2JywgJzczJywgJzExNCcsICczNCdd";
+                            var codeFinalResult = eval("("+resultJson.CheckCodeResult.Msg+")");
+                            console.log("cja2y final json: "+codeFinalResult.CodeResult);
+							//dologin(tjGjjCardId,tjGjjPassword,result.data,temp);
+							mylogin(tjGjjCardId, tjGjjPassword, codeFinalResult.CodeResult);
+							checkcodeId.captchaId = codeFinalResult.CaptchaId;
+						} else {
+							//document.getElementById("failed_number").innerText = (++failNumber);
+							tellSocketError("errorcode");
+						}
+					},
+					error: function(data) {
+						console.log(JSON.stringify(data));
+						//document.getElementById("failed_number").innerText = (++failNumber);
+						tellSocketError("errorcode");
+					}
+				});
+				
+//				$.ajax({
+//					type: "POST",
+//					dataType: 'json',
+//					url: 'http://114.55.232.244:8088/dama/dama.htm',
+//					data: {
+//						fileDataBase64: myImage,
+//						type: '106',
+//						sign: hex_md5(myImage + "51gjj")
+//					},
+//					success: function(result) {
+//						result = $.parseJSON(result);
+//						if(result.code == 0) {
+//							//var temp = "Wyc4OScsICcxMDYnLCAnODgnLCAnMzknLCAnMzMnLCAnOTYnLCAnNzInLCAnNDUnLCAnODMnLCAnNjUnLCAnMTA0JywgJzg3JywgJzk5JywgJzg0JywgJzcxJywgJzY5JywgJzEwMScsICc3OCcsICc2MScsICc4MCcsICcxMTMnLCAnMTEyJywgJzUzJywgJzEyMicsICc1OScsICc2MicsICc3NicsICcxMDMnLCAnMTAyJywgJzkwJywgJzQwJywgJzkxJywgJzg1JywgJzgyJywgJzc3JywgJzYzJywgJzEyMScsICcxMTknLCAnNDcnLCAnMTA5JywgJzUwJywgJzcwJywgJzEyMCcsICc0MScsICc0MycsICc5MicsICc4NicsICcxMTAnLCAnMTAwJywgJzk1JywgJzY4JywgJzQ4JywgJzU2JywgJzk4JywgJzM2JywgJzU4JywgJzQ5JywgJzExNycsICc2NCcsICcxMTgnLCAnMTA4JywgJzEyNCcsICcxMDUnLCAnNTQnLCAnNzUnLCAnOTMnLCAnNDInLCAnNjcnLCAnNDQnLCAnODEnLCAnMTA3JywgJzEyNScsICc1MScsICc1NScsICczNycsICcxMjMnLCAnMTExJywgJzk0JywgJzM4JywgJzc0JywgJzUyJywgJzU3JywgJzQ2JywgJzk3JywgJzY2JywgJzc5JywgJzExNScsICc2MCcsICcxMjYnLCAnMzUnLCAnMTE2JywgJzczJywgJzExNCcsICczNCdd";
+//
+//							//dologin(tjGjjCardId,tjGjjPassword,result.data,temp);
+//							mylogin(tjGjjCardId, tjGjjPassword, result.data);
+//						} else {
+//							//document.getElementById("failed_number").innerText = (++failNumber);
+//							tellSocketError("errorcode");
+//						}
+//					},
+//					error: function(data) {
+//						console.log(JSON.stringify(data));
+//						//document.getElementById("failed_number").innerText = (++failNumber);
+//						tellSocketError("errorcode");
+//					}
+//				});
+
+			}
+
+			localStorage.setItem('onlineClicked', 'false');
+			oImgYzm.addEventListener('tap', function() {
+				oImgYzm.src = localStorage.getItem("interfaceUrl") + 'verifyCode.app' + "?" + new Date().getTime();
+				console.log("cja2y yzm" + oImgYzm);
+			});
+
+			function mylogin(user, pass, yzm) {
+				$.ajax({
+					url: localStorage.getItem("interfaceUrl") + "sendMapping.app" + "?" + get_time(),
+					type: "GET",
+					async: false,
+					success: function(O) {
+						//console.log(O+"cja2y");
+						//mappArray = O;
+						dologin(user, pass, yzm, O);
+					}
+				});
+			}
+
+			/*ajax*/
+			function dologin(user, pass, yzm, mapparray) {
+
+				//console.log("cja2y log str :"+getPasswordString("071012"));
+
+				//var wd = plus.nativeUI.showWaiting(); //wait	
+				// oPassError.style.visibility="hidden";
+				//console.log(formSubmit()+"cja2y");
+				mui.ajax(localStorage.getItem("interfaceUrl") + 'login.app', {
+					timeout: 15000,
+					dataType: 'json',
+					type: 'post',
+					data: {
+						user: user,
+						pass: myFormSubmit(pass, mapparray), //加密后返回的密码
+						yzm: yzm
+					},
+					success: function(data) {
+						console.log("cja2y login data  " + JSON.stringify(data));
+						// wd.close();
+						if(data.jg == '0') {
+							localStorage.setItem(token_sfzh, user);
+							localStorage.setItem('zgxm', data.user.yhm);
+							localStorage.setItem('grdm', data.user.grdm);
+							localStorage.setItem('zgxb', data.user.xb);
+							localStorage.setItem('zjlx', data.user.zjlx);
+							localStorage.setItem('lkkh', data.user.lkkh);
+							localStorage.setItem('scdlsj', data.user.dlsj);
+							localStorage.setItem('dlqd', data.user.dlqd);
+
+							mui.ajax(localStorage.getItem("interfaceUrl") + 'getPersonalAccount.app', {
+								timeout: 15000,
+								dataType: 'json',
+								type: 'get',
+								success: function(data) {
+									console.log(JSON.stringify(data));
+									jsonToGjjJsonGeneral(data);
+									mui.ajax(localStorage.getItem("interfaceUrl") + 'grmxz.app', {
+								timeout: 5000,
+								dataType: 'json',
+								type: 'post',
+								data: {
+									zjlx: "G",
+									qsrq: 19890101,
+									zzrq: 20161001
+								},
+								success: function(data) {
+									console.log(JSON.stringify(data));
+									jsonToGjjJsonDetail(data);
+									getTotalJson();
+									//wd.close();
+									var currentGjjInfo = {};
+									currentGjjInfo.data = {};
+									currentGjjInfo.data.job_sid = tjGjjJobId;
+									currentGjjInfo.data.gjj = tjGjjTotalJson;
+									eventData.state = 2;
+									eventData.endDate = new Date();//(+new Date);
+									
+									eventData.data = currentGjjInfo.data;
+									console.log("cja2y success mes  "+JSON.stringify(eventData));
+									
+									send(JSON.stringify(eventData).replace(/[\r\n]/g,""));
+									//send(currentGjjInfo);
+									//send("gjj51123");
+									endTime = (+new Date);
+									//Console.log("当前任务耗时：" + (endTime - beginTime));
+									mui.toast(JSON.stringify(data));
+									//document.getElementById("success_number").innerText = (++successNumer);
+
+//									mui.ajax(localStorage.getItem("interfaceUrl") + 'logout.app', {
+//										timeout: 15000,
+//										dataType: 'json',
+//										type: 'post',
+//										success: function(data) {
+//											console.log(JSON.stringify(data));
+//											if(data.jg == '0') {
+//												mui.fire(plus.webview.getLaunchWebview(), 'logout');
+//												//					  		                          mui.toast('退出成功！');
+//												//					  		                          mui.back();
+//											} else if(data.jg == '-98') {
+//												loginPlease();
+//											} else {
+//												plus.nativeUI.toast(data.cwms1, {
+//													'duration': 'long'
+//												});
+//											}
+//
+//										},
+//										error: function(data) {
+//											plus.nativeUI.toast("网络连接异常!", {
+//												'duration': 'long'
+//											});
+//										}
+//									});
+
+								},
+								error: function(data) {
+									plus.nativeUI.toast("网络连接异常!", {
+										'duration': 'long'
+									});
+									//document.getElementById("failed_number").innerText = (++failNumber);
+									tellSocketError("error");
+								}
+							});
+								},
+								error: function(data) {
+									mui.toast("网络连接异常!");
+									//document.getElementById("failed_number").innerText = (++failNumber);
+									tellSocketError('error');
+								}
+							});
+
+							
+
+						} else {
+//							oImgYzm.src = localStorage.getItem("interfaceUrl") + 'verifyCode.app' + "?" + new Date().getTime();
+//							plus.nativeUI.toast(data.cwms1, {
+//								'duration': 'long'
+//							});
+							//document.getElementById("yzm_failed_number").innerText = (++codeFailNumer);
+							tellSocketError(data.cwms1);
+						}
+					},
+					error: function(data) {
+						plus.nativeUI.toast("网络连接异常!", {
+							'duration': 'long'
+						});
+						wd.close();
+						tellSocketError("error");
+					}
+				});
+
+			};
+		}
+
+		if(window.plus) {
+			plusReady();
+		} else {
+			document.addEventListener('plusready', plusReady, false);
+		}
+		/*点击*/
+		var as = 'zoom-fade-out';
+		var _openw = null;
+
+		function clicked(id, a, s) {
+			if(_openw) {
+				return;
+			}
+			a || (a = as);
+			if(_openw) {
+				_openw.showded = true;
+				_openw.show(a, null, function() {
+					_openw = null; //避免快速点击打开多个页面
+				});
+			} else {
+				_openw = plus.webview.create(id, id, {
+					scrollIndicator: 'none',
+					scalable: false,
+					popGesture: 'hide'
+				}, {
+					preate: true
+				});
+
+				_openw.addEventListener('loaded', function() { //叶面加载完成后才显示
+					s || _openw.show(a, null, function() {
+						_openw = null; //避免快速点击打开多个页面
+					});
+					s && (_openw = null); //避免s模式下变量无法重置
+				}, false);
+				_openw.addEventListener('hide', function() {
+					_openw && (_openw.showded = true);
+					_openw = null;
+				}, false);
+			}
+		}
+		//保留前12位，其余全为***
+		function staySixAllStar(num) {
+			var n = num.substring(0, num.length - 6) + num.substring(0, num.length - 12).replace(/\w/g, '*');
+			return n;
+		}
+	</script>
+	<script type="text/javascript">
+		function imgReload() {
+			var img = document.getElementById("imgYzmMine");
+			img.src = localStorage.getItem("interfaceUrl") + 'verifyCode.app' + "?" + new Date().getTime();
+		}
+	</script>
+	<script type="text/javascript">
+		function GjjTask(gjjUrl) {
+			$.ajax({
+				url: 'http://114.55.232.244:4821/api/tjgjj?data={%22jobs%22:[{%22sid%22:%2232304%22,%22gjj_sid%22:%2213464%22,%22func%22:%22getGjjData%22,%22pinyin%22:%22tianjin%22,%22detail%22:%221%22,%22hascode%22:%220%22,%22loan%22:%221%22,%22loan_detail%22:%221%22,%22refer%22:null,%22codeStr%22:null,%22cookie%22:null,%22record_date%22:%220000-00-00%22,%22loan_record_date%22:%22%22,%22json%22:%22{\%22ID\%22:\%22120102197808031078\%22,\%22password\%22:\%22200100\%22,\%22code\%22:\%22\%22}%22}]}',
+				type: "GET",
+				async: false,
+				success: function(O) {
+					//console.log(O+"cja2y");
+					//mappArray = O;
+					//dologin(user, pass,yzm,O);
+				}
+			});
+		}
+	</script>
+
+	<script type="text/javascript">
+		function tellSocketError(errorType) {
+			//		switch(errorType){
+			//			case 'dataError':send('{type:dataError}');break;
+			//			case 'yzmError':send('{type:yzmError}');break;
+			//			default : send('{type:error}');
+			//		}
+			
+			var errorInfo = {};
+			errorInfo.data = {};
+			errorInfo.data.state = -1;
+			errorInfo.data.job_sid = tjGjjJobId;
+			//errorInfo.state = -1;
+			//errorInfo.note = errorType;
+			(errorInfo.data)["note"] = errorType;
+			eventData.data = errorInfo.data;
+			
+			eventData.state = -1;
+			eventData.endDate = new Date();
+			eventData.note = errorType;
+			send(JSON.stringify(eventData));
+			console.log("cja2y failed mes  "+JSON.stringify(eventData));
+			
+			if(errorType.indexOf("验证码有误") >= 0){
+				$.ajax({
+					type: "POST",
+					dataType: 'text',
+					contentType: 'application/json',
+					url: 'http://120.26.227.26:4821/JBServices/ReportCheckCodeError',
+					data: JSON.stringify(checkcodeId),
+					success: function(result) {
+						result = $.parseJSON(result);
+						console.log("cja2y new code: "+JSON.stringify(result));
+						
+						
+						
+						
+					},
+					error: function(data) {
+						console.log(JSON.stringify(data));
+						
+					}
+				});
+			}
+		}
+	</script>
+
+</html>

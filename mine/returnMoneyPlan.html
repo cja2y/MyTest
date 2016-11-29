@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>returnMoneyPlan</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js"></script> 
+    <script src="../js/layer.js"></script> 
+    <link href="../css/layer.css" rel="stylesheet"/>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <style type="text/css"> 
+    	.mui-content{background-color: #DDDDDD;margin-bottom: 20px;}
+    	html{background-color: #DDDDDD}
+    	.beizhu{line-height: 45px;}
+    </style>
+</head>
+<body style="background-color: #EFEFF4;">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">还款计划</h1>
+	    <a id="hidRightWindow" class="mui-icon mui-icon-more mui-pull-right" style="color: #FFFFFF; font-size: 30px;"></a>
+	</header>
+    <div id="mainContent" class="mui-content">
+    	<div id="actualReturnMoneyWrap" style="margin-top: 10px;"></div>
+	    <div id="rightWindow" style="display: none;">
+    		<a id="downloadHkpz"><img src="../img/allImg/icon_download.png"/><span>下载还款计划</span></a>
+    		<div style="border-bottom: 1px solid #DDDDDD; margin-left: 3px;"></div> 
+    		<span id="wtddyw"><img id="sfwtddImg" src="../img/allImg/icon_weituo.png"/><span id="sfwtdd"></span></span>
+	    </div>    
+	</div>
+	<div class="overlay" style="display: none;"></div>
+  <script type="text/javascript" charset="UTF-8">
+      	mui.init();
+      	function plusReady(){
+      		plus.webview.currentWebview().setStyle({scrollIndicator:'none'});
+      		var oHidRightWindow=document.getElementById("hidRightWindow");
+      		var oRightWindow=document.getElementById("rightWindow");
+      		var oSfwtdd = document.getElementById("sfwtdd");
+      	    var dkzh = plus.webview.currentWebview().dkzh;
+      	    var sldm = plus.webview.currentWebview().sldm;
+      	    var sfwt = plus.webview.currentWebview().sfwt;
+      	    var w = plus.nativeUI.showWaiting("正在加载...");   //防止快速点击情况的发生
+      	    //下载还款计划
+      	    if ( plus.os.name == "Android" ) {
+      	    	 //下载路径提示  	    
+	      	    document.getElementById("downloadHkpz").addEventListener('tap',function(){ 
+	      	    	var timesTamp = new Date().getTime();
+	      	    	this.href = 'https://app.zfgjj.cn/dzyw-app/pdfs/'+dkzh+'_hkjh.pdf'+"?"+timesTamp;
+	      	    	/* var relativePath = plus.io.convertLocalFileSystemURL("_downloads/"+dkzh+"_hkjh.pdf");
+						plus.ui.confirm( "文件已下载到"+relativePath+"路径下。", function ( i ) {
+						}, "Confirm", ["知道了"] );*/
+						
+	      	   }) 
+      	    } else if ( plus.os.name == "iOS" ) {
+      	    	document.getElementById("downloadHkpz").addEventListener('tap',function(){
+				    plus.runtime.launchApplication( {action:"https://app.zfgjj.cn/dzyw-app/pdfs/"+dkzh+"_hkjh.pdf"}, function ( e ) { } );
+      	       })
+      	    }
+      	    //判断是否委托代打
+      	    if(sfwt =='0'){
+      	    	oSfwtdd.innerHTML = '取消委托代打';
+      	    	document.getElementById("sfwtdd").addEventListener('tap',function(){
+                wtddBanli(dkzh,sldm,"1");      //取消委托代打
+      		});
+      	    }else if(sfwt =='1'){
+      	    	oSfwtdd.innerHTML = '申请委托代打'; 
+      	    	document.getElementById("sfwtdd").addEventListener('tap',function(){
+      	    	wtdayw(dkzh,sldm,"0");             //委托代打业务办理    
+      		});    
+      	    }else{
+      	    	oRightWindow.style.height = '51px';
+      	    	document.getElementById("sfwtddImg").style.display = 'none';
+      	    }
+      		oHidRightWindow.addEventListener('tap',function(){
+      			if (oRightWindow.style.display=='none') {
+      				oRightWindow.style.display='block';
+      			} else{
+      				oRightWindow.style.display='none';
+      			}
+      		});
+      		//还款计划信息
+  			mui.ajax(localStorage.getItem("interfaceUrl")+'hkjh.app', {   
+				  timeout: 15000,
+				  dataType: 'json', 
+				  type: 'post',
+				  data: {
+				    dkzh: dkzh
+				  }, 
+				  success: function(data) {
+				  	w.close();
+				  	if(data.jg == '0'){
+				  		actualReturnMoneyWrap.innerHTML='';
+				  	    for(var i=0; i<data.hkjh.detail.length; i++){
+					  		actualReturnMoneyWrap.innerHTML+='<div class="innerHandle"><div class="timeReal"><label style="padding-right: 10px;">'
+		                         +formatDate(data.hkjh.detail[i].hkyf)
+		                         +'</label></div><div class="moneyInfo clearfix"><ul><li class="ali aliFont">' 
+		                         +data.hkjh.detail[i].zxlv
+		                         +'%</li><li class="bli aliFont">￥'
+								 +fmoney(data.hkjh.detail[i].yhbj)
+								 +'</li><li class="cli aliFont">￥'
+								 +fmoney(data.hkjh.detail[i].yhlx)
+								 +'</li><li class="ali bliFont">执行年利率</li><li class="bli bliFont">月还本金</li><li class="cli bliFont">月还利息</li></ul></div><div class="beizhu"><label>月还款额</label><span class="right orange" style="font-size: 18px;">'
+								 +fmoney(data.hkjh.detail[i].yhje)
+								 +'</span></div></div>';
+					  	}
+				  	}else if(data.jg == '-98'){
+						loginPlease();
+					}else{
+				  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+				  	}
+				  },
+				  error: function(data) {
+				     	w.close();
+				        plus.nativeUI.toast("网络连接异常!",{'duration':'long'}); 
+				    }
+				});
+		}
+		if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+        
+    </script>
+</html>

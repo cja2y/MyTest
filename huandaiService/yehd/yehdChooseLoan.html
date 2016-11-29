@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>余额还贷选择贷款</title>
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/tayh_app.js"></script>
+    <script src="../../js/layer.js"></script>
+    <link href="../../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/layer.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/iphone4.css"/>
+    <style type="text/css">
+        html{
+        	background-color: #DDDDDD;
+        }
+    	.mui-content {
+    		padding-bottom: 70px;
+    		background-color: #DDDDDD;
+    	}
+    	#bRadio{
+    		display: none;
+    	}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">选择已登记贷款</h1>
+	</header>
+	<div class="mui-content">
+        <div class="showLoan clearfix">
+        	<label class="left" style="font-size: 16px; color: #929292; padding-left: 2px;">显示</label>
+        	<div id="aRadio" class="mui-input-row mui-radio mui-left">
+				<label class="radioWord">我的贷款</label>
+				<input id="radioOne" name="radio1" type="radio" checked="checked">
+			</div>
+			<div id="bRadio" class="mui-input-row mui-radio mui-left">
+				<label id="wordPodk" class="radioWord"></label>
+				<input id="radioTwo" name="radio2" type="radio">
+			</div>
+        </div>
+        <!--我的贷款-->
+        <div id="myLoan" style="display: block; margin-top: 47px;"></div>
+        <!--配偶的贷款-->
+        <div id="peiouLoan" style="display: none; margin-top: 47px;"></div>
+		<div class="nextStep clearfix" style="position: fixed;">
+	        	<a id="onlineZixun" class="consultBtn left"><img src="../../images/consult.png" alt="" /><span>咨询</span></a>
+	            <span id="yehdBfdk" class="nextStepBtn" style="width: 90%;">部分还款</span>
+	           <!-- <span href="#" id="yehdJqdk" class="nextStepBtn" style="width: 47%; margin-left: 2%;">结清贷款</span> --> 
+	    </div>
+	    <div class="spouse">
+			<div class="identifyHd">
+		    	<span href="#"  class="closeIdentify"><img src="../../images/close.png" alt=""/></span>
+		        <h3>配偶身份验证</h3>
+		    </div>
+		    <div class="identifyBd">
+		        <ul class="identifyWrite">
+		            <li class="clearfix spouseId">
+		            	<img src="../../images/icon_3.png" alt="" />
+		                <input id="inputSfz" type="text" placeholder="请输入配偶身份证号" maxlength="18"/>       
+		            </li>
+		        </ul>
+		        <span id="identifyPosf" class="identifyBtn">验证身份</span>
+		    </div>
+        </div>
+    </div>    
+ <div id="mask" class="overlay" style="display: none;"></div>
+</body>
+<script type="text/javascript">
+	mui.init();
+	var oMyLoan=document.getElementById("myLoan");
+	var oPeiouLoan=document.getElementById("peiouLoan");
+	var oRadioOne=document.getElementById("radioOne");
+	var oRadioTwo=document.getElementById("radioTwo");
+	var oInputSfz=document.getElementById("inputSfz");
+	var oMask=document.getElementById("mask");
+	var oSpouse=document.querySelector(".spouse");
+	var oYehdBfdk=document.getElementById("yehdBfdk");
+	function plusReady(){
+		plus.webview.currentWebview().setStyle({scrollIndicator:'none'});
+		//在线咨询
+        onlineConsult();
+		//判断是否有配偶
+	    mui.ajax(localStorage.getItem("interfaceUrl")+'djxx.app', {    
+		  timeout: 15000,                       
+		  dataType: 'json',    
+		  type: 'post', 
+		  success: function(data) { 
+		  	if(data.jg == "0"){   
+		  		document.getElementById("bRadio").style.display = "inline-block";  
+		  		document.getElementById("wordPodk").innerHTML = '配偶的贷款';
+		  	}   
+		  },      
+		  error: function(data) {
+		  	    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});  
+		  }  
+		});
+		//出登记信息列表
+		mui.ajax(localStorage.getItem("interfaceUrl")+'djxxcx.app', {     
+		  timeout: 15000,                       
+		  dataType: 'json',         
+		  type: 'post', 
+		  data: {   
+			  ywlb: "302",    
+			 }, 
+		  success: function(data) {
+		  	    if(data.jg == '0'){
+		  	    	var loanLength=data.djxx.detail.length;
+				  	var tempSexScr='';
+				  	var dkzt ='';
+				  	   if(localStorage.getItem('zgxb') !== '0'){                   //判断性别,性别返回值在login接口
+				  	   	  tempSexScr='../../img/allImg/user_man.png';
+				  	   }else{
+				  	   	  tempSexScr='../../img/allImg/user_women.png';
+				  	   }
+				  	for(var i=0;i<loanLength;i++){ 
+				  		if(data.djxx.detail[i].gjjdkzt=='01'){
+				  	   	 dkzt = '未还清';
+				  	   }else{ 
+				  	   	 dkzt = '已还清'; 
+				  	   }
+				  	   if(data.djxx.detail[i].ajdkzh !== ''){
+				  	   	    oMyLoan.innerHTML+='<div id="loanBox'+i+'" class="loanBox" onclick="chooseLoan('+i+')"><div class="loanTop clearfix"><img src='+tempSexScr+' alt="" class="left" /><dl class="left"><dt style="font-size: 16px; font-weight: bold;">'
+		                                +data.djxx.detail[i].xm
+		                                +'</dt><dd><label>身份证号:</label><span style="padding-left:5px;">'
+		                                +fourNumSixstar(data.djxx.detail[i].sfzh)
+		                                +'</span></dd></dl></div><ul class="loanCenter"><li class="clearfix"><label class="left">公积金贷款账号:</label><span class="orange right">'
+		                                +fourNumSixstar(data.djxx.detail[i].gjjdkzh)
+		                                +'</span></li><li class="clearfix"><em class="left" style="margin-top:-5px;">'
+		                                +dkzt
+		                                +'</em></li><li class="clearfix"><label class="left">按揭贷款账号:</label><span class="blue right">'
+		                                +fourNumSixstar(data.djxx.detail[i].ajdkzh)
+		                                +'</span></li><li class="clearfix"><em class="left" style="margin-top:-5px;">未还清</em></li></ul><ul class="loanBtm"><li class="clearfix left"><label class="left">贷款银行:</label><span class="marginL3 left">'
+		                                +data.djxx.detail[i].dkyh
+		                                +'</span><span class="right" style="font-size:13px;padding-left:5px;">'
+		                                +'</span></li><li class="clearfix"><span class="right" style="margin-left: 3px;">'
+		                                +fmoney(data.djxx.detail[i].gjjdkje)
+		                                +'元</span><label class="right">公积金贷款金额:</label></li></ul><img id="imgChoosedOne'+i+'" djbbh="'+data.djxx.detail[i].djbbh+'" dkzh="'+data.djxx.detail[i].gjjdkzh+'"  dkzl="'+data.djxx.detail[i].dkzl+'" class="imgChoosedOne" src="../../images/choosed.png" alt="" style="display: none;"/></div>';
+				  	   }else{
+				  	   	    oMyLoan.innerHTML+='<div id="loanBox'+i+'" class="loanBox" onclick="chooseLoan('+i+')"><div class="loanTop clearfix"><img src='+tempSexScr+' alt="" class="left" /><dl class="left"><dt style="font-size: 16px; font-weight: bold;">'
+		                                +data.djxx.detail[i].xm
+		                                +'</dt><dd><label>身份证号:</label><span style="padding-left:5px;">'
+		                                +fourNumSixstar(data.djxx.detail[i].sfzh)
+		                                +'</span></dd></dl></div><ul class="loanCenter"><li class="clearfix"><label class="left">公积金贷款账号:</label><span class="orange right">'
+		                                +fourNumSixstar(data.djxx.detail[i].gjjdkzh)
+		                                +'</span></li><li class="clearfix"><em class="left" style="margin-top:-5px;">'
+		                                +dkzt
+		                                +'</em></li></li></ul><ul class="loanBtm"><li class="clearfix left"><label class="left">贷款银行: </label><span class="marginL3 left">'
+		                                +data.djxx.detail[i].dkyh
+		                                +'</span><span class="right" style="font-size:13px;padding-left:5px;">'
+		                                +'</span></li><li class="clearfix"><span class="right" style="margin-left: 3px;">'
+		                                +fmoney(data.djxx.detail[i].gjjdkje)
+		                                +'元</span><label class="right">公积金贷款金额:</label></li></ul><img id="imgChoosedOne'+i+'" djbbh="'+data.djxx.detail[i].djbbh+'" dkzh="'+data.djxx.detail[i].gjjdkzh+'"  dkzl="'+data.djxx.detail[i].dkzl+'" class="imgChoosedOne" src="../../images/choosed.png" alt="" style="display: none;"/></div>';
+				  	    }
+			          }
+		  	    }else if(data.jg == '-98'){
+		  	    	loginPlease();
+		  	    }
+		  	    else{
+		  	    	plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+		  	    }
+				  	       
+		  },      
+		  error: function(data) { 
+		            plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+		  }   
+		});
+
+		document.getElementById("aRadio").addEventListener('tap',function(){
+			clearImgBlock();
+			oRadioOne.checked='checked';
+			oRadioTwo.checked=''; 
+		    oMyLoan.style.display='block';
+			oPeiouLoan.style.display='none';
+			sessionStorage.setItem("isChoosed",'');
+		});
+		document.getElementById("bRadio").addEventListener('tap',function(){    //负责显示或隐藏配偶的信息
+			clearImgBlock();
+			var oBoxOne=document.querySelector(".loanBox");
+			var oImgOne=document.getElementById("imgChoosedOne");
+			oRadioOne.checked=''; 
+			sessionStorage.setItem("isChoosed",'');
+			if(sessionStorage.getItem("confirmPosfzh")=="true"){
+				oRadioTwo.checked='checked';
+				oMyLoan.style.display='none';
+		        oPeiouLoan.style.display='block'; 
+			}else{
+				event.stopPropagation();
+				oMask.style.display='block';
+				oSpouse.style.bottom = '0px';  
+			}
+		});
+	    document.querySelector(".closeIdentify").addEventListener('tap',function(){
+		   oSpouse.style.bottom = '-154px'; 
+		   oMask.style.display='none';
+		   oRadioOne.checked='block';
+		   oRadioTwo.checked='';
+		});
+		document.getElementById("identifyPosf").addEventListener('tap',function(){
+			if(oInputSfz.value =='' || oInputSfz.value.length !==18){
+				mui.toast('请输入正确的身份证号！');
+			}else{
+				oPeiouLoan.innerHTML = '';
+		        yzpoSfz( oInputSfz.value );
+			}
+		});
+		
+		//验证配偶身份证
+		function yzpoSfz(posfzh){
+			 var w = plus.nativeUI.showWaiting();   //防止快速点击情况的发生
+					setTimeout( function(){
+							w.close();
+					}, 1500 );
+			mui.ajax(localStorage.getItem("interfaceUrl")+'djxxcx.app', {    
+			  timeout: 15000,                       
+			  dataType: 'json',    
+			  type: 'post',
+			  data: {
+			  	ywlb: "302",
+			  	posfzh: posfzh,   //配偶身份证号
+			  	acType: "1"
+			  },
+			  success: function(data) {
+			  	    var jg = data.jg;
+				  	if(jg == "0") {
+						oSpouse.style.bottom = '-154px'; 
+				        oMask.style.display='none';
+						oRadioOne.checked='';
+					    oRadioTwo.checked='checked'; 
+				        oMyLoan.style.display='none';
+				        oPeiouLoan.style.display='block';
+				        sessionStorage.setItem("confirmPosfzh",true);
+				        var loanLength=data.djxx.detail.length;
+					  	for(var i=0;i<loanLength;i++){  
+					  	   var tempSexScr='';
+					  	   var dkzt = '';
+					  	   var poSex = getXb(posfzh);
+					  	   if(poSex!=='0'){                   //判断性别,性别返回值在login接口
+					  	   	  tempSexScr='../../img/allImg/user_man.png';
+					  	   }else{
+					  	   	  tempSexScr='../../img/allImg/user_women.png';
+					  	   }
+					  	   
+					  	   if(data.djxx.detail[i].gjjdkzt=='01'){                    //贷款状态
+					  	   	 dkzt = '未还清';
+					  	   }else{ 
+					  	   	 dkzt = '已还清'; 
+					  	   }
+			               if(data.djxx.detail[i].ajdkzh !== ''){
+					  	   	    oPeiouLoan.innerHTML+='<div id="loanBoxPo'+i+'" class="loanBox" onclick="chooseLoanPo('+i+')"><div class="loanTop clearfix"><img src='+tempSexScr+' alt="" class="left" /><dl class="left"><dt style="font-size: 16px; font-weight: bold;">'
+			                                +data.djxx.detail[i].xm
+			                                +'</dt><dd><label>身份证号:</label><span style="padding-left:5px;">'
+			                                +fourNumSixstar(data.djxx.detail[i].sfzh)
+			                                +'</span></dd></dl></div><ul class="loanCenter"><li class="clearfix"><label class="left">公积金贷款账号:</label><span class="orange right">'
+			                                +fourNumSixstar(data.djxx.detail[i].gjjdkzh)
+			                                +'</span></li><li class="clearfix"><em class="left" style="margin-top:-5px;">'
+			                                +dkzt
+			                                +'</em></li><li class="clearfix"><label class="left">按揭贷款账号:</label><span class="blue right">'
+			                                +fourNumSixstar(data.djxx.detail[i].ajdkzh)
+			                                +'</span></li><li class="clearfix"><em class="left" style="margin-top:-5px;">未还清</em></li></ul><ul class="loanBtm"><li class="clearfix left"><label class="left">贷款银行:</label><span class="marginL3 left">'
+			                                +data.djxx.detail[i].dkyh
+			                                +'</span><span class="right" style="font-size:13px;padding-left:5px;">'
+			                                +'</span></li><li class="clearfix"><span class="right" style="margin-left: 3px;">'
+			                                +fmoney(data.djxx.detail[i].gjjdkje)
+			                                +'元</span><label class="right">公积金贷款金额:</label></li></ul><img id="imgChoosedTwo'+i+'" djbbh="'+data.djxx.detail[i].djbbh+'" dkzh="'+data.djxx.detail[i].gjjdkzh+'"  dkzl="'+data.djxx.detail[i].dkzl+'" class="imgChoosedOne" src="../../images/choosed.png" alt="" style="display: none;"/></div>';
+					  	   }else{
+					  	   	    oPeiouLoan.innerHTML+='<div id="loanBoxPo'+i+'" class="loanBox" onclick="chooseLoanPo('+i+')"><div class="loanTop clearfix"><img src='+tempSexScr+' alt="" class="left" /><dl class="left"><dt style="font-size: 16px; font-weight: bold;">'
+			                                +data.djxx.detail[i].xm
+			                                +'</dt><dd><label>身份证号:</label><span style="padding-left:5px;">'
+			                                +fourNumSixstar(data.djxx.detail[i].sfzh)
+			                                +'</span></dd></dl></div><ul class="loanCenter"><li class="clearfix"><label class="left">公积金贷款账号:</label><span class="orange right">'
+			                                +fourNumSixstar(data.djxx.detail[i].gjjdkzh)
+			                                +'</span></li><li class="clearfix"><em class="left" style="margin-top:-5px;">'
+			                                +dkzt
+			                                +'</em></li></li></ul><ul class="loanBtm"><li class="clearfix left"><label class="left">贷款银行: </label><span class="marginL3 left">'
+			                                +data.djxx.detail[i].dkyh
+			                                +'</span><span class="right" style="font-size:13px;padding-left:5px;">'
+			                                +'</span></li><li class="clearfix"><span class="right" style="margin-left: 3px;">'
+			                                +fmoney(data.djxx.detail[i].gjjdkje)
+			                                +'元</span><label class="right">公积金贷款金额:</label></li></ul><img id="imgChoosedTwo'+i+'" djbbh="'+data.djxx.detail[i].djbbh+'" dkzh="'+data.djxx.detail[i].gjjdkzh+'"  dkzl="'+data.djxx.detail[i].dkzl+'" class="imgChoosedOne" src="../../images/choosed.png" alt="" style="display: none;"/></div>';
+					  	    }
+				       }
+					}else{ 
+						sessionStorage.setItem("confirmPosfzh",false);
+						datajgRespone({dataJg: jg, cwms: data.cwms1, ywlb: 0});
+					}
+			  },      
+			  error: function(data) {
+			  	        plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+			  }  
+			});
+		}
+		//部分还款点击事件
+		oYehdBfdk.addEventListener('tap',function(){
+			var oAllImg=document.querySelectorAll(".imgChoosedOne");
+			var dkzh='';
+			for(var i=0;i<oAllImg.length;i++){
+				if(oAllImg[i].style.display=='block'){
+					var w = plus.nativeUI.showWaiting();   //防止快速点击情况的发生
+					setTimeout( function(){
+							w.close();
+					}, 3000 );
+					dkzh = oAllImg[i].getAttribute('dkzh');
+					djbbh = oAllImg[i].getAttribute('djbbh');
+					//余额还贷前置检查
+					mui.ajax(localStorage.getItem("interfaceUrl")+'yehdqzjc.app', {     
+						  timeout: 15000,                       
+						  dataType: 'json',     
+						  type: 'post',       
+						  data: { 
+						  	ywlsh: plus.webview.currentWebview().ywlsh,       //业务流水号
+						  	ywxl: "01",                                        //业务小类
+						  	dkzh: dkzh,                                       //贷款账号
+						  	djbbh: djbbh                                      //登记表编号
+						  },        
+						  success: function(data) { 
+							    if(data.jg == "0"){ 
+									//弹出窗口
+									var sldm = data.response.sldm;
+									var dkye = data.response.dkye;
+							        mui.ajax(localStorage.getItem("interfaceUrl")+'dklb.app', {     
+										  timeout: 15000,                       
+										  dataType: 'json',     
+										  type: 'post',       
+										  data: { 
+										  	dkzh: dkzh                                       //贷款账号
+										  },        
+										  success: function(data) { 
+										    if(data.jg=="0"){
+										       var content = '';
+										       if(data.dklb =='01'){
+										       	var content = "<div>1.您正在办理的是“<span style='color:red;'>公积金贷款余额还贷业务</span>”。</div><div>2.该业务办理成功后不能撤销。</div>";
+										       }else{
+										       	var content = "<div>1.您正在偿还“<span style='color:red;'>公积金组合贷款中的公积金部分</span>”，而非商业银行按揭部分。如需偿还商业银行按揭部分请咨询贷款银行。</div><div>2.该业务办理成功后不能撤销。</div>"
+										       }
+										       var timer = null,time=5,rightBtn;
+										       layerOpen({ 
+														"title":"",
+														"content": content,
+														"btn":["取消","确定阅读"],
+														"style":{
+															"content":"background-color: #fffff;font-size: 16px; font-weight:700;color: #000000;padding: 18px 20px 18px 20px;border-radius: 8px 8px 0px 0px; z-index:9999",
+														},
+														"event":[function () {/*取消按钮*/},function () {
+															var rightBtn=document.querySelector(".layer_btn_right");
+															if(time<0){
+															    mui.openWindow({ 
+																				id: 'yehdbfHkjs',
+																				url: 'yehdbfHkjs.html', 
+																				show: {aniShow: 'slide-in-right',duration:'200'},
+																				extras: {
+																					dkzh : dkzh,                     //贷款账号
+																					djbbh: djbbh,                    //登记表编号                     
+																					sldm : sldm,                      //受理代码
+																					dkye: dkye
+																				},
+																				waiting:{ autoShow: true}
+																			});
+																return;
+															}
+															//如果定时器正在运行，则默认不做任何事		
+									                        if(timer){return true;}
+									                        //启动定时器
+															rightBtn.innerHTML=time+'s';
+															timer = setInterval(function(){
+																	time--;
+																	if(time<0){
+																		rightBtn.innerHTML = '确定'; 
+																		clearInterval(timer);
+																		timer = null;
+																		return;
+																	}
+																	rightBtn.innerHTML=time+'s';
+																},1000); 
+															return true;
+														   }]
+												});                                      //办理结束
+								   }else{ datajgRespone({dataJg: data.jg, cwms: data.cwms1, ywlb: 0});}
+								  },     
+								  error: function(data) { plus.nativeUI.toast("网络连接异常!",{'duration':'long'}); }    
+								});                                              //弹窗结束
+							   }else{
+							   	datajgRespone({dataJg: data.jg, cwms: data.cwms1, ywlb: 0});
+							   }
+						  },     
+						  error: function(data) { plus.nativeUI.toast("网络连接异常!",{'duration':'long'}); } 
+					  });              //还款办理方法结束
+				}                                                                //确定选择的是哪个按钮
+			}                                                                    //部分还款方法结束
+			if(sessionStorage.getItem("isChoosed")!=="true"){      //记录是否选择
+				    plus.nativeUI.toast("请选择一条登记信息！",{'duration':'long'});
+                }
+		});
+		//结清还款点击事件
+		/*document.getElementById("yehdJqdk").addEventListener('tap',function(){
+			var oAllImg=document.querySelectorAll(".imgChoosedOne");
+			var dkzh='';
+			for(var i=0;i<oAllImg.length;i++){
+				if(oAllImg[i].style.display=='block'){
+					dkzh = oAllImg[i].getAttribute('dkzh');
+					dkye = oAllImg[i].getAttribute('dkye');
+					djbbh = oAllImg[i].getAttribute('djbbh');
+					mui.ajax(localStorage.getItem("interfaceUrl")+'yehdqzjc.app', {     
+						  timeout: 15000,                       
+						  dataType: 'json',     
+						  type: 'post',       
+						  data: { 
+						  	ywlsh: plus.webview.currentWebview().ywlsh,      //业务流水号
+						  	ywxl: "1",                                       //业务小类
+						  	dkzh: dkzh,                                      //贷款账号
+						  	djbbh: djbbh                                     //登记表编号
+						  },        
+						  success: function(data) {    //显示获取到的要素图标	
+						    if(data.jg=="0"){
+						   	mui.openWindow({ 
+								id: 'yehdjqHkjs',
+								url: 'yehdjqHkjs.html', 
+								show: {aniShow: 'slide-in-right',duration:'200'},
+								extras: {
+									dkzh : dkzh,                     //贷款账号
+									dkye : dkye,                     //贷款余额
+									sldm : data.response.sldm,       //受理代码
+									djbbh: djbbh,                    //登记表编号                     
+									hkbj : data.response.hkbj,       //还款本金
+									hkhj : data.response.hkhj,       //还款合计
+									hklx : data.response.hklx,       //还款利息
+									dqbj : data.response.dqbj,       //当期本金
+									dqlx : data.response.dqlx,        //当期利息
+									gjjje : data.response.tjgjj,      //推荐公积金提取额
+									bcje : data.response.tjbc,        //推荐补充提取额
+									ayje : data.response.tjay        //推荐按月提取额
+								},
+								waiting:{ autoShow: true}
+							});
+						   }else{
+						   	plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+						   }
+						  },     
+						  error: function(data) {     
+						   } 
+						});
+				}
+			}
+			if(sessionStorage.getItem("isChoosed")!=="true"){      //记录是否选择
+					mui.toast("请输入一条登记信息！");
+                }
+		});*/		
+	}
+	if(window.plus){
+		plusReady();
+	}else{
+		document.addEventListener('plusready',plusReady,false);
+	}
+	//选择加样式(选中方框+对勾)
+	 function chooseLoan(num){
+	 	    var oLoanBox=document.getElementById("loanBox"+num);
+	 	    var oImg=document.getElementById("imgChoosedOne"+num);
+	 	    clearImgBlock();         //清除所有的样式
+			oLoanBox.style.border='3px solid  rgb(79,163,246)';
+			oImg.style.display='block';
+			oYehdBfdk.style.backgroundColor='#0080d7';
+			//document.getElementById("yehdJqdk").style.backgroundColor='#0080d7';
+			sessionStorage.setItem("isChoosed",true);   //记录选中登记信息
+        }
+	 //配偶选择加样式
+	 function chooseLoanPo(num){
+	 	    var oLoanPoBox = document.getElementById("loanBoxPo"+num);
+	 	    var oImgPo = document.getElementById("imgChoosedTwo"+num);
+	 	    clearImgBlock();         //清除所有的样式
+			oLoanPoBox.style.border = '3px solid  rgb(79,163,246)';
+			oImgPo.style.display = 'block';
+			oYehdBfdk.style.backgroundColor = '#0080d7';
+			sessionStorage.setItem("isChoosed",true);   //记录选中登记信息  
+        }
+     //清除所有的样式
+	 function clearImgBlock(){
+	 	    var oAllLoanBox=document.querySelectorAll(".loanBox");
+	 	    var oAllImg=document.querySelectorAll(".imgChoosedOne");
+	 	     for(var i=0;i<oAllLoanBox.length;i++){
+            	oAllLoanBox[i].style.border='1px solid #d9d9d9';
+            	oAllImg[i].style.display='none';
+            	oYehdBfdk.style.backgroundColor='#AAAAAA';
+            };
+	 }
+</script>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<meta name="HandheldFriendly" content="true"/>
+		<meta name="MobileOptimized" content="320"/>
+		<title>人工服务</title>
+		<link href="../css/mui.min.css" rel="stylesheet"/>
+        <link href="../css/menu.css" rel="stylesheet"/> 
+		<script type="text/javascript" src="../js/common.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+		var ws=null,embed;
+		// 扩展API加载完毕，现在可以正常调用扩展API 
+		function plusReady(){
+			ws = plus.webview.currentWebview();
+			ws.addEventListener('show',createEmbed,false);
+			//安卓返回键设置
+		    mui.back = function() {
+		        ws.hide('slide-out-right',300);
+		        if ( plus.os.name == "iOS" ){
+		        	 document.getElementById("aaa").focus();
+		        	 document.getElementById("aaa").blur();
+		        }
+			}
+		}
+		// 判断扩展API是否准备，否则监听"plusready"事件
+		if(window.plus){ 
+			plusReady();
+		}else{
+			document.addEventListener("plusready",plusReady,false);
+		}
+		// 创建子Webview
+		function createEmbed(){
+			var topoffset='45px'; 
+			if(embed == null){
+				embed=plus.webview.create(localStorage.getItem("interfaceUrl")+'zxzx.app','embed',{top:topoffset,bottom:'0px',position:'dock',dock:'bottom',bounce:'vertical'});
+			    ws.append(embed);
+			}
+		}
+		</script>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<div class="nvbt iback" onclick="back()"></div>
+            <h1 id="title" class="mui-title">人工服务</h1>
+            <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #FFFFFF;"></a> 
+		</header>
+		<input  id="aaa"/>
+	</body>
+	<script type="text/javascript" src="../js/immersed.js" ></script>
+</html>

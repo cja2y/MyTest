@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>myJiaocun</title>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/tayh_app.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iphone4.css"/>
+    <style type="text/css">
+    	.mui-content{background-color: #DDDDDD}
+    	html{background-color: #DDDDDD}
+    </style> 
+</head>
+<body style="background-color: #EFEFF4;">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">我的缴存</h1>
+	</header>
+	<div id="mainContent" class="mui-content"></div>    
+</body>
+  <script type="text/javascript" charset="UTF-8">
+      	mui.init();
+      	function plusReady(){
+      		var oMainContent=document.getElementById("mainContent")
+      		mui.ajax(localStorage.getItem("interfaceUrl")+'getPersonalAccount.app', {        
+			  timeout: 10000,                 
+			  dataType: 'json', 
+			  type: 'get',
+			  success: function(data) {
+			  	console.log(JSON.stringify(data));
+			  	if(data.jg == '0'){
+			  		oMainContent.innerHTML+='<div class="myloanInfoWrap"><div><label>用户姓名：</label><span>'
+			  	+data.result.zgxm
+			  	+'</span></div><div><label>单位名称：</label><span>'
+			    +data.result.dwmc  
+			    +'</span></div><div><label>单位代码：</label><span>'
+			    +data.result.dwdm
+			    +'</span></div>' /*<div><label>个人代码：</label><span>
+			    +data.result.grdm</span></div>*/
+			    +'</div>';
+			    
+				for(var i=0;i<data.result.detail.length;i++){
+					console.log(data.result.detail[i].khrq.toString());
+					if(data.result.detail[i].zjlx=="G"){
+						oMainContent.innerHTML+='<div id="../mine/gjjAccountMx.html" class="jc_zfgjj" onclick="clicked(this.id)"><div class="blueDiv"></div><label>住房公积金</label><span id="moneyNumber">'
+											    +'￥'+data.result.detail[i].zhye  
+											    +'</span><span style="position: absolute;right: 40px;">明细</span><img src="../images/linksarrow.png"></div><div class="loanAccountInfo"><div><label>开户日期</label><span>'
+											    +formatDateA(data.result.detail[i].khrq)
+											    +'</span><label class="infoLeft">最后缴存</label><span class="spanLeft">'
+											    +formatDateA(data.result.detail[i].zjjcyf)
+											    +'</span></div><div><label>账户状态</label><span>'
+											    +khzt(data.result.detail[i].zhzt)
+											    +'</span><label class="infoLeft">单位比例</label><span class="spanLeft">'
+											    +data.result.detail[i].dwbl+'%'
+											    +'</span></div><div><label>月缴存额</label><span>'
+											    +data.result.detail[i].yjce
+											    +'</span><label class="infoLeft">个人比例</label><span class="spanLeft">'
+											    +data.result.detail[i].grbl+'%'
+											    +'</span></div><div><label>缴至年月</label><span>'
+											    +formatDate(data.result.detail[i].jzny)
+											    +'</span></div></div>';
+										}else if(data.result.detail[i].zjlx=="B"){
+											oMainContent.innerHTML+='<div id="../mine/bcGjjAccountMx.html"  class="jc_zfgjj" onclick="clicked(this.id)"><div class="blueDiv"></div><label>补充住房公积金</label><span id="moneyNumber">'
+											    +'￥'+data.result.detail[i].zhye
+											    +'</span><span style="position: absolute;right: 40px;">明细</span><img src="../images/linksarrow.png"></div><div class="loanAccountInfo"><div><label>开户日期</label><span>'
+											    +formatDateA(data.result.detail[i].khrq)
+											    +'</span><label class="infoLeft">缴至年月</label><span class="spanLeft">'
+											    +formatDate(data.result.detail[i].jzny)
+											    +'</span></div><div><label>账户状态</label><span>'
+											    +khzt(data.result.detail[i].zhzt)
+											    +'</span><label class="infoLeft">最后缴存</label><span class="spanLeft">'
+											    +formatDateA(data.result.detail[i].zjjcyf)
+											    +'</span></div><div><label>月缴存额</label><span>'
+											    +data.result.detail[i].yjce
+											    +'</span><label class="infoLeft">单位比例</label><span class="spanLeft">'
+											    +data.result.detail[i].dwbl+'%'
+											    +'</span></div></div>';
+										}else if(data.result.detail[i].zjlx=="Y"){
+											oMainContent.innerHTML+='<div id="../mine/ayzfbtMx.html" class="jc_zfgjj" onclick="clicked(this.id)"><div class="blueDiv"></div><label>按月住房补贴</label><span id="moneyNumber">'
+									            +'￥'+data.result.detail[i].zhye
+									            +'</span><span style="position: absolute;right: 40px;">明细</span><img src="../images/linksarrow.png"></div><div class="loanAccountInfo"><div><label>开户日期</label><span>'
+									            +formatDateA(data.result.detail[i].khrq)
+									            +'</span><label class="infoLeft">缴至年月</label><span class="spanLeft">'
+									            +formatDate(data.result.detail[i].jzny)
+									            +'</span></div><div><label>账户状态</label><span>'
+									            +khzt(data.result.detail[i].zhzt)
+									            +'</span><label class="infoLeft">最后缴存</label><span class="spanLeft">'
+									            +formatDateA(data.result.detail[i].zjjcyf)
+									            +'</span></div><div><label>月缴存额</label><span>'
+									            +data.result.detail[i].yjce
+									            +'</span></div></div>';
+										}
+				}
+			  	}else if(data.jg == '-98'){
+			  		loginPlease();
+			  	}else{
+			  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+			  	}			  	
+			  }, 
+			  error: function(data) {  
+			  	    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+			   } 
+			}); 
+			
+		}
+		if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+		var as='pop-in'; 
+		var _openw=null;
+		function clicked(id,a,s){
+			if(_openw){return;}
+            a||(a=as);
+			if(_openw){
+				_openw.showded=true;
+				_openw.show(a,null,function(){
+					_openw=null;//避免快速点击打开多个页面
+				});
+			}else{
+				_openw=plus.webview.create(id,id,{scrollIndicator:'none',scalable:false,popGesture:'hide'},{preate:true});
+
+				_openw.addEventListener('loaded',function(){//叶面加载完成后才显示
+					s||_openw.show(a,null,function(){
+						_openw=null;//避免快速点击打开多个页面
+					});
+					s&&(_openw=null);//避免s模式下变量无法重置
+				},false);
+				_openw.addEventListener('hide',function(){
+					_openw&&(_openw.showded=true);
+					_openw=null;
+				},false);
+			}
+		}
+    
+    //账户状态转换
+    function khzt(khzt){
+    	var khzt=khzt;
+    	if(khzt=="01"){
+    		khzt="正常"; 
+    	}else{
+    		khzt="封存";
+    	}
+    	return khzt;
+    }
+    </script>
+</html>

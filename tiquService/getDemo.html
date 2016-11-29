@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>get</title>
+    <script src="../js/mui.min.js"></script> 
+    <script src="../js/layer.js"></script> 
+    <script type="text/javascript" src="../js/tayh_app.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link href="../css/menu.css" rel="stylesheet"/>
+    <link href="../css/app.css" rel="stylesheet"/> 
+    <link href="../css/layer.css" rel="stylesheet"/>   
+    <style type="text/css">   
+        body{background-color: #EFEFF4;}   
+        li{background-color: #FFFFFF;}   
+    	.mui-table-view-cell img{ height: 55px; width: 55px; margin-top: 20px;}
+    	.conditionStyle{background-color: white;}   
+        .conditionStyle span{font-size: 14px; padding-left: 45%; line-height: 35px;}
+        h4{padding-top: 22px;padding-left: 65px;}
+        .ywxcxxData{font-size: 20px; padding-bottom: 0!important; padding-top: 0!important;}  
+        .mui-media-body{font-size: 16px;}
+        li:active{background-color: #DDDDDD!important;}
+        @media (device-height:480px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone4/4s */
+        h4{font-size: 16px;}   
+       }
+    </style> 
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <h1 class="mui-title">提取</h1> 
+	</header> 
+	<div id="wrapGet" class="mui-content"></div>
+	<div id="mui-spinner" class="mui-spinner" style="position: absolute; margin-top: 55%; margin-left: 47%;"></div>
+	
+<script type="text/javascript" charset="UTF-8">
+    //window.localStorage.clear();   
+  	mui.init();      
+	var oWrapGet=document.getElementById("wrapGet");
+	var oldStotageYwxcxx="oldStotageYwxcxx";                        //老业务宣传信息版本号，与新的做对比 
+  	function plusReady(){
+  		oBitmap = new plus.nativeObj.Bitmap();                      //存本地图片时用的对象(base64)
+  		var oWaitCircle=document.getElementById("mui-spinner");
+  			var arryYs3 = new Array();                                     //要素集合
+		  	var arryYs4 = new Array(); 
+		  	var arryYs5 = new Array();
+		  	var arryYs6 = new Array();
+      		/*plus.webview.currentWebview().setStyle({scrollIndicator:'none'}); */
+			//一、获取3个更新版本号,并更新 
+			mui.ajax(localStorage.getItem("interfaceUrl")+'getCacheVersion.app', {  
+			  timeout: 15000,                            
+			  dataType: 'json',         
+			  type: 'get',             
+			  success: function(data) {	 
+				  	var ywxcxx=data.result.ywxcxxbbh;  
+	                getYwxcxx(ywxcxx);                                                      //图片信息版本号判断及处理   
+			  },                    
+			  error: function(data) {                                                       //没网时直接循环输出本地信息    
+				  	if (localStorage.getItem("ywList")==null) {
+				  		requestFailure(); 
+				  	} else{
+				  		for(var i=0;i<localStorage.getItem("ywList");i++){                  //业务数据显示  
+				  		var ywmc=localStorage.getItem("ywmc"+i);                            //获取业务名称 
+				  		var mcjs=localStorage.getItem("mcjs"+i);                            //获取名词解释
+				  		var sxh=localStorage.getItem("sxh"+i);                              //获取图标顺序号
+				  	    showYwxxData(sxh,ywmc,mcjs);                                        //显示业务名称 业务名称  设置图片div的Id
+				  	    getStorageTb(sxh);                                                  //显示本地图标
+				  	    var yaoSuLength=localStorage.getItem("yaoSuLength"+i);
+					  	for(var k=0;k<yaoSuLength;k++){
+					  	    	var yaosuMc=localStorage.getItem("ysYwmc"+i+k);              //获取对应的要素名称
+					  	    	var yaosuSxh=localStorage.getItem("ysSxh"+i+k);
+					  	    	showYsmcData(i,sxh,yaosuSxh,yaosuMc);                        //显示要素名称 要素img的Div 并设置id  
+		                        getStorageYsTb(i,yaosuSxh);                                  //显示并存储要素图标    
+					  	    }    
+				  	    }  	
+				  	}
+			    }    
+			});
+		//判断业务宣传信息版本号是否更新
+		function getYwxcxx(ywxcxx){
+		    if(localStorage.getItem(oldStotageYwxcxx)!==ywxcxx){                             //第一次登录或者业务宣传信息版本号更新
+			    //localStorage.setItem(oldStotageTpxx,ywxcxx);                               //传入的版本号定义为老版本号
+				mui.ajax(localStorage.getItem("interfaceUrl")+'tqywsm.app', {
+				  timeout: 20000,      
+				  dataType: 'json',    
+				  type: 'get',  
+				  success: function(data) {                                                   //业务宣传维护信息    
+					  	for(var i=0;i<data.result.length;i++){ 
+						  	    var sxh=data.result[i].sxh;                                   //获取顺序号
+						  	    var tbid=data.result[i].tbid;                                 //获取图标id 
+						  	    var ywmc=data.result[i].ywmc;                                 //获取业务名称 
+						  	    var mcjs=data.result[i].mcjs;                                 //获取名词解释  
+					  	    
+			                    showYwxxData(sxh,ywmc,mcjs);                                  //显示业务名称和名词解释 并设置id 
+			                    storageTb(tbid,sxh);                                          //显示并存储图标   
+			                    localStorage.setItem("ywList",data.result.length);            //本地存储业务列表长度
+			                    localStorage.setItem("sxh"+i,sxh);                            //本地存储顺序号
+			                    localStorage.setItem("ywmc"+i,ywmc);                          //本地存储业务名称 
+			                    localStorage.setItem("mcjs"+i,mcjs);                          //本地存储名词解释
+		                        var yaoSuLength=data.result[i].ysdetail.length; 
+		                for(var k=0; k<yaoSuLength; k++){
+					  	    	var yaosuTbid=data.result[i].ysdetail[k].ystpid;              //获取对应的要素图标id
+					  	    	var yaosuMc=data.result[i].ysdetail[k].ysmc;                  //获取对应的要素名称
+					  	    	var yaosuSxh=data.result[i].ysdetail[k].sxh;                  //获取对应的要素顺序号
+		                        if(sxh=='3'){
+		                        	arryYs3.push(data.result[i].ysdetail[k]);
+		                        }else if(sxh=='4'){
+		                        	arryYs4.push(data.result[i].ysdetail[k]);
+		                        }else if(sxh=='5'){
+		                        	arryYs5.push(data.result[i].ysdetail[k]);
+		                        }else if(sxh=='6'){
+		                        	arryYs6.push(data.result[i].ysdetail[k]);
+		                        }
+					  	    	showYsmcData(i,sxh,yaosuSxh,yaosuMc);                     //显示要素名称 要素img的Div 并设置id  
+		                        storageYstb(i,yaosuTbid,yaosuSxh);                        //存储要素图标    
+		                        localStorage.setItem("ysSxh"+i+k,yaosuSxh);               //本地存储要素顺序号   
+		                        localStorage.setItem("ysYwmc"+i+k,yaosuMc);               //本地存储要素名称
+		                        localStorage.setItem("yaoSuLength"+i,yaoSuLength);        //本地存储要素长度
+					  	        }
+						    }
+				  	        //打开要素详情页面
+							var yaosuAll = document.querySelectorAll(".chooseYaosu");
+					        for(var i = 0; i<yaosuAll.length; i++ ){
+					        	 yaosuAll[i].addEventListener('tap',function(){
+				  	   　　　　　　　if(this.getAttribute('ysxqAllInfo') == '3'){ 
+						 					        openYaoSuDetail(arryYs3,this.getAttribute('ysxqDingWei'));
+										}else if(this.getAttribute('ysxqAllInfo') == '4'){ 
+											        openYaoSuDetail(arryYs4,this.getAttribute('ysxqDingWei'));
+										}else if(this.getAttribute('ysxqAllInfo') == '5'){
+											        openYaoSuDetail(arryYs5,this.getAttribute('ysxqDingWei'));   
+										}else if(this.getAttribute('ysxqAllInfo') == '6'){
+											        openYaoSuDetail(arryYs6,this.getAttribute('ysxqDingWei'));
+										}
+				  　　　　　	}); 
+					    }   
+				  },           
+				  error: function(data) {
+				  	requestFailure();   //连接失败，无网刷新
+				  }
+				}); 
+		}else{ 
+			  innerHtmlNoConnect();                         //未更新(有网),显示本地数据
+		} 
+	}	 
+	    //循环创建列表 设置图标id 显示业务名称和名词解释
+        function showYwxxData(sxh,ywmc,mcjs){ 
+        	oWrapGet.innerHTML+='<div style="margin-top: 10px;"><li class="mui-table-view-cell"><a class="mui-navigate-right ywxcxxData" onclick="clickedYwxxDetail('+sxh+')"><img id="tbImg'+sxh+'" class="mui-pull-left" alt=""><div class="mui-media-body"><h4>'+ywmc+'</h4><p class="mui-ellipsis">'+mcjs+'</p></div></a></li><div>';
+        	oWrapGet.innerHTML+='<div id="necessaryCondition'+sxh+'" class="conditionStyle" onclick="clickedHidCondition('+sxh+')"><span>必备条件</span></div>';
+        	oWrapGet.innerHTML+='<div id="hidElements'+sxh+'" class="hidConditions" style="display:none;"></div>';
+        } 
+        //循环创建列表 显示要素名称 并设置id 
+        function showYsmcData(i,sxh,yaosuSxh,yaosuMc){
+            var hidElementsId="hidElements"+sxh; 
+        	document.getElementById(hidElementsId).innerHTML+='<div class="chooseYaosu" style="width:33.3%;float:left;" ysxqAllInfo="'+sxh+'" ysxqDingWei="'+yaosuSxh+'"><img id="ysImg'+i+''+yaosuSxh+'" style="margin:10% 22% 0 22%;" alt=""><span style="float:left;width:100%;text-align:center;">'+yaosuMc+'</span></div>';   
+        } 
+        //下载要素图标(有网)  
+		function storageYstb(i,yaosuTbid,yaosuSxh){ 
+			mui.ajax(localStorage.getItem("interfaceUrl")+'getTpxx.app', {     
+			  timeout: 30000,                       
+			  dataType: 'json',     
+			  type: 'post',       
+			  data: { 
+			  	tpid: yaosuTbid   
+			  },        
+			  success: function(data) {    //显示获取到的要素图标
+			    var ystbId="ysImg"+i+yaosuSxh;
+			    var storageYs="ysImgSxh"+i+yaosuSxh; 
+			    document.getElementById(ystbId).src="data:image/png;base64,"+data.result.tpxx;  
+			    createDownload(document.getElementById(ystbId).src,yaosuTbid,storageYs);   //下载到指定的文件夹  
+			  },     
+			  error: function(data) {     
+			   } 
+			});
+		}
+	    //显示并下载图标(有网)  
+		function storageTb(tbid,sxh){
+		    mui.ajax(localStorage.getItem("interfaceUrl")+'getTpxx.app', {    
+			  timeout: 30000,                        
+			  dataType: 'json',    
+			  type: 'post',     
+			  data: {   
+			  	tpid: tbid   
+			  },       
+			  success: function(data) { //显示获取到的业务宣传图标   
+			    var tbId="tbImg"+sxh;  
+			    document.getElementById(tbId).src="data:image/png;base64,"+data.result.tpxx;
+			    createDownload(document.getElementById(tbId).src,tbid,sxh);   //下载到指定的文件夹
+			    oWaitCircle.style.display='none'; 
+			  },       
+			  error: function(data) {       
+			   } 
+			}); 
+		}
+		//获取本地图标(无网)
+		function getStorageTb(sxh){
+			oWaitCircle.style.display='none';    
+			var tbId="tbImg"+sxh;
+			document.getElementById(tbId).src=setImgFromLocal(localStorage.getItem("tbImgUrl"+sxh));
+		}
+		//获取本地 要素图标(无网)
+		function getStorageYsTb(i,yaosuSxh){  
+			var ystbId="ysImg"+i+yaosuSxh;
+			var storageYs="ysImgSxh"+i+yaosuSxh; 
+			document.getElementById(ystbId).src=setImgFromLocal(localStorage.getItem("tbImgUrl"+storageYs));  
+		}
+		//无网刷新
+		function requestFailure(){ 
+			  	oWaitCircle.style.display='none';
+			  	oWrapGet.innerHTML+='<div class="nowifi"><p class="firstp">网络请求失败</p><p class="secondp">请检查您的网络</p></div><div class="btn-refresh"><button id="btnRefrash" type="button" class="mui-btn mui-btn-blue btnZdy">刷新</button></div>';
+			  	document.getElementById('btnRefrash').addEventListener('tap',function(){
+			  	   plus.webview.currentWebview().reload(); 
+			  	});
+		}          
+    }	    
+	if(window.plus){
+		plusReady();
+	}else{
+		document.addEventListener('plusready',plusReady,false);
+	}  
+		//下载图片方法
+	    function createDownload(dataUrl,tbid,sxh){ 
+	   	    oBitmap.loadBase64Data(dataUrl,function(){  
+	                        },function(){
+	                        }); 
+	        oBitmap.save('_doc/image/ywxcxxImgDemo'+tbid+'.png',{overwrite:true},function(){
+	        },function(){                   
+	        });    
+	        localStorage.setItem("tbImgUrl"+sxh,'_doc/image/ywxcxxImgDemo'+tbid+'.png');    //存储本地图标路径   
+	   }
+	    //本地相对路径转成SD卡绝对路径;  
+	    function setImgFromLocal(relativePath) {
+	            var sd_path = plus.io.convertLocalFileSystemURL(relativePath);
+	            return sd_path;
+	        }
+		function clickedHidCondition(sxh){
+	      		var oElements=document.getElementById("hidElements"+sxh);
+	      		var oHidConditions=document.querySelectorAll(".hidConditions");
+	      		if (oElements.style.display=='none'){
+	      			for(var i=0;i<oHidConditions.length;i++){
+	      		    oHidConditions[i].style.display= 'none';
+	      			}   
+	      			oElements.style.display= 'block';
+	      		}else{ 
+	      			for(var i=0;i<oHidConditions.length;i++){ 
+	      		    oHidConditions[i].style.display= 'none';
+	      			}
+	      		}
+			} 
+		function clickedYwxxDetail(sxh){
+			//这里做渠道接入检查统一验证  + 签约验证
+			   if(sxh==3){
+			   	  hdqdjrjc('203','../tiquService/gjjzhdkhdtq/gjjzhChooseLoan.html','gjjzhChooseLoan.html');
+			   }else if(sxh==4){
+			   	  hdqdjrjc('204','../tiquService/ajdkhdtq/ajdkChooseLoan.html','ajdkChooseLoan.html');    //按揭的先不弄
+			   }else if(sxh==5){ 
+			   	  xhqdjrjc('201','16','../tiquService/jcldgxmlntq/jcldgxmlntqLimit.html','jcldgxmlntqLimit.html'); 
+			   }else if(sxh==6){
+			   	  xhqdjrjc('202','17','../tiquService/wsszgjcldgxtq/wsszgjcldgxLimit.html','wsszgjcldgxLimit.html');
+			   }
+		}
+		//打开要素详情页面
+		function openYaoSuDetail(arryYs,ysxqDingWei){
+			mui.openWindow({   
+							id: 'ysDetail', 
+							url: '../view/ysDetail.html',
+							show: {aniShow: 'slide-in-right',duration:'300'},
+							waiting:{
+								      autoShow: true,
+								      title:'正在加载...',
+								    },
+							extras: {
+								arryYs: arryYs,
+								ysxqDingWei: ysxqDingWei
+							}
+					    })
+		}
+</script>
+</body>
+</html>

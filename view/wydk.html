@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>wydk</title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <style type="text/css">
+    	html{
+    		background-color: #DDDDDD;
+    	}
+    	.passError{
+    		padding-left: 2%;
+    	}
+    	.passError img{
+    		height: 15px;
+    		margin-right: 3px;
+    		float: left;
+    		margin-top: 13px;
+    	}
+    	p{
+    		display: inline-block;
+    		color: #FF0000;
+    		margin: 0px;
+    		margin-top: 10px;
+    	}
+    	.identNum:active{
+	    	background-color: #555555;
+	    }
+	    #imgYzm{
+    		width: 25%;
+    		height: 45px;
+    		float: left;
+    		background-color: #EEEEEE;
+    		margin-top: 10px;
+    		border-bottom: 1px solid #DDDDDD;
+    	}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">我要贷款</h1>
+	</header>
+	<div class="mui-content" style="background-color: #DDDDDD;">
+		<div class="doPassword" style="margin-top: 15px;"><span>职工姓名</span><input id="ServicePass" type="password" placeholder="请输入您的姓名" maxlength="6" style="padding-left: 35px;"/></div>
+		<div class="doPassword"><span>联系电话</span><input id="dxyzm" type="password" placeholder="请输入您的手机号码" maxlength="6" style="padding-left: 35px;"/></div> 
+		<div class="doPassword left" style="width: 40%;">
+			<span>方便接电话时间 </span>
+		</div>
+		<select style="font-size: 16px; width: 60%; height: 44px; background-color: #FFFFFF; float: left; margin: 0px; border-radius: 0px;">
+				<option value="01">09:00-11:00</option>
+				<option value="02">11:00-13:00</option>
+				<option value="03">13:00-18:00</option>
+				<option value="04">18:00-20:00</option>
+				<option value="05">20:00-00:00</option>
+				<option value="06">00:00-09:00</option>
+		</select>
+		<div class="doPassword left" style="margin-top: 10px; width: 65%; border-bottom-right-radius: 5px; border-top-right-radius: 5px;"><span>验证码</span><input id="yzm" style="width: 70%;border: none;font-size: 16px;text-indent: 5px;" type="password" maxlength="6" style="padding-left: 35px;"/></div><img class="left" id="imgYzm" style="border-radius: 5px; margin-left: 10px;"/>
+		<div id="error" class="passError left" style="visibility: hidden; margin-bottom: 5px;"><img src="../img/zhuce/u206.png"><p id="errorContent"></p></div>
+		<button id="buttCancle" type="button" class="mui-btn mui-btn-blue" style="margin-top: 130px;">确定提取</button>
+	</div>
+</body>
+<script type="text/javascript">
+  mui.init();
+	function plusReady(){
+		var oYzm=document.getElementById("yzm");
+		var oImgYzm=document.getElementById("imgYzm");
+		var oButConfirm=document.getElementById("buttCancle");
+		var oError=document.getElementById("error");
+		var oErrorContent=document.getElementById("errorContent");
+		var oXm=document.getElementById('ServicePass');
+		var oLxdh=document.getElementById("dxyzm");
+		var oAgainPass=document.getElementById("againPass");
+		oImgYzm.src=localStorage.getItem("interfaceUrl")+'verifyCode.app';
+		oImgYzm.addEventListener('tap',function(){
+			var timesTamp=new Date().getTime();
+			oImgYzm.src=localStorage.getItem("interfaceUrl")+'verifyCode.app'+"?"+timesTamp;
+		});
+		oButConfirm.addEventListener('tap',function(){
+			if (!oXm.value=='') {
+				oError.style.visibility='hidden';
+				if(!oLxdh.value==''){
+					oError.style.visibility='hidden';
+					if(!oYzm.value==''){
+						oError.style.visibility='hidden';
+						alert("hello world")
+					}else{
+						oError.style.visibility='visible';
+				        oErrorContent.innerHTML="验证码不能为空";
+					}
+				}else{
+					oError.style.visibility='visible';
+				    oErrorContent.innerHTML="联系电话不能为空";
+				}
+			}else{
+				oError.style.visibility='visible';
+				oErrorContent.innerHTML="职工姓名不能为空";
+			}
+		})
+	}
+	if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+</script>
+</html>

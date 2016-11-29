@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"> 
+		<title>Index</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script src="js/tayh_app.js"></script>
+		<link rel="stylesheet" href="css/mui.min.css"> 
+		<style>  
+		  .mui-bar-add{ 
+		  	background-color: white;  
+		  	border-top: solid 1px rgba(0, 0, 0, 0.2);   
+		  }    
+		  img{       
+		  	height: 25px;
+		  } 
+		  .mui-tab-item{ 
+		  	line-height: 18px;
+		  }
+		  #img1{
+		  	margin-left: -2px;
+		  }
+		</style>
+	</head>  
+	<body> 
+		<nav id="navWrap" class="mui-bar mui-bar-add mui-bar-tab">
+			<a id="defaultTab" class="mui-tab-item" href="view/menu.html">
+				<span class="mui-icon"><img id="img1" src="images/navindexlink_1.png"/></span>
+				<span id="span1" class="mui-tab-label" style="color: #66A6FF;">首页</span>
+			</a>
+			<a id="get" class="mui-tab-item get-icon two"  href="tiquService/getDemo.html">
+				<span class="mui-icon"><img id="img2" src="images/navextractlink.png"/></span>
+				<span id="span2" class="mui-tab-label">提取</span>
+			</a>
+			<a id="returnLoan" class="mui-tab-item"  href="huandaiService/huanDai.html">
+				<span class="mui-icon"><img id="img3" src="images/navloanlink.png"/></span>
+				<span id="span3" class="mui-tab-label">还贷</span>
+			</a>
+			<a id="mine" class="mui-tab-item"  href="mine/mine.html">
+				<span class="mui-icon"><img id="img4" src="images/navminelink.png"/></span>
+				<span id="span4" class="mui-tab-label">我的</span> 
+			</a> 
+		</nav> 
+		<script src="js/mui.min.js"></script>  
+		<script type="text/javascript" charset="utf-8">        
+			mui.init();   
+			localStorage.setItem('isLogin','');   //清除登录状态
+			localStorage.setItem("interfaceUrl","https://app.zfgjj.cn/dzyw-app/app/");         /*  http://111.160.231.3:82/dzyw-app/app/   http://192.168.191.1:8111/tayh-app/app/  http://10.94.3.45:8085/tayh-app/app/  http://111.160.231.3:82/dzyw-app/app/  https://test.zfgjj.cn:82/dzyw-app/app/   https://app.zfgjj.cn/dzyw-app/app/ */
+			var subpages = ['view/menu.html','tiquService/getDemo.html', 'huandaiService/huanDai.html', 'mine/mine.html'];
+		    var subpage_style = {   
+				top: '0px',        
+				bottom: '51px'          
+			}; 
+			mui.plusReady(function() {
+				var aniShow = {};
+				var self = plus.webview.currentWebview();  //index页面
+				var oImg1=document.getElementById("img1");
+				var oImg2=document.getElementById("img2");
+				var oImg3=document.getElementById("img3");
+				var oImg4=document.getElementById("img4");
+				var oSpan1=document.getElementById("span1");
+				var oSpan2=document.getElementById("span2");
+				var oSpan3=document.getElementById("span3");
+				var oSpan4=document.getElementById("span4");
+			    //点击选项卡时 判断是否登录 
+			    var muiTabItem = document.getElementsByClassName("mui-tab-item");
+			    for(var i=0; i<muiTabItem.length; i++){
+			    	if(i !== 0){
+			    		muiTabItem[i].addEventListener('tap',function(){
+				    	oSpan2.style.color="#808080"; 
+                        oSpan3.style.color="#808080";
+                        oSpan4.style.color="#808080";
+						isLogin(); 
+					});
+			    	} 
+			    }
+		        var activeTab=subpages[0];                //当前激活选项
+				//创建子页面，首个选项卡页面显示，其它均隐藏(创建4个子页面,第一个显示，剩下的隐藏)
+				for (var i = 0; i < 4; i++) {
+					var temp = {};
+					var sub = plus.webview.create(subpages[i], subpages[i], subpage_style);  //WebviewObject plus.webview.create( url, id, styles, extras )
+					if (i > 0) {                          //不是首页面的隐藏
+						sub.hide();
+					}else{
+						temp[subpages[i]] = "true";        //首页面存入temp=true
+						mui.extend(aniShow,temp);          //合并对象
+					}
+					self.append(sub);
+				}
+				//选项卡点击事件
+				mui('.mui-bar-tab').on('tap', 'a', function(e) {
+					var  targetTab = this.getAttribute('href');
+					if(localStorage.getItem("isLogin") !== "true"){
+						return;
+					}
+					if (targetTab == activeTab) {
+						return;                //点击的和当前的相同
+					}
+					//显示目标选项卡,若为iOS平台或非首次显示，则直接显示
+					if(mui.os.ios||aniShow[targetTab]){ 
+						plus.webview.show(targetTab);
+					}else{
+						//否则，使用fade-in动画，且保存变量
+						var temp = {}; 
+						temp[targetTab] = "true";
+						mui.extend(aniShow,temp);
+						plus.webview.show(targetTab,"fade-in",300);
+					}
+					//隐藏当前
+					plus.webview.hide(activeTab);
+					//更改当前活跃的选项卡
+					activeTab = targetTab;
+					 
+				});
+				//退出登录触发的自定义事件 
+				document.addEventListener('logout',function(){ 
+				   localStorage.setItem('isLogin','');
+				   var targetTab = subpages[0];
+				   var temp = {};				   
+				   temp[targetTab] = "true";
+				   mui.extend(aniShow,temp);
+				   plus.webview.show(targetTab,"fade-in",300);
+				   plus.webview.hide(activeTab);      //隐藏当前
+				   activeTab = targetTab;             //更改当前活跃的选项卡
+				   
+                   oImg1.src='images/navindexlink_1.png';
+                   oImg4.src='images/navminelink.png';  
+                   oSpan1.style.color="#66A6FF";
+                   oSpan4.style.color="#808080";
+			    });
+				//自定义换第四个选项卡事件
+				document.addEventListener('eventTap', function(event) {
+				   localStorage.setItem('isLogin','true');
+				   var targetTab = subpages[3];
+				   var temp = {};				   
+				   temp[targetTab] = "true"; 
+				   mui.extend(aniShow,temp);
+				   plus.webview.show(targetTab,"fade-in",300);
+				   plus.webview.hide(activeTab);      //隐藏当前
+				   activeTab = targetTab;             //更改当前活跃的选项卡
+				   plus.webview.getWebviewById("mine/mine.html").reload();                 //刷新我的选项卡页面
+
+				   oImg4.src='images/navminelink_1.png';
+		           oImg1.src='images/navindexlink.png';  
+		           oImg2.src='images/navextractlink.png'; 
+		           oImg3.src='images/navloanlink.png';
+		           
+		           oSpan4.style.color="#66A6FF";
+		           oSpan1.style.color="#808080";  
+		           oSpan2.style.color="#808080";
+		           oSpan3.style.color="#808080"; 
+			  });
+			    //自定义首页选项卡事件
+			    document.addEventListener('eventMenu', function(event) {
+				   var targetTab = subpages[0]; 
+				   var temp = {};				   
+				   temp[targetTab] = "true"; 
+				   mui.extend(aniShow,temp);
+				   plus.webview.show(targetTab,"fade-in",300); 
+				   plus.webview.hide(activeTab);      //隐藏当前
+				   activeTab = targetTab;             //更改当前活跃的选项卡
+
+				   oImg1.src='images/navindexlink_1.png';
+                   oImg2.src='images/navextractlink.png';
+                   oImg3.src='images/navloanlink.png';
+                   oImg4.src='images/navminelink.png';  
+                  
+                   oSpan1.style.color="#66A6FF";
+                   oSpan2.style.color="#808080"; 
+                   oSpan3.style.color="#808080";
+                   oSpan4.style.color="#808080";
+			    });
+			    //自定义首页选项卡事件
+			    document.addEventListener('openLogin', function(event) {
+                          mui.openWindow({
+									id: 'login',
+									url: 'login.html',
+									show: {aniShow: 'slide-in-right',duration:'200'},
+									waiting:{autoShow: true,title:'正在加载...'}
+							    });
+			    });
+			    //自定义我的贷款选项卡事件
+			    document.addEventListener('eventMyloan', function(event) {
+				   var targetTab = subpages[3];
+				   var temp = {};				   
+				   temp[targetTab] = "true"; 
+				   mui.extend(aniShow,temp);
+				   plus.webview.show(targetTab,"fade-in",300);
+				   plus.webview.hide(activeTab);      //隐藏当前
+				   activeTab = targetTab;             //更改当前活跃的选项卡
+
+				   oImg4.src='images/navminelink_1.png'; 
+		           oImg1.src='images/navindexlink.png';  
+		           oImg2.src='images/navextractlink.png'; 
+		           oImg3.src='images/navloanlink.png'; 
+		           
+		           oSpan4.style.color="#66A6FF";
+		           oSpan1.style.color="#808080";  
+		           oSpan2.style.color="#808080";
+		           oSpan3.style.color="#808080";  
+			  });    
+			    //自定义提取选项卡事件
+			    document.addEventListener('eventTiqu', function(event) {
+				   var targetTab = subpages[1];
+				   var temp = {};				   
+				   temp[targetTab] = "true";
+				   mui.extend(aniShow,temp);
+				   plus.webview.show(targetTab,"fade-in",300);
+				   plus.webview.hide(activeTab);      //隐藏当前
+				   activeTab = targetTab;             //更改当前活跃的选项卡
+				   oImg2.src='images/navextractlink_1.png';
+                   oImg1.src='images/navindexlink.png';
+                   oImg3.src='images/navloanlink.png';
+                   oImg4.src='images/navminelink.png';                 
+                   oSpan2.style.color="#66A6FF";
+                   oSpan1.style.color="#808080";
+                   oSpan3.style.color="#808080";
+                   oSpan4.style.color="#808080"; 
+			  });   
+			    //自定义还贷选项卡事件  
+			    document.addEventListener('eventHuandai', function(event) {
+				   var targetTab = subpages[2];
+				   var temp = {};				   
+				   temp[targetTab] = "true";
+				   mui.extend(aniShow,temp);
+				   plus.webview.show(targetTab,"fade-in",300);
+				   plus.webview.hide(activeTab);      //隐藏当前
+				   activeTab = targetTab;             //更改当前活跃的选项卡
+				   oImg3.src='images/navloanlink_1.png'; 
+                   oImg1.src='images/navindexlink.png';
+                   oImg2.src='images/navextractlink.png';
+                   oImg4.src='images/navminelink.png';
+                   oSpan3.style.color="#66A6FF"; 
+                   oSpan1.style.color="#808080";
+                   oSpan2.style.color="#808080";
+                   oSpan4.style.color="#808080"; 
+			  });
+                //点击选项卡变色 样式改变  登录变  没登录不变 
+				document.getElementById("defaultTab").addEventListener('tap',function(){ 
+                  oImg1.src='images/navindexlink_1.png';
+                  oImg2.src='images/navextractlink.png';
+                  oImg3.src='images/navloanlink.png';
+                  oImg4.src='images/navminelink.png';  
+                  
+                  oSpan1.style.color="#66A6FF";
+                  oSpan2.style.color="#808080"; 
+                  oSpan3.style.color="#808080";
+                  oSpan4.style.color="#808080";
+			   });
+			    document.getElementById("get").addEventListener('tap',function(){
+			    if(localStorage.getItem("isLogin") !== "true"){
+							return;
+				}	
+                  oImg2.src='images/navextractlink_1.png';
+                  oImg1.src='images/navindexlink.png';
+                  oImg3.src='images/navloanlink.png';
+                  oImg4.src='images/navminelink.png';
+                  
+                  oSpan2.style.color="#66A6FF";
+                  oSpan1.style.color="#808080";
+                  oSpan3.style.color="#808080";
+                  oSpan4.style.color="#808080";
+			    });
+			    document.getElementById("returnLoan").addEventListener('tap',function(){
+		    	if(localStorage.getItem("isLogin") !== "true"){
+						return;
+				}
+                  oImg3.src='images/navloanlink_1.png';
+                  oImg1.src='images/navindexlink.png';
+                  oImg2.src='images/navextractlink.png';
+                  oImg4.src='images/navminelink.png';
+                  
+                  oSpan3.style.color="#66A6FF";
+                  oSpan1.style.color="#808080";
+                  oSpan2.style.color="#808080";
+                  oSpan4.style.color="#808080";
+			    });
+
+			    document.getElementById("mine").addEventListener('tap',function(){
+		    	if(localStorage.getItem("isLogin") !== "true"){
+						return;
+				}
+				  mui.fire(plus.webview.getWebviewById('mine/mine.html'), 'refreshBtn');
+				  
+		          oImg4.src='images/navminelink_1.png';
+		          oImg1.src='images/navindexlink.png';
+		          oImg2.src='images/navextractlink.png';
+		          oImg3.src='images/navloanlink.png';
+		          
+		          oSpan4.style.color="#66A6FF";
+		          oSpan1.style.color="#808080";
+		          oSpan2.style.color="#808080";
+		          oSpan3.style.color="#808080";
+			    });			
+            });
+			//首页返回键处理
+			//处理逻辑：2秒内，连续两次按返回键，则退出应用；
+			var first = null;
+			mui.back = function() {
+					//首次按键，提示‘再按一次退出应用’
+					if (!first) {
+						first = new Date().getTime();
+						mui.toast('再按一次退出应用');
+						setTimeout(function() {
+							first = null;
+						}, 2000);
+					} else {
+						if (new Date().getTime() - first < 2000) {
+							plus.runtime.quit();
+						}
+					}
+			};
+		</script>
+	</body>
+</html>

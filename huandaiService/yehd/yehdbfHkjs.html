@@ -1,0 +1,473 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>余额还贷计算(部分)</title>
+<script type="text/javascript" src="../../js/mui.min.js"></script> 
+<script type="text/javascript" src="../../js/tayh_app.js"></script>
+<script type="text/javascript" src="../../js/layer.js"></script>
+<link rel="stylesheet" type="text/css" href="../../css/mui.min.css"/>
+<link rel="stylesheet" href="../../css/global.css" />
+<link rel="stylesheet" href="../../css/app.css" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" type="text/css" href="../../css/layer.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/iphone4.css"/>
+<style type="text/css">
+        @media (device-height:480px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone4/4s */
+          #hiddenBox{
+				padding-top: 15px;
+			}
+			.boxTitle{
+				height: 30px;
+				line-height: 20px;
+			}
+			#hiddenBox ul li{
+				height: 28px;
+				line-height: 28px;
+			}
+			#hiddenBoxMx .boxTitle{
+			 	height: 30px;
+				line-height: 20px;
+			}
+       }
+        @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+            #hiddenBox{
+				padding-top: 15px;
+			}
+			.boxTitle{
+				height: 30px;
+				line-height: 20px;
+			}
+			#hiddenBox ul li{
+				height: 28px;
+				line-height: 28px;
+			}
+			#hiddenBoxMx .boxTitle{
+			 	height: 30px;
+				line-height: 20px;
+			}
+       }
+	    #hiddenBoxMx{
+			width: 100%;
+			box-shadow:0px 2px 1px rgba(0, 0, 0, .1);
+			background:no-repeat url(../../img/allImg/payBackLeft.png); 
+			background-size: 100%;
+			padding-top: 20px;
+			padding-left: 10px;
+			font-size: 14px;
+			font-weight: bold;
+			color: #AAAAAA;
+		}
+		.boxTitle{
+			width: 100%;
+			height: 36px;
+			line-height: 36px;
+			color: #1C86EE;
+			font-size: 14px;
+			border-bottom: 1px solid #EEEEEE;
+			font-weight: bold;
+		}
+		#hiddenBoxMx ul li{
+			height: 22px;
+			width: 100%;
+			line-height: 22px;
+		}
+		.boxSpan{
+			float: right;
+			padding-right: 10px;
+			color: #000000;
+		}
+		#hiddenBox{
+			margin-top: 0;
+		}
+		#zhhjLi{
+        	font-size: 15px; 
+        	color: #000000; 
+        	font-weight: bold; 
+        	height: 30px;
+        }
+        #zhhjLi span{
+        	position: absolute;
+        	right: 8px;
+        	height: 30px;
+        }
+        .yhkeWrap{width: 100%; height: 30px; line-height: 25px; color: #999999;}
+	    .yhkeWrap span{float: right; margin-right: 2px;}
+        #firstUl li{display: none;}
+</style>
+</head>
+<body class="page-header-fixed">
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">余额还贷还款计算</h1>
+	</header>
+<div id="wrapper">
+	<div id="scroller">
+        <div class="limitList">
+        	<dl class="clearfix">
+            	<dd class="clearfix blue" style="overflow: hidden;">
+                	<label class="left">贷款账号:</label>
+                    <span id="dkzh" class="left marginR10 "></span>
+                	<label class="left">公积金贷款余额:</label>
+                    <span id="dkye" class="left"></span>
+                </dd>
+            	<dd class="clearfix size14 beforeBackMoney left">
+                	<label class="left">提前偿还本金</label>
+                    <input id="tqchbj"  class="left" style="width: 40%;  padding: 0px; margin-left: 20px;" onkeyup="formatAmount(this)"/><em>元</em>     
+                </dd>
+                <input type="button" id="btnCalculateInterest" value="计算利息"/>
+            </dl>
+            <div class="yhkeWrap">
+	            	<span id="zhyehj" class="right" style="margin-right: 10px;"></span><span>账户余额合计:</span> 
+	        </div>
+            <div id="yhkeId" class="yhkeWrap" style="display: none;">
+	            	<span id="dqyhke" class="right" style="margin-right: 10px;"></span><span>当期应还款额:</span> 
+	        </div>
+            <div class="BeforeBackInterest">
+            	<label class="left">提前偿还利息</label>
+            	<em class="right" style="margin-right: 10px;">元</em><span id="tishiTap" class="right"></span>
+            </div>
+            <div class="BeforeBackInterest">
+            	<label class="left">本次还款合计</label>
+            	<em class="right" style="margin-right: 10px;">元</em><span id="bchkhj" class="right payAllNum"></span>
+            </div>
+            <div class="clearfix limitQuestionBox">
+            	<span id="lookChange" class="right lookChange">查看还款计划变更</span>
+            	<span id="showTiquMx" class="right limitQuestion">显示提取明细</span> 
+            </div>
+            <div id="hiddenBox" class="clearfix" style="display: none;">
+            	<div class="boxTitle"><span>还款计划变更</span></div>
+            	<ul>
+            		<li>还款前上月实还金额<span id="hkqsyshje" class="boxSpan" style="font-weight: normal;"></span></li>
+            		<li>还款后下月应换金额<span id="hkhxyyhje" class="boxSpan" style="font-weight: normal;"></span></li>
+            		<li>还款成功后账户余额合计<span id="hkcghzhyehj" class="boxSpan payAllNum" style="font-weight: normal;"></span></li>
+            	</ul>
+            </div>
+            <div id="hiddenBoxMx" class="clearfix" style="display: none;">
+            	<div class="boxTitle"><span>账户余额提取明细</span><span class="right" style="color: #AAAAAA; font-weight: 100; margin-right: 10px;">提取金额/账户金额</span></div>
+        		<ul id="firstUl">
+	        		<li id="zfgjj"><span id="zfgjjJe" class="boxSpan" style="font-weight: normal;"></span></li>
+	        		<li id="bczfgjj"><span id="bczfgjjJe" class="boxSpan" style="font-weight: normal;"></span></li>
+	        		<li id="ayzfgjj"><span id="ayzfgjjJe" class="boxSpan" style="font-weight: normal;"></span></li>
+            	</ul>
+            	<div style="height: 1px; margin:0px 10px 5px 0px;  border-bottom: 1px dashed #AAAAAA;"></div>
+            	<ul>
+            		<li id="zhhjLi">账户合计<span id="zhhj"></span></li>
+            	</ul>	
+            </div>
+        </div>
+	</div>      
+    <div class="nextStep clearfix" style="z-index: 0">
+    	<a id="onlineZixun" class="consultBtn left"><img src="../../images/consult.png" alt="" /><span>咨询</span></a>
+        <span id="nextStepBtn" class="nextStepBtn">下一步</span>
+    </div>
+    <div id="Ididentify" class="identify">
+		<div class="identifyHd">
+	    	<a class="closeIdentify" id="closeIdentify"><img src="../../images/close.png" alt="" /></a>
+	        <h3>验证身份</h3>
+	    </div>
+	    <div class="identifyBd">
+	    	<p id="sjhm">已绑定手机:</p>
+	        <ul class="identifyWrite">
+	        	<li class="clearfix identifyingCode">
+	            	<img src="../../images/icon_1.png" alt="" />
+	                <input id="sjyzm" type="text" placeholder="请输入手机验证码" maxlength="6"/>
+	                <span id="hqsjyzm" class="getCode">获取验证码</span>
+	            </li>
+	            <li class="clearfix password">
+	            	<img src="../../images/icon_2.png" alt="" />
+	                <input id="ywblmm" type="password" placeholder="请输入业务办理密码" maxlength="6"/>       
+	            </li>
+	        </ul>
+	        <span id="confrim" class="identifyBtn">验证身份</span>
+	    </div>
+    </div>   
+	<div id="mask" class="overlay" style="display: none;"></div>
+</div>
+</body>
+<script type="text/javascript" charset="UTF-8">
+	mui.init();
+	function plusReady(){
+		var oHideBox=document.getElementById("hiddenBox");          //还款计划变更盒子
+		var oHiddenBoxMx=document.getElementById("hiddenBoxMx");    //还款计划明细盒子
+		var oBtnCalculateInterest=document.getElementById("btnCalculateInterest");
+		var oNextStepBtn=document.getElementById("nextStepBtn");
+		var oIdidentify=document.getElementById("Ididentify");
+		var oMask=document.getElementById("mask");
+		var oConfrim=document.getElementById("confrim");
+		var zjlx=localStorage.getItem("zjlx");                      //资金类型
+		var dkye = plus.webview.currentWebview().dkye;              //贷款余额
+		var sldm = plus.webview.currentWebview().sldm;
+		var zhyehj = '';
+		document.getElementById("dkzh").innerHTML=fourNumSixstar(plus.webview.currentWebview().dkzh);
+        document.getElementById("dkye").innerHTML=fmoney(dkye)+'元';
+        //账户余额合计
+        mui.ajax(localStorage.getItem("interfaceUrl")+'zgzhxx.app', {    
+					  timeout: 20000,                       
+					  dataType: 'json',    
+					  type: 'post', 
+					  success: function(data) {
+						  	if(data.jg == "0"){
+						  		  zhyehj = data.zhze;
+						  		  document.getElementById("zhyehj").innerHTML = fmoney(zhyehj)+' 元';                  
+						  	}else if(data.jg == "-98"){
+						  		  loginPlease();
+						  	}else{
+						  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+						  	}         
+					  },
+					  error: function(data) {
+					  	    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+					  }  
+				});
+        getOldSjhm();   //手机号码获取
+        var flagSjyzm = '';
+    	//获取手机验证码
+    	document.getElementById("hqsjyzm").addEventListener('tap' ,function(){
+    		if(flagSjyzm !== ''){             //获取中
+    			return;
+    		}else{                            //获取
+    			    getSjYzmBl('302',sldm);          //获取验证码
+    			    flagSjyzm = 0;
+	        		var timer = 60;
+	        		var thisThis = this;
+	        		thisThis.style.backgroundColor = '#AAAAAA';
+				    thisThis.innerHTML=timer+'s';
+				    var time = setInterval(function(){ 
+					if(timer >= 1){
+						timer=timer-1;
+						thisThis.innerHTML = timer+'s';
+					}else{
+						thisThis.style.backgroundColor = '#0080d8';
+						thisThis.innerHTML = '获取验证码';
+						flagSjyzm = '';
+						clearInterval(time);
+					}
+				},1000);
+    	    }
+    	})
+        //在线咨询
+        onlineConsult();  
+        //显示计划变更
+		document.getElementById("lookChange").addEventListener('tap',function(){ 
+			oHiddenBoxMx.style.display = 'none';
+			if (oHideBox.style.display=='none') {
+				var oTqchbjValue = document.getElementById("tqchbj").value;
+		        if(!oTqchbjValue==""){
+			        mui.ajax(localStorage.getItem("interfaceUrl")+'yehdedjs.app', {    
+						  timeout: 30000,                       
+						  dataType: 'json',    
+						  type: 'post', 
+						  data: {
+						  qqData: encodeURI(JSON.stringify({"grdm": localStorage.getItem("grdm"),
+						           "djbbh": plus.webview.currentWebview().djbbh,
+						  	       "dkzh":  plus.webview.currentWebview().dkzh,
+						  	       "sldm":  sldm,
+						  	       "tqhklx": "01",
+						  	       "hkbj": oTqchbjValue
+						  }))
+						  },
+						  success: function(data) {
+						  	    if(data.jg == '0'){
+							  	    	oHideBox.style.display='block';
+							  	    	document.getElementById("hkqsyshje").innerHTML = data.data.syshje+'元';      //查看还款计划变更
+						  	            document.getElementById("hkhxyyhje").innerHTML = data.data.xyyhje+'元';
+						  	            document.getElementById("hkcghzhyehj").innerHTML = (data.data.zhyehj - oTqchbjValue - data.data.hklx).toFixed(2)+'元';
+						  	    }else if(data.jg == '-98'){
+						  	    	    loginPlease();
+						  	    }else{
+						  	    	    plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+						  	    }	
+						  },
+						  error: function(data) {
+						  	    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+						  }  
+					});
+		       }else{
+		          	plus.nativeUI.toast("提前偿还本金不得为空！",{'duration':'long'});
+		       }
+			}else{
+				oHideBox.style.display='none';
+			}
+		});
+		//显示提取明细
+		document.getElementById("showTiquMx").addEventListener('tap',function(){
+			    oHideBox.style.display = 'none';
+	        	if (oHiddenBoxMx.style.display=='none') {
+				var oTqchbjValue = document.getElementById("tqchbj").value;
+		        if(!oTqchbjValue==""){
+		        	mui.ajax(localStorage.getItem("interfaceUrl")+'yehdedjs.app', {    
+					  timeout: 30000,                       
+					  dataType: 'json',    
+					  type: 'post', 
+					  data: {
+					  qqData: encodeURI(JSON.stringify({"grdm": localStorage.getItem("grdm"),
+					           "djbbh": plus.webview.currentWebview().djbbh,
+					  	       "dkzh":  plus.webview.currentWebview().dkzh,
+					  	       "sldm":  sldm,
+					  	       "tqhklx": "01",
+					  	       "hkbj": oTqchbjValue
+					  }))
+					  }, 
+					  success: function(data) {
+						   var oZhhj=document.getElementById("zhhj");
+						   var hadTap=sessionStorage.getItem("hadTap"); 
+						   if(data.jg == "0"){
+							    var gjjtj=data.data.tjgjj;
+							    var bctj=data.data.tjbc;
+							    var aytj=data.data.tjay;
+							    var gjjye=data.data.gjjzh;
+							    var bcye=data.data.bczh;
+							    var aye=data.data.ayzh;
+							    var zjlxLen = zjlx.length;
+							    oHiddenBoxMx.style.display='block';
+							  	if(zjlxLen == 1){
+						  		document.getElementById("firstUl").style.height = '22px';
+						  		    oHiddenBoxMx.style.height = '110px';
+							  	}else if(zjlxLen == 2){
+							  		document.getElementById("firstUl").style.height = '44px';
+							  		oHiddenBoxMx.style.height = '135px';
+							  	}else if(zjlxLen == 3){
+							  		document.getElementById("firstUl").style.height = '66px';     
+							  		oHideBox.style.height = '157px';
+							  	}
+								if(zjlx.indexOf('G') > -1){    
+							  		if(hadTap!=="true"){
+							  			document.getElementById("zfgjj").innerHTML+='住房公积金';
+							  			document.getElementById("zfgjj").style.display = 'block';
+							  		    document.getElementById("zfgjjJe").innerHTML=gjjtj+'/'+gjjye+'元';
+							  		}else{
+							  			document.getElementById("zfgjjJe").innerHTML=gjjtj+'/'+gjjye+'元';
+							  		}
+							  	}
+							  	if(zjlx.indexOf('B') > -1){
+							  		if(hadTap!=="true"){
+							  			document.getElementById("bczfgjj").innerHTML+='补充住房公积金';
+							  			document.getElementById("bczfgjj").style.display = 'block';
+							  		    document.getElementById("bczfgjjJe").innerHTML=bctj+'/'+bcye+'元';
+							  		}else{
+							  			document.getElementById("bczfgjjJe").innerHTML=bctj+'/'+bcye+'元';
+							  		}
+							  	}
+							  	if(zjlx.indexOf('Y') > -1){
+							  		if(hadTap!=="true"){
+							  			document.getElementById("ayzfgjj").innerHTML+='按月住房补贴';
+							  			document.getElementById("ayzfgjj").style.display = 'block';
+							  		    document.getElementById("ayzfgjjJe").innerHTML=aytj+'/'+aye+'元';
+							  		}else{
+							  			document.getElementById("ayzfgjjJe").innerHTML=aytj+'/'+aye+'元';
+							  		}
+							  	}
+							  	oZhhj.innerHTML=(gjjtj+bctj+aytj).toFixed(2)+'/'+(gjjye+bcye+aye).toFixed(2)+'元';
+							  	sessionStorage.setItem("hadTap","true");
+							}else if(data.jg == '-98'){
+								loginPlease();
+							}else{
+								plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+							}
+						   
+					  },
+					  error: function(data) {
+					  	    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+					  }  
+				});
+		       }else{
+		         	plus.nativeUI.toast("提前偿还本金不得为空！",{'duration':'long'});
+		        }
+				}else{
+					oHiddenBoxMx.style.display='none';
+				}
+        	})
+		//显示计算结果
+		oBtnCalculateInterest.addEventListener('tap',function(){
+			var oTqchbjValue = document.getElementById("tqchbj").value;
+	        if(!oTqchbjValue==""){
+		        mui.ajax(localStorage.getItem("interfaceUrl")+'yehdedjs.app', {    
+					  timeout: 30000,                       
+					  dataType: 'json',    
+					  type: 'post', 
+					  data: {
+					  qqData: encodeURI(JSON.stringify({"grdm": localStorage.getItem("grdm"),
+					           "djbbh": plus.webview.currentWebview().djbbh,
+					  	       "dkzh":  plus.webview.currentWebview().dkzh,
+					  	       "sldm":  sldm,
+					  	       "tqhklx": "01",
+					  	       "hkbj": oTqchbjValue
+					  }))
+					  },
+					  success: function(data) {
+					  	if(data.jg == "0"){
+					  		if((data.data.dqbj + data.data.dqlx) !== 0){
+						  	   	  document.getElementById("yhkeId").style.display = 'block';
+						  	   	  document.getElementById("dqyhke").innerHTML = fmoney(data.data.dqbj + data.data.dqlx) + '元';
+						  	} 
+						  	sessionStorage.setItem('hadCalculate','true');
+							sessionStorage.setItem('calculateValue',oTqchbjValue);
+					  		document.getElementById("tishiTap").innerHTML = data.data.hklx ;            //显示计算结果
+					  	    document.getElementById("bchkhj").innerHTML = data.data.hkhj;                           
+					  	}else if(data.jg == '-98'){
+					  		loginPlease();
+					  	}else{
+					  		plus.nativeUI.toast(data.cwms1,{'duration':'long'});
+					  	}        
+					  },
+					  error: function(data) {
+					  	    plus.nativeUI.toast("网络连接异常!",{'duration':'long'});
+					  }  
+				});
+	       }else{
+	       	    plus.nativeUI.toast("提前偿还本金不得为空！",{'duration':'long'});
+	        }
+		});
+		oNextStepBtn.addEventListener('tap',function(){
+	        if(document.getElementById("tqchbj").value!==""){
+	        	var oTqchbjValue = document.getElementById("tqchbj").value;
+				if(oTqchbjValue >= parseFloat(dkye)){
+					    plus.nativeUI.toast('提前偿还本金不能大于公积金贷款余额！',{'duration':'long'});
+				}else{
+					if(oTqchbjValue >= parseFloat(zhyehj)){
+					    plus.nativeUI.toast('提前偿还本金不能大于账户余额合计！',{'duration':'long'});
+					}else if(sessionStorage.getItem('hadCalculate') !=='true' || sessionStorage.getItem('calculateValue') !== oTqchbjValue){
+					    plus.nativeUI.toast('请先计算利息！',{'duration':'long'});
+				    }else{
+						oMask.style.display='block';
+	        	        document.getElementById("Ididentify").style.bottom = '0px';
+					}
+				}
+	        }else{
+	        	    plus.nativeUI.toast("请输入正确的提前偿还本金！",{'duration':'long'});
+	        }
+		});
+		document.querySelector(".closeIdentify").addEventListener('tap',function(){
+		   oIdidentify.style.bottom = '-222px';
+		   oMask.style.display='none';
+		});
+		//还贷办理
+		oConfrim.addEventListener('tap',function(){
+			if(document.getElementById("sjyzm").value==""){
+				plus.nativeUI.toast("手机验证码不能为空！",{'duration':'long'});
+			}else if(document.getElementById("ywblmm").value==""){
+				plus.nativeUI.toast("业务办理密码不能为空！",{'duration':'long'});
+			}else{
+				    var reg = /(^[0-9]+(.[0-9]{1,2})?$)/; 
+					if(!reg.test(document.getElementById("tqchbj").value)){
+						plus.nativeUI.toast('请输入正确的提前偿还本金！',{'duration':'long'});
+					}else{
+						    var w = plus.nativeUI.showWaiting();   //防止快速点击情况的发生
+							setTimeout( function(){
+									w.close();
+					    }, 2500 );
+						forBfyehdConfirm(document.getElementById("tqchbj").value);
+				   }
+			} 
+		});
+	}	
+	if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener('plusready',plusReady,false);
+		}
+</script>
+</html>
+
